@@ -1,1 +1,81 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@theme {
+    --font-tan: "TAN Nimbus", sans-serif;
+    --font-satisfy: "Satisfy", sans-serif;
+    --font-poppins: "Poppins", sans-serif;
+    --color-primary:#000000;
+    --color-secondary:#ffffff;
+}
+@layer components {
+  .titulo {
+    @apply text-2xl font-semibold text-black dark:text-white;
+  }
+
+  .subtitulo {
+    @apply text-lg font-medium text-neutral-700 dark:text-neutral-300;
+  }
+
+  .parrafo {
+    @apply text-base text-neutral-600 dark:text-neutral-400 leading-relaxed;
+  }
+
+  .texto-pequeno {
+    @apply text-sm text-neutral-500 dark:text-neutral-400;
+  }
+    .boton {
+    @apply px-4 py-2 rounded bg-black text-white hover:bg-neutral-800 active:scale-95 transition-all duration-300 dark:bg-white dark:text-black dark:hover:bg-neutral-200;
+  }
+
+  .boton-secundario {
+    @apply px-4 py-2 rounded  border-neutral-400 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-800;
+  }
+    .input {
+    @apply w-full px-3 py-2 border border-neutral-300 rounded bg-white text-black placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-black dark:bg-neutral-900 dark:text-white dark:border-neutral-700 dark:placeholder-neutral-400 dark:focus:ring-white;
+  }
+
+  .label {
+    @apply block mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300;
+  }
+}
+
+
+@font-face {
+    font-family: "TAN Nimbus";
+    src: url("/fonts/TAN-NIMBUS.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Satisfy";
+    src: url("/fonts/Satisfy-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}

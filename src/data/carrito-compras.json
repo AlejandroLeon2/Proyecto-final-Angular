@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "nombre": "Auriculares Bluetooth",
+    "precio": 129.99,
+    "categoria": "Electrónica",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 1
+  },
+  {
+    "id": 2,
+    "nombre": "Zapatillas Running",
+    "precio": 89.5,
+    "categoria": "Deportes",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 2
+  },
+  {
+    "id": 3,
+    "nombre": "Mochila Antirrobo",
+    "precio": 59.99,
+    "categoria": "Accesorios",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 1
+  },
+  {
+    "id": 4,
+    "nombre": "Teclado Mecánico RGB",
+    "precio": 74.25,
+    "categoria": "Computación",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 1
+  },
+  {
+    "id": 5,
+    "nombre": "Smartwatch Deportivo",
+    "precio": 149.0,
+    "categoria": "Tecnología",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 1
+  },
+  {
+    "id": 6,
+    "nombre": "Lámpara LED Escritorio",
+    "precio": 39.9,
+    "categoria": "Hogar",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 3
+  },
+  {
+    "id": 7,
+    "nombre": "Cámara Web Full HD",
+    "precio": 54.75,
+    "categoria": "Computación",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 1
+  },
+  {
+    "id": 8,
+    "nombre": "Botella Térmica 1L",
+    "precio": 24.99,
+    "categoria": "Camping",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 2
+  },
+  {
+    "id": 9,
+    "nombre": "Mouse Gamer",
+    "precio": 45.0,
+    "categoria": "Gaming",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 1
+  },
+  {
+    "id": 10,
+    "nombre": "Cargador USB-C 65W",
+    "precio": 32.5,
+    "categoria": "Accesorios",
+    "imagen": "/images/gato.jpg",
+    "cantidad": 1
+  }
+]
