@@ -50,25 +50,28 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
+        redirectTo: 'products',
+      },
+      {
+        path: 'dashboard',
         loadComponent: () =>
           import('./feature/admin/components/products/products').then((c) => c.Products),
       },
       {
-        path: 'admin-dashboard',
+        path: 'products',
         loadComponent: () =>
-          import('./feature/admin/admin-dashboard/admin-dashboard').then((c) => c.AdminDashboard),
+          import('./feature/admin/components/products/products').then((c) => c.Products),
       },
-
-      // {
-      //   path: 'admin-crud',
-      //   loadComponent: () =>
-      //     import('./feature/admin/admin-crud/admin-crud').then((c) => c.AdminCrud),
-      // },
-      // {
-      //   path: 'admin-productos',
-      //   loadComponent: () =>
-      //     import('./feature/admin/admin-productos/admin-productos').then((c) => c.AdminProductos),
-      // },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./feature/admin/components/products/products').then((c) => c.Products),
+      },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import('./feature/admin/components/products/products').then((c) => c.Products),
+      },
     ],
   },
 
