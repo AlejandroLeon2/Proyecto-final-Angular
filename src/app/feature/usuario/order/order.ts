@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-ordenes',
   imports: [],
-  templateUrl: './ordenes.html',
-  styleUrl: './ordenes.css',
+  templateUrl: './order.html',
+  styleUrl: './order.css',
 })
-export class Ordenes {
+export class Order {
 
 }
