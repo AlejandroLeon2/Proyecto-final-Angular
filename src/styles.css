@@ -79,3 +79,11 @@
     font-style: normal;
     font-display: swap;
 }
+
+:root{
+    --background-dark: #101922;
+}
+/*  stylos para header dark  */
+.bodyStyle {
+  @apply bg-[#101922]
+}
