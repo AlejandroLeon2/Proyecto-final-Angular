@@ -1,0 +1,37 @@
+<aside class="fixed  top-0 left-0 z-50 flex flex-col w-full max-w-xs min-h-screen dark:bg-primary bg-secondary border border-gray-700 shadow-lg">
+  <header class="relative px-4 pt-10 pb-2 border-b ">
+    <button class="absolute top-4 right-4 text-sm text-gray-400 hover:text-white transition-colors">
+      ✕
+    </button>
+    <div class="flex items-center gap-4 border border-white px-4 py-2 rounded">
+      <img src="/images/gato.jpg" class="rounded-full h-14 w-14 object-cover border border-gray-600" alt="Avatar" title="Usuario" />
+      <div>
+        <p class="text-sm dark:text-white font-medium ">Nombre user</p>
+        <p class="text-xs subtitulo ">Correo user</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto" aria-label="Main navigation">
+    <ul class="space-y-1">
+      @for (item of navlinks; track $index) {
+        <li>
+          <a
+            [routerLink]="['/user', item.links]"
+            routerLinkActive="bg-gray-800 text-white"
+            [title]="item.title"
+            class="flex items-center gap-3 p-2 rounded-md text-sm  hover:bg-gray-800 hover:text-white transition-colors"
+          >
+            <span class="text-black dark:text-white">{{ item.nombre }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <footer class="px-4 py-6 border-t border flex justify-center items-center border-gray-700 ">
+    <a class="flex items-center justify-center p-2 rounded-md text-sm text-red-400 hover:bg-red-900 hover:text-white transition-colors">
+      <span>Logout</span>
+    </a>
+  </footer>
+</aside>
