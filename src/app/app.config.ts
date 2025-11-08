@@ -1,4 +1,4 @@
-// --- Imports existentes ---
+
 import { 
   ApplicationConfig, 
   provideBrowserGlobalErrorListeners, 
@@ -8,6 +8,7 @@ import {
   importProvidersFrom
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
+
 import { routes } from './app.routes';
 
 // --- Imports nuevos ---
@@ -37,5 +38,6 @@ export const appConfig: ApplicationConfig = {
     
     // 4. Si necesitaras importar un MÓDULO, iría aquí:
     // importProvidersFrom(AlgunModulo)
+
   ]
 };
