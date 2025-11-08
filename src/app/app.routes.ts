@@ -49,8 +49,9 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'admin',
         pathMatch: 'full',
+        loadComponent: () =>
+          import('./feature/admin/components/products/products').then((c) => c.Products),
       },
       {
         path: 'admin-dashboard',
@@ -58,21 +59,16 @@ export const routes: Routes = [
           import('./feature/admin/admin-dashboard/admin-dashboard').then((c) => c.AdminDashboard),
       },
 
-      {
-        path: 'admin-crud',
-        loadComponent: () =>
-          import('./feature/admin/admin-crud/admin-crud').then((c) => c.AdminCrud),
-      },
-      {
-        path: 'admin-productos',
-        loadComponent: () =>
-          import('./feature/admin/admin-productos/admin-productos').then((c) => c.AdminProductos),
-      },
-      {
-        path: 'admin-ordenes',
-        loadComponent: () =>
-          import('./feature/usuario/profile/ordenes/ordenes').then((c) => c.Ordenes),
-      },
+      // {
+      //   path: 'admin-crud',
+      //   loadComponent: () =>
+      //     import('./feature/admin/admin-crud/admin-crud').then((c) => c.AdminCrud),
+      // },
+      // {
+      //   path: 'admin-productos',
+      //   loadComponent: () =>
+      //     import('./feature/admin/admin-productos/admin-productos').then((c) => c.AdminProductos),
+      // },
     ],
   },
 
