@@ -16,7 +16,7 @@ export class Header {
   leaveUserMenu():void{
     setTimeout(()=>{
       this.showUserMenu = false
-    },300)
+    },200)
   }
 
   toggleMenu (){

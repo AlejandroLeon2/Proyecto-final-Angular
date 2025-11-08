@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'shop/home',
+    redirectTo: 'shop',
     pathMatch: 'full',
   },
   {
@@ -11,8 +11,13 @@ export const routes: Routes = [
     loadComponent: () => import('./layouts/shop-layout/shop-layout').then((c) => c.ShopLayout),
     children: [
       {
-        path: 'usuario/**',
-        redirectTo: 'usuario',
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+      },
+      {
+        path: '**',
+        redirectTo: 'home',
       },
       {
         path: 'home',
@@ -49,7 +54,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'admin',
+        redirectTo: 'admin-dashboard',
         pathMatch: 'full',
       },
       {
@@ -71,23 +76,37 @@ export const routes: Routes = [
       {
         path: 'admin-ordenes',
         loadComponent: () =>
-          import('./feature/usuario/profile/ordenes/ordenes').then((c) => c.Ordenes),
+          import('./feature/usuario/order/order').then((c) => c.Order),
+      },
+      {
+        path: '**',
+        redirectTo: 'admin-dashboard',
       },
     ],
   },
 
   {
     path: 'usuario',
+    loadComponent: () =>
+      import('./layouts/usuario-layout/usuario-layout').then((c) => c.UsuarioLayout),
     children: [
       {
-        path: 'usuario/**',
-        redirectTo: 'usuario',
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
       },
-
+      {
+        path: '**',
+        redirectTo: 'profile',
+      },
       {
         path: 'profile',
         loadComponent: () => import('./feature/usuario/profile/profile').then((c) => c.Profile),
       },
+            {
+        path: 'orders',
+        loadComponent: () => import('./feature/usuario/order/order').then((c) => c.Order),
+      }
     ],
   },
 
