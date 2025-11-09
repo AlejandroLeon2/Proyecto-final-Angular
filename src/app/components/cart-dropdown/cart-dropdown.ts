@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CartItemComponent } from '../cart-item/cart-item';
 
 interface CartItem {
   id: number;
@@ -12,7 +12,8 @@ interface CartItem {
 
 @Component({
   selector: 'app-cart-dropdown',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CartItemComponent],
   templateUrl: './cart-dropdown.html',
   styleUrl: './cart-dropdown.css',
 })
