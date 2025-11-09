@@ -8,7 +8,7 @@
     "updatedAt?": "",
     "stock": 25,
     "category": "Electrónica",
-    "status": "activo",
+    "status": "active",
     "stars": 4.5,
     "comments": 12,
     "image": "/images/gato.jpg"
@@ -22,7 +22,7 @@
     "updatedAt?": "",
     "stock": 40,
     "category": "Deportes",
-    "status": "activo",
+    "status": "active",
     "stars": 4.2,
     "comments": 8,
     "image": "/images/gato.jpg"
@@ -36,7 +36,7 @@
     "updatedAt?": "",
     "stock": 15,
     "category": "Accesorios",
-    "status": "activo",
+    "status": "active",
     "stars": 4.8,
     "comments": 21,
     "image": "/images/gato.jpg"
@@ -50,7 +50,7 @@
     "updatedAt?": "",
     "stock": 10,
     "category": "Computación",
-    "status": "activo",
+    "status": "active",
     "stars": 4.6,
     "comments": 14,
     "image": "/images/gato.jpg"
@@ -64,7 +64,7 @@
     "updatedAt?": "",
     "stock": 30,
     "category": "Tecnología",
-    "status": "activo",
+    "status": "active",
     "stars": 4.7,
     "comments": 19,
     "image": "/images/gato.jpg"
@@ -78,7 +78,7 @@
     "updatedAt?": "",
     "stock": 50,
     "category": "Hogar",
-    "status": "activo",
+    "status": "active",
     "stars": 4.3,
     "comments": 7,
     "image": "/images/gato.jpg"
@@ -92,7 +92,7 @@
     "updatedAt?": "",
     "stock": 20,
     "category": "Computación",
-    "status": "activo",
+    "status": "active",
     "stars": 4.1,
     "comments": 5,
     "image": "/images/gato.jpg"
@@ -106,7 +106,7 @@
     "updatedAt?": "",
     "stock": 60,
     "category": "Camping",
-    "status": "activo",
+    "status": "active",
     "stars": 4.9,
     "comments": 33,
     "image": "/images/gato.jpg"
@@ -120,7 +120,7 @@
     "updatedAt?": "",
     "stock": 35,
     "category": "Gaming",
-    "status": "activo",
+    "status": "active",
     "stars": 4.4,
     "comments": 10,
     "image": "/images/gato.jpg"
@@ -134,7 +134,7 @@
     "updatedAt?": "",
     "stock": 45,
     "category": "Accesorios",
-    "status": "activo",
+    "status": "active",
     "stars": 4.6,
     "comments": 13,
     "image": "/images/gato.jpg"
@@ -148,7 +148,7 @@
     "updatedAt?": "",
     "stock": 70,
     "category": "Moda",
-    "status": "activo",
+    "status": "active",
     "stars": 4.2,
     "comments": 6,
     "image": "/images/gato.jpg"
@@ -162,7 +162,7 @@
     "updatedAt?": "",
     "stock": 22,
     "category": "Ferretería",
-    "status": "activo",
+    "status": "active",
     "stars": 4.5,
     "comments": 11,
     "image": "/images/gato.jpg"
@@ -176,7 +176,7 @@
     "updatedAt?": "",
     "stock": 18,
     "category": "Tecnología",
-    "status": "activo",
+    "status": "active",
     "stars": 4.3,
     "comments": 9,
     "image": "/images/gato.jpg"
@@ -190,7 +190,7 @@
     "updatedAt?": "",
     "stock": 12,
     "category": "Muebles",
-    "status": "activo",
+    "status": "active",
     "stars": 4.7,
     "comments": 15,
     "image": "/images/gato.jpg"
@@ -204,7 +204,7 @@
     "updatedAt?": "",
     "stock": 28,
     "category": "Audio",
-    "status": "activo",
+    "status": "active",
     "stars": 4.6,
     "comments": 17,
     "image": "/images/gato.jpg"
