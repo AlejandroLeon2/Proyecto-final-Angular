@@ -39,7 +39,7 @@ export class Sidebar {
   }
 
   private checkScreenSize() {
-    this.isMobile = window.innerWidth < 768; // md breakpoint
+    this.isMobile = window.innerWidth < 1024; // lg breakpoint
     if (!this.isMobile) {
       this.isOpen = true;
     } else {
