@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet} from '@angular/router';
 import { Header } from "../../components/header/header";
-import { SidebarUser } from "../../feature/usuario/Components/sidebar-user/sidebar-user";
+import { SidebarUser } from "../../feature/user/Components/sidebar-user/sidebar-user";
 
 @Component({
   selector: 'app-usuario-layout',
