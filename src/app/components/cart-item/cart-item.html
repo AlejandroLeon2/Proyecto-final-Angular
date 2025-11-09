@@ -1,0 +1,16 @@
+<div class="cart-item">
+  <img [src]="item.imagen" [alt]="item.nombre" class="item-image">
+  <div class="item-details">
+    <h4 class="item-name">{{item.nombre}}</h4>
+    <p class="item-category">{{item.categoria}}</p>
+    <div class="item-price-quantity">
+      <span class="item-price">${{item.precio}}</span>
+      <div class="quantity-controls">
+        <button class="quantity-btn" (click)="updateQuantity(item.id, item.cantidad - 1)">-</button>
+        <span class="quantity">{{item.cantidad}}</span>
+        <button class="quantity-btn" (click)="updateQuantity(item.id, item.cantidad + 1)">+</button>
+      </div>
+    </div>
+  </div>
+  <button class="remove-btn" (click)="onRemoveItem(item.id)">🗑️</button>
+</div>
