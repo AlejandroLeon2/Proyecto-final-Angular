@@ -1,48 +1,91 @@
-<div class="flex flex-col h-full pb-4 p-4">
-  <div class="text-xl font-bold border-b border-gray-700 pb-4">eCommerce</div>
+<!-- Mobile menu button -->
+<div class="lg:hidden fixed w-full bg-gray-950 p-2 px-3 z-30 flex items-center gap-2">
+  <button
+    (click)="toggleMenu()"
+    class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+    [attr.aria-expanded]="isOpen"
+  >
+    <span class="sr-only">Abrir menú</span>
+    <lucide-icon [img]="menuIcon" [size]="24"></lucide-icon>
+  </button>
+  <span class="text-lg font-bold">eCommerce</span>
+</div>
 
-  <nav class="flex-1 pt-4 space-y-1">
-    <a
-      routerLink="dashboard"
-      routerLinkActive="bg-gray-800 text-blue-400"
-      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
-    >
-      <lucide-icon [img]="dashboardIcon" [size]="18" class="icon"></lucide-icon>
-      <span>Dashboard</span>
-    </a>
-    <a
-      routerLink="products"
-      routerLinkActive="bg-gray-800 text-blue-400"
-      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
-    >
-      <lucide-icon [img]="productIcon" [size]="18" class="icon"></lucide-icon>
-      <span>Productos</span>
-    </a>
-    <a
-      routerLink="categories"
-      routerLinkActive="bg-gray-800 text-blue-400"
-      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
-    >
-      <lucide-icon [img]="categoryIcon" [size]="18" class="icon"></lucide-icon>
-      <span>Categorías</span>
-    </a>
-    <a
-      routerLink="orders"
-      routerLinkActive="bg-gray-800 text-blue-400"
-      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
-    >
-      <lucide-icon [img]="orderIcon" [size]="18" class="icon"></lucide-icon>
-      <span>Ordenes</span>
-    </a>
-  </nav>
+<!-- Overlay -->
+@if (isOpen && isMobile) {
+<div (click)="closeMenu()" class="lg:hidden fixed inset-0 bg-gray-900/70 z-40"></div>
+}
 
-  <div class="border-t border-gray-700 pt-4">
-    <p class="text-sm">Admin User</p>
-    <p class="text-xs text-gray-400">admin@example.com</p>
+<!-- Sidebar -->
+<aside
+  [class.translate-x-0]="isOpen || !isMobile"
+  [class.-translate-x-64]="!isOpen && isMobile"
+  class="fixed lg:static inset-y-0 left-0 z-50 w-64 h-full bg-gray-950 text-white transition-transform duration-300 ease-in-out transform lg:translate-x-0"
+>
+  <div class="flex flex-col h-full pb-4 p-4">
+    <div class="text-xl font-bold border-b border-gray-700 pb-3">eCommerce</div>
+
+    <nav class="flex-1 pt-4">
+      <ul class="space-y-2">
+        <li (click)="isMobile && closeMenu()">
+          <a
+            routerLink="dashboard"
+            routerLinkActive="bg-gray-800 text-blue-400"
+            class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+          >
+            <lucide-icon [img]="dashboardIcon" [size]="18" class="icon"></lucide-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li (click)="closeMenu()">
+          <a
+            routerLink="products"
+            routerLinkActive="bg-gray-800 text-blue-400"
+            class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+          >
+            <lucide-icon [img]="productIcon" [size]="18" class="icon"></lucide-icon>
+            <span>Productos</span>
+          </a>
+        </li>
+        <li (click)="closeMenu()">
+          <a
+            routerLink="categories"
+            routerLinkActive="bg-gray-800 text-blue-400"
+            class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+          >
+            <lucide-icon [img]="categoryIcon" [size]="18" class="icon"></lucide-icon>
+            <span>Categorías</span>
+          </a>
+        </li>
+        <li (click)="closeMenu()">
+          <a
+            routerLink="orders"
+            routerLinkActive="bg-gray-800 text-blue-400"
+            class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+          >
+            <lucide-icon [img]="orderIcon" [size]="18" class="icon"></lucide-icon>
+            <span>Órdenes</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="border-t border-gray-700 pt-4">
+      <p class="text-sm">Admin User</p>
+      <p class="text-xs text-gray-400">admin@example.com</p>
+    </div>
+
+    <div
+      (click)="isMobile && closeMenu()"
+      class="flex items-center rounded-lg text-sm hover:bg-gray-800 gap-2 p-2 mb-4 mt-2 cursor-pointer"
+    >
+      <lucide-icon [img]="logoutIcon" [size]="18" class="icon"></lucide-icon>
+      <span class="text-sm">Cerrar Sesión</span>
+    </div>
   </div>
+</aside>
 
-  <div class="flex items-center rounded-lg text-sm hover:bg-gray-800 gap-2 p-2 mb-4 mt-2">
-    <lucide-icon [img]="logoutIcon" [size]="18" class="icon"></lucide-icon>
-    <a class="text-sm">Cerrar Sesión</a>
-  </div>
+<!-- Main content -->
+<div class="transition-all duration-300 ease-in-out" [class.lg:ml-64]="!isMobile">
+  <ng-content></ng-content>
 </div>
