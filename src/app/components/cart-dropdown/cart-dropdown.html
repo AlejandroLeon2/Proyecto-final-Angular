@@ -1,0 +1,44 @@
+<div class="cart-dropdown-container">
+  <button class="cart-button" (click)="toggleDropdown()">
+    <span class="cart-icon">🛒</span>
+    <span class="cart-count" *ngIf="totalItems > 0">{{totalItems}}</span>
+  </button>
+
+  <div class="dropdown-menu" *ngIf="isDropdownOpen">
+    <div class="dropdown-header">
+      <h3>Mi Carrito</h3>
+      <button class="close-button" (click)="toggleDropdown()">×</button>
+    </div>
+
+    <div class="cart-items" *ngIf="cartItems.length > 0">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <img [src]="item.imagen" [alt]="item.nombre" class="item-image">
+        <div class="item-details">
+          <h4 class="item-name">{{item.nombre}}</h4>
+          <p class="item-category">{{item.categoria}}</p>
+          <div class="item-price-quantity">
+            <span class="item-price">${{item.precio}}</span>
+            <div class="quantity-controls">
+              <button class="quantity-btn" (click)="updateQuantity(item.id, item.cantidad - 1)">-</button>
+              <span class="quantity">{{item.cantidad}}</span>
+              <button class="quantity-btn" (click)="updateQuantity(item.id, item.cantidad + 1)">+</button>
+            </div>
+          </div>
+        </div>
+        <button class="remove-btn" (click)="removeItem(item.id)">🗑️</button>
+      </div>
+    </div>
+
+    <div class="empty-cart" *ngIf="cartItems.length === 0">
+      <p>Tu carrito está vacío</p>
+    </div>
+
+    <div class="dropdown-footer" *ngIf="cartItems.length > 0">
+      <div class="total-section">
+        <span class="total-label">Total:</span>
+        <span class="total-price">${{totalPrice.toFixed(2)}}</span>
+      </div>
+      <button class="checkout-btn">Proceder al Pago</button>
+    </div>
+  </div>
+</div>
