@@ -1,0 +1,48 @@
+<div class="flex flex-col h-full pb-4 p-4">
+  <div class="text-xl font-bold border-b border-gray-700 pb-4">eCommerce</div>
+
+  <nav class="flex-1 pt-4 space-y-1">
+    <a
+      routerLink="dashboard"
+      routerLinkActive="bg-gray-800 text-blue-400"
+      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+    >
+      <lucide-icon [img]="dashboardIcon" [size]="18" class="icon"></lucide-icon>
+      <span>Dashboard</span>
+    </a>
+    <a
+      routerLink="products"
+      routerLinkActive="bg-gray-800 text-blue-400"
+      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+    >
+      <lucide-icon [img]="productIcon" [size]="18" class="icon"></lucide-icon>
+      <span>Productos</span>
+    </a>
+    <a
+      routerLink="categories"
+      routerLinkActive="bg-gray-800 text-blue-400"
+      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+    >
+      <lucide-icon [img]="categoryIcon" [size]="18" class="icon"></lucide-icon>
+      <span>Categorías</span>
+    </a>
+    <a
+      routerLink="orders"
+      routerLinkActive="bg-gray-800 text-blue-400"
+      class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
+    >
+      <lucide-icon [img]="orderIcon" [size]="18" class="icon"></lucide-icon>
+      <span>Ordenes</span>
+    </a>
+  </nav>
+
+  <div class="border-t border-gray-700 pt-4">
+    <p class="text-sm">Admin User</p>
+    <p class="text-xs text-gray-400">admin@example.com</p>
+  </div>
+
+  <div class="flex items-center rounded-lg text-sm hover:bg-gray-800 gap-2 p-2 mb-4 mt-2">
+    <lucide-icon [img]="logoutIcon" [size]="18" class="icon"></lucide-icon>
+    <a class="text-sm">Cerrar Sesión</a>
+  </div>
+</div>

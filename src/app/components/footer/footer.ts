@@ -1,11 +1,41 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-footer',
-  imports: [],
+  imports: [ CommonModule, FormsModule ],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
 })
 export class Footer {
+  email: string = '';
 
+    shopLinks = [
+      { label: 'Nuevos Lanzamientos', url: '/new-arrivals' },
+      { label: 'Ofertas', url: '/deals' },
+      { label: 'Categorias', url: '/categories' }
+    ];
+
+  aboutLinks = [
+      { label: 'Sobre Nosotros', url: '/about' },
+      { label: 'Contacto', url: '/contact' },
+      { label: 'Preguntas frecuentes', url: '/faq' }
+    ];
+
+  legalLinks = [
+      { label: 'Terminos y condiciones', url: '/terms' },
+      { label: 'Politica de privacidad', url: '/privacy' }
+    ];
+
+  subscribe() {
+    if (this.email) {
+      console.log(`Subscribed with email: ${this.email}`);
+      
+      
+      alert('Gracias por suscribirte');
+
+      this.email = '';
+    }
+  }
 }

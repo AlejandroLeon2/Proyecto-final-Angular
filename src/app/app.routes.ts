@@ -54,32 +54,34 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'admin-dashboard',
         pathMatch: 'full',
+        redirectTo: 'products',
       },
       {
-        path: 'admin-dashboard',
+        path: 'dashboard',
         loadComponent: () =>
-          import('./feature/admin/admin-dashboard/admin-dashboard').then((c) => c.AdminDashboard),
+          import('./feature/admin/components/products/products').then((c) => c.Products),
       },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./feature/admin/components/products/products').then((c) => c.Products),
+      },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./feature/admin/components/products/products').then((c) => c.Products),
+      },
+      {
 
-      {
-        path: 'admin-crud',
+        path: 'orders',
         loadComponent: () =>
-          import('./feature/admin/admin-crud/admin-crud').then((c) => c.AdminCrud),
-      },
-      {
-        path: 'admin-productos',
-        loadComponent: () =>
-          import('./feature/admin/admin-productos/admin-productos').then((c) => c.AdminProductos),
-      },
-      {
-        path: 'admin-ordenes',
-        loadComponent: () => import('./feature/user/order/order').then((c) => c.Order),
+          import('./feature/admin/components/products/products').then((c) => c.Products),
       },
             {
         path: '**',
-        redirectTo: 'admin-crud',
+
+        redirectTo: ''
       },
       
     ],
@@ -106,6 +108,7 @@ export const routes: Routes = [
       {
         path: '**',
         redirectTo: 'profile',
+
       },
     ],
   },
