@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Home, LogOut, LucideAngularModule, Package2, Shapes, ShoppingCart } from 'lucide-angular';
+import { House, LogOut, LucideAngularModule, Package2, Shapes, ShoppingCart } from 'lucide-angular';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +10,7 @@ import { Home, LogOut, LucideAngularModule, Package2, Shapes, ShoppingCart } fro
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  dashboardIcon = Home;
+  dashboardIcon = House;
   productIcon = Package2;
   categoryIcon = Shapes;
   orderIcon = ShoppingCart;
