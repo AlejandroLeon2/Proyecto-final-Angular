@@ -1,9 +1,14 @@
-<div class="flex items-center w-full">
-  <input
-    type="text"
-    class="border border-gray-600 rounded px-2 py-1 w-full"
-    placeholder="Search..."
-    [ngModel]="quickFilterText"
-    (ngModelChange)="quickFilterTextChange.emit($event)"
-  />
-</div>
+<form class="flex items-center w-full">
+  <div class="flex items-center border border-gray-600 rounded-lg px-2 py-1 w-full gap-2">
+    <lucide-icon [img]="search" size="18" class="icon"></lucide-icon>
+
+    <input
+      type="text"
+      class="w-full"
+      placeholder="Buscar..."
+      [ngModel]="quickFilterText"
+      (ngModelChange)="quickFilterTextChange.emit($event)"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </div>
+</form>
