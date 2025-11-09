@@ -1,0 +1,12 @@
+input {
+  border: none;
+  outline: none;
+  
+  &::placeholder {
+    color: #9d9d9e;
+  }
+}
+
+lucide-icon {
+  color: #9d9d9e;
+}
