@@ -3,5 +3,7 @@
     type="text"
     class="border border-gray-600 rounded px-2 py-1 w-full"
     placeholder="Search..."
+    [ngModel]="quickFilterText"
+    (ngModelChange)="quickFilterTextChange.emit($event)"
   />
 </div>
