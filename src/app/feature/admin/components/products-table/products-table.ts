@@ -16,7 +16,7 @@ import {
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { ProductsService } from '../../../../core/service/products/products';
-
+import { ActionsCellRenderer } from './actions-cell-renderer';
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
 @Component({
@@ -35,7 +35,10 @@ export class ProductsTable {
   productsService: ProductsService = inject(ProductsService);
 
   private gridApi!: GridApi;
-  theme = themeQuartz;
+  theme = themeQuartz.withParams({
+    backgroundColor: '#1f2836',
+    headerBackgroundColor: '#1f2836',
+  });
 
   rowData$ = this.productsService.getProducts();
   columnDefs = [
@@ -54,7 +57,10 @@ export class ProductsTable {
       filter: true,
       filterParams: { active: 'Activo', inactive: 'Inactivo' },
     },
-    { headerName: 'Acciones' },
+    {
+      headerName: 'Acciones',
+      cellRenderer: ActionsCellRenderer,
+    },
   ];
   defaultColDef: ColDef = {
     resizable: false,
