@@ -71,7 +71,8 @@ export class Login implements OnInit {
 
       // --- PASO 2: Enviar Token al Backend ---
       console.log('Enviando token al backend (Paso 2)...');
-      const token = await userCredential.user.getIdToken();
+      const token = await userCredential.user.uid;
+
 
       // --- ¡¡AQUÍ ESTÁ LA CAPTURA DEL TOKEN!! ---
       console.log('****************************************');
@@ -80,10 +81,26 @@ export class Login implements OnInit {
       console.log('****************************************');
       // --- FIN DE LA CAPTURA ---
 
-      const backendResponse = await this.auth.saveGoogleUserToDb(token);
-      console.log('Respuesta del backend (Paso 2):', backendResponse);
+      // const backendResponse = await this.auth.saveGoogleUserToDb(token);
+      // console.log('Respuesta del backend (Paso 2):', backendResponse);
       
-      this.router.navigate(['/']);
+    // condicion para redirigir a admin o user
+      
+      localStorage.setItem('auth', JSON.stringify({uid:userCredential.user.uid}))
+
+      const rol:string = await this.auth.getUserRol(userCredential.user.uid);
+      console.log(rol);
+      
+
+      if(rol === `usuario`){
+      console.log(rol);
+      this.router.navigate(['/admin']);
+      }
+
+      if(rol === `admin`){
+      this.router.navigate(['/admin']);
+
+      }
 
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);
