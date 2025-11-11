@@ -20,6 +20,7 @@
       <!--add button-->
       <button
         class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-white md:text-md text-sm flex-1"
+        (click)="openModal()"
       >
         + Agregar
       </button>
@@ -28,6 +29,11 @@
 
   <!--ag grid table-->
   <div class="px-6 flex-1">
-    <app-products-table [quickFilterText]="quickFilterText"></app-products-table>
+    <app-products-table
+      [products]="rowData()"
+      [quickFilterText]="quickFilterText"
+    ></app-products-table>
   </div>
 </div>
+
+<app-modal [isOpen]="isOpen()" (openEvent)="closeModal()"></app-modal>

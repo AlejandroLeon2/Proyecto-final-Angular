@@ -1,0 +1,181 @@
+<h2 class="text-lg font-semibold text-gray-300 pb-4 text-center">
+  {{ product()?.id ? 'Actualizar' : 'Agregar' }} producto
+</h2>
+
+@let f = formState();
+<form (submit)="onSubmit($event)" class="space-y-4 text-gray-300">
+  <!-- Nombre del Producto -->
+  <div>
+    <label for="name" class="block text-sm font-medium">Nombre del producto</label>
+    <input
+      id="name"
+      type="text"
+      [ngModel]="f.name"
+      (ngModelChange)="updateFormState({ name: $event })"
+      name="name"
+      class="border border-gray-300 rounded w-full p-2"
+      [class.border-red-300]="f.name && f.name.length < 3"
+      required
+    />
+    @if (f.name && f.name.length < 3) {
+    <p class="text-red-500 text-xs mt-1">El nombre debe tener al menos 3 caracteres</p>
+    }
+  </div>
+
+  <!-- Precio -->
+  <div>
+    <label for="price" class="block text-sm font-medium">Precio</label>
+    <input
+      id="price"
+      type="number"
+      min="1"
+      [ngModel]="f.price"
+      (ngModelChange)="updateFormState({ price: $event ? +$event : 0 })"
+      name="price"
+      class="border border-gray-300 rounded w-full p-2"
+      [class.border-red-300]="f.price <= 0"
+      required
+    />
+
+    @if (f.price <= 0) {
+    <p class="text-red-500 text-xs mt-1">El precio debe ser mayor a 0</p>
+    }
+  </div>
+
+  <!-- Descripción -->
+  <div>
+    <label for="description" class="block text-sm font-medium">Descripción</label>
+    <textarea
+      id="description"
+      [ngModel]="f.description"
+      (ngModelChange)="updateFormState({ description: $event })"
+      name="description"
+      rows="3"
+      class="border border-gray-300 rounded w-full p-2"
+      [class.border-red-300]="f.description && f.description.length < 10"
+      required
+    ></textarea>
+    @if (f.description && f.description.length < 10) {
+    <p class="text-red-500 text-xs mt-1">La descripción debe tener al menos 10 caracteres</p>
+    }
+  </div>
+
+  <!-- Stock -->
+  <div>
+    <label for="stock" class="block text-sm font-medium">Stock</label>
+    <input
+      id="stock"
+      type="number"
+      min="1"
+      (wheel)="$event.target.blur()"
+      [ngModel]="f.stock"
+      (ngModelChange)="updateFormState({ stock: $event ? +$event : 0 })"
+      name="stock"
+      class="border border-gray-300 rounded w-full p-2"
+      [class.border-red-300]="f.stock < 0"
+      required
+    />
+    @if (f.stock < 0) {
+    <p class="text-red-500 text-xs mt-1">El stock no puede ser negativo</p>
+    }
+  </div>
+
+  <!-- Categoría -->
+  <div>
+    <label for="category" class="block text-sm font-medium">Categoría</label>
+    <select
+      id="category"
+      [ngModel]="f.category"
+      (ngModelChange)="updateFormState({ category: $event })"
+      name="category"
+      class="border border-gray-300 rounded w-full p-2"
+      required
+    >
+      <option class="bg-gray-800" [ngValue]="''">Seleccionar categoría</option>
+      @for (cat of categories(); track cat.id) {
+      <option class="bg-gray-900" [value]="cat.id">{{ cat.name }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Image Upload -->
+  <div class="space-y-2">
+    <label class="block text-sm font-medium">Imagen del producto</label>
+
+    <!-- Image preview -->
+    @if (previewUrl || f.image) {
+    <div class="mb-3">
+      <div class="relative inline-block">
+        <img
+          [src]="previewUrl || (typeof f.image === 'string' ? f.image : '')"
+          alt="Preview"
+          class="h-32 w-32 object-cover rounded border border-gray-300"
+        />
+        <button
+          type="button"
+          (click)="removeImage()"
+          class="absolute -top-2 -right-2 bg-blue-600 text-white rounded-full p-1 hover:bg-blue-700 transition-colors"
+          title="Eliminar imagen"
+        >
+          <lucide-angular [name]="removeIcon" [size]="18"></lucide-angular>
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- File input -->
+    <div class="flex items-center">
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        accept="image/*"
+        class="hidden"
+        id="imageUpload"
+      />
+      <label
+        for="imageUpload"
+        class="cursor-pointer bg-gray-900 py-2 px-3 rounded-lg shadow-sm text-sm leading-4 font-medium text-gray-200 focus:outline-none"
+      >
+        <span>Seleccionar archivo</span>
+      </label>
+      @if (selectedFile) {
+      <span class="ml-3 text-sm text-gray-500">{{ selectedFile.name }}</span>
+      }
+    </div>
+
+    <!-- Image URL fallback (hidden but keeps the model binding) -->
+    <input
+      type="hidden"
+      [ngModel]="f.image"
+      (ngModelChange)="updateFormState({ image: $event })"
+      name="image"
+    />
+
+    <p class="text-xs text-gray-500 mt-1">
+      Sube una imagen del producto o proporciona una URL. Tamaño máximo: 5MB. Formatos: JPG, PNG,
+      WebP.
+    </p>
+  </div>
+
+  <!-- Botones -->
+  <menu class="flex justify-end gap-2 mt-6">
+    <button
+      type="button"
+      class="text-gray-400 bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-950 transition-colors"
+      (click)="closeModal()"
+    >
+      Cancelar
+    </button>
+
+    <button
+      type="submit"
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+      [disabled]="!isFormValid()"
+      [class.opacity-50]="!isFormValid()"
+      [class.cursor-not-allowed]="!isFormValid()"
+    >
+      {{ product()?.id ? 'Actualizar' : 'Agregar' }}
+    </button>
+  </menu>
+</form>
