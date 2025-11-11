@@ -1,5 +1,6 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Form } from '../form/form';
+import { ModalService } from './service/modal';
 
 @Component({
   selector: 'app-modal',
@@ -8,10 +9,12 @@ import { Form } from '../form/form';
   styleUrl: './modal.css',
 })
 export class Modal {
-  isOpen = input(false);
-  openEvent = output<boolean>();
+  modalService = inject(ModalService);
+
+  isOpen = computed(() => this.modalService.isOpen());
+  data = computed(() => this.modalService.data());
 
   closeModal() {
-    this.openEvent.emit(false);
+    this.modalService.close();
   }
 }

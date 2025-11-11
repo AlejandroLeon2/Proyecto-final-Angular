@@ -26,7 +26,6 @@ import { ProductsService } from '../../../../core/service/products/products';
 })
 export class Form implements OnDestroy {
   // Input signals with default values
-  isModalOpen = input(false);
   product = input<Product | null>(null);
 
   // Output signals
@@ -84,6 +83,7 @@ export class Form implements OnDestroy {
       const product = this.product();
       if (product) {
         this.formState.set({
+          id: product.id,
           name: product.name,
           price: product.price,
           description: product.description,

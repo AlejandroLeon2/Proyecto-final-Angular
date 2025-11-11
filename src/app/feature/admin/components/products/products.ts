@@ -1,6 +1,7 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { ProductsService } from '../../../../core/service/products/products';
 import { Modal } from '../modal/modal';
+import { ModalService } from '../modal/service/modal';
 import { ProductsTable } from '../products-table/products-table';
 import { SearchBar } from '../search-bar/search-bar';
 
@@ -12,9 +13,9 @@ import { SearchBar } from '../search-bar/search-bar';
 })
 export class Products implements OnInit {
   quickFilterText: string = '';
-  isOpen = signal(false);
 
   productsService = inject(ProductsService);
+  modalService = inject(ModalService);
 
   rowData = computed(() => this.productsService.data);
 
@@ -23,10 +24,10 @@ export class Products implements OnInit {
   }
 
   openModal() {
-    this.isOpen.set(true);
+    this.modalService.open();
   }
 
   closeModal() {
-    this.isOpen.set(false);
+    this.modalService.close();
   }
 }

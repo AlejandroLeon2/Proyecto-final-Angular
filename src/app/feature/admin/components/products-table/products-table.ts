@@ -39,6 +39,10 @@ export class ProductsTable {
 
   columnDefs = [
     {
+      field: 'id',
+      hide: true,
+    },
+    {
       field: 'name',
       headerName: 'Nombre',
       minWidth: 180,

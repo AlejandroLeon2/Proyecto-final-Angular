@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, take, throwError } from 'rxjs';
+import { catchError, of, take } from 'rxjs';
+import productData from '../../../../data/products.json';
 import { environment } from '../../../../environments/environment';
 import { Product } from '../../models/product';
 
@@ -22,7 +23,8 @@ export class ProductsService {
         take(1),
         catchError((error) => {
           console.error('ProductsService: Error al obtener los productos', error);
-          return throwError(() => error);
+          return of(productData as Product[]);
+          // return throwError(() => error);
         })
       )
       .subscribe({
@@ -44,15 +46,15 @@ export class ProductsService {
         take(1),
         catchError((error) => {
           console.error('ProductsService: Error al obtener los productos', error);
-          return throwError(() => error);
-          // return of(product);
+          // return throwError(() => error);
+          return of(product);
         })
       )
       .subscribe({
         next: (response) => {
-          // response.id = this.data.length + 1;
-          // response.image =
-          //   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png';
+          response.id = this.data.length + 1;
+          response.image =
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png';
           this._data.update((data) => [...data, response]);
           console.log('ProductsService: ', this._data());
         },
@@ -70,17 +72,19 @@ export class ProductsService {
         take(1),
         catchError((error) => {
           console.error('ProductsService: Error al obtener los productos', error);
-          return throwError(() => error);
+          // return throwError(() => error);
+          return of(product);
         })
       )
       .subscribe({
         next: (product) => {
-          const index = this.data.findIndex((p) => p.id === product.id);
-          if (index !== -1) {
-            this.data[index] = product;
-          }
-          this._data.update((data) => [...data]);
-          console.log('ProductsService: ', this._data());
+          this._data.update((data) => {
+            const index = data.findIndex((p) => p.id === product.id);
+            if (index !== -1) {
+              data[index] = product;
+            }
+            return [...data];
+          });
         },
         error: () => {
           console.error('ThrowError: Error al obtener los productos');

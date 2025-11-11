@@ -19,7 +19,7 @@
     aria-labelledby="modalTitle"
     aria-describedby="modalDesc"
   >
-    <app-form [isModalOpen]="isOpen()" (close)="closeModal()"></app-form>
+    <app-form [product]="data()" (close)="closeModal()"></app-form>
   </dialog>
 </div>
 }
