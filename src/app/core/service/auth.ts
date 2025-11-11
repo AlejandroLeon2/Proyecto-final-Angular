@@ -70,7 +70,7 @@ export class Auth {
 
     // Esta ruta SÍ existe en el nuevo repo (POST .../v1/auth/)
     // Enviamos un body vacío ({}) 
-    const request$ = this.http.post(this.apiUrl, {}, { headers });
+    const request$ = this.http.post(`${this.apiUrl}/auth/`, {}, { headers });
     return firstValueFrom(request$);
   }
 

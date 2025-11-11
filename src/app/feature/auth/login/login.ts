@@ -71,7 +71,7 @@ export class Login implements OnInit {
 
       // --- PASO 2: Enviar Token al Backend ---
       console.log('Enviando token al backend (Paso 2)...');
-      const token = await userCredential.user.uid;
+      const token = await userCredential.user.getIdToken();
 
 
       // --- ¡¡AQUÍ ESTÁ LA CAPTURA DEL TOKEN!! ---
@@ -81,8 +81,8 @@ export class Login implements OnInit {
       console.log('****************************************');
       // --- FIN DE LA CAPTURA ---
 
-      // const backendResponse = await this.auth.saveGoogleUserToDb(token);
-      // console.log('Respuesta del backend (Paso 2):', backendResponse);
+       const backendResponse = await this.auth.saveGoogleUserToDb(token);
+       console.log('Respuesta del backend (Paso 2):', backendResponse);
       
     // condicion para redirigir a admin o user
       
