@@ -8,7 +8,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './seach.css',
 })
 export class Seach {
-
-  wordKey = "";
-
+  wordKey = '';
+  onSearch() {
+    console.log(this.wordKey);
+  }
 }
