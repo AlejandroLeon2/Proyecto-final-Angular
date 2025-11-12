@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, of, take } from 'rxjs';
-import productData from '../../../../data/products.json';
+import { catchError, take, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Product } from '../../models/product';
 
@@ -18,19 +17,17 @@ export class ProductsService {
 
   getProducts(): void {
     this.http
-      .get<Product[]>(environment.apiURL + '/products')
+      .get<Product[]>(environment.apiURL + '/product/all')
       .pipe(
         take(1),
         catchError((error) => {
           console.error('ProductsService: Error al obtener los productos', error);
-          return of(productData as Product[]);
-          // return throwError(() => error);
+          return throwError(() => error);
         })
       )
       .subscribe({
         next: (response) => {
           this._data.set(response);
-          console.log('ProductsService: ', this._data());
         },
         error: () => {
           console.error('ThrowError: Error al obtener los productos');
@@ -39,24 +36,19 @@ export class ProductsService {
   }
 
   addProduct(product: Product) {
-    //TODO: Implement API call
     this.http
-      .post<Product>(environment.apiURL + '/products', product)
+      .post<Product>(environment.apiURL + '/product', product)
       .pipe(
         take(1),
         catchError((error) => {
           console.error('ProductsService: Error al obtener los productos', error);
-          // return throwError(() => error);
-          return of(product);
+          return throwError(() => error);
         })
       )
       .subscribe({
         next: (response) => {
-          response.id = this.data.length + 1;
-          response.image =
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png';
+          console.log('ProductsService: ', response);
           this._data.update((data) => [...data, response]);
-          console.log('ProductsService: ', this._data());
         },
         error: () => {
           console.error('ThrowError: Error al obtener los productos');
@@ -65,15 +57,13 @@ export class ProductsService {
   }
 
   updateProduct(product: Product) {
-    //TODO: Implement API call
     this.http
-      .put<Product>(environment.apiURL + '/products', product)
+      .put<Product>(environment.apiURL + '/product', product)
       .pipe(
         take(1),
         catchError((error) => {
           console.error('ProductsService: Error al obtener los productos', error);
-          // return throwError(() => error);
-          return of(product);
+          return throwError(() => error);
         })
       )
       .subscribe({

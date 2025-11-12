@@ -181,6 +181,7 @@ export class Form implements OnDestroy {
       this.productService.addProduct(this.formState());
     }
     this.resetForm();
+    this.close.emit();
     this.removeImage();
   }
 

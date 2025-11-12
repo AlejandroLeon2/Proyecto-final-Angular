@@ -1,5 +1,5 @@
 export const environment = {
-  apiURL: 'http://localhost:3000',
+  apiURL: 'https://proyecto-final-api-ecommerce-production.up.railway.app/v1',
   production: false,
   firebaseConfig: {
     apiKey: 'AIzaSyAUcA7_gjFtiBixVvO2fL30t6Ko3my48fk',
