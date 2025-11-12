@@ -10,7 +10,7 @@ export const routes: Routes = [
   },
   {
     path: 'shop',
-    canActivate: [userGuardGuard],
+
     loadComponent: () => import('./layouts/shop-layout/shop-layout').then((c) => c.ShopLayout),
     children: [
       {
@@ -36,7 +36,7 @@ export const routes: Routes = [
         path: 'cart',
         loadComponent: () => import('./page/cart/cart').then((c) => c.Cart),
       },
-            {
+      {
         path: '**',
         redirectTo: 'home',
       },
@@ -52,7 +52,7 @@ export const routes: Routes = [
     loadComponent: () => import('./feature/auth/login/login').then((c) => c.Login),
   },
 
-// ADMIN Routes
+  // ADMIN Routes
   {
     path: 'admin',
     canActivate: [adminGuardGuard],
@@ -79,22 +79,21 @@ export const routes: Routes = [
           import('./feature/admin/components/products/products').then((c) => c.Products),
       },
       {
-
         path: 'orders',
         loadComponent: () =>
           import('./feature/admin/components/products/products').then((c) => c.Products),
       },
-            {
+      {
         path: '**',
 
-        redirectTo: ''
+        redirectTo: '',
       },
-      
     ],
   },
 
   {
     path: 'user',
+    canActivate: [userGuardGuard],
     loadComponent: () =>
       import('./layouts/usuario-layout/usuario-layout').then((c) => c.UsuarioLayout),
     children: [
@@ -114,7 +113,6 @@ export const routes: Routes = [
       {
         path: '**',
         redirectTo: 'profile',
-
       },
     ],
   },

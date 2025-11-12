@@ -10,8 +10,8 @@ export const userGuardGuard: CanActivateFn = async(route, state) => {
 
   //obtenermos token de ususario
   const token:string = Auth.getUidUser();
-
-  if(!token){
+  console.log(token);
+  if(token =="no-auth" ){
     router.navigate(['/login'])
   }
 
@@ -21,6 +21,6 @@ export const userGuardGuard: CanActivateFn = async(route, state) => {
     return true
   }
 
-  router.navigate(['/'])
+  router.navigate(['/user'])
   return false;
 };
