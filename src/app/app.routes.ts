@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { NotFound } from './page/not-found/not-found';
 
 export const routes: Routes = [
   {
@@ -8,7 +9,8 @@ export const routes: Routes = [
   },
   {
     path: 'shop',
-    loadComponent: () => import('./layouts/shop-layout/shop-layout').then((c) => c.ShopLayout),
+    loadComponent: () =>
+      import('./layouts/shop-layout/shop-layout').then((c) => c.ShopLayout),
     children: [
       {
         path: '',
@@ -33,10 +35,6 @@ export const routes: Routes = [
         path: 'cart',
         loadComponent: () => import('./page/cart/cart').then((c) => c.Cart),
       },
-            {
-        path: '**',
-        redirectTo: 'home',
-      },
     ],
   },
 
@@ -50,13 +48,10 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    loadComponent: () => import('./layouts/admin-layout/admin-layout').then((c) => c.AdminLayout),
+    loadComponent: () =>
+      import('./layouts/admin-layout/admin-layout').then((c) => c.AdminLayout),
     children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'products',
-      },
+      { path: '', redirectTo: 'products', pathMatch: 'full' },
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -73,17 +68,10 @@ export const routes: Routes = [
           import('./feature/admin/components/products/products').then((c) => c.Products),
       },
       {
-
         path: 'orders',
         loadComponent: () =>
           import('./feature/admin/components/products/products').then((c) => c.Products),
       },
-            {
-        path: '**',
-
-        redirectTo: ''
-      },
-      
     ],
   },
 
@@ -92,11 +80,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./layouts/usuario-layout/usuario-layout').then((c) => c.UsuarioLayout),
     children: [
-      {
-        path: '',
-        redirectTo: '',
-        pathMatch: 'full',
-      },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
       {
         path: 'profile',
         loadComponent: () => import('./feature/user/profile/profile').then((c) => c.Profile),
@@ -105,16 +89,12 @@ export const routes: Routes = [
         path: 'orders',
         loadComponent: () => import('./feature/user/order/order').then((c) => c.Order),
       },
-      {
-        path: '**',
-        redirectTo: 'profile',
-
-      },
     ],
   },
 
+  // Ruta 404 
   {
     path: '**',
-    redirectTo: 'home',
+    loadComponent: () => import('./page/not-found/not-found').then((c) => c.NotFound),
   },
 ];
