@@ -12,9 +12,9 @@ export class Footer {
   email: string = '';
 
     shopLinks = [
-      { label: 'Nuevos Lanzamientos', url: '/new-arrivals' },
+      { label: 'Nuevos Lanzamientos', url: '/shop/home' },
       { label: 'Ofertas', url: '/deals' },
-      { label: 'Categorias', url: '/categories' }
+      { label: 'Categorias', url: '/shop/categorias-product' }
     ];
 
   aboutLinks = [

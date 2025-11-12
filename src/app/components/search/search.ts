@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-seach',
+  selector: 'app-search',
   imports: [FormsModule],
-  templateUrl: './seach.html',
-  styleUrl: './seach.css',
+  templateUrl: './search.html',
+  styleUrl: './search.css',
 })
-export class Seach {
+export class Search {
   wordKey = '';
   onSearch() {
     console.log(this.wordKey);
