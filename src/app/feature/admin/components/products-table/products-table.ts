@@ -1,7 +1,6 @@
-import { Component, inject, Input, ViewEncapsulation } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { AsyncPipe } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import {
   AllCommunityModule,
@@ -15,24 +14,22 @@ import {
   themeQuartz,
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { ProductsService } from '../../../../core/service/products/products';
+import { Product } from '../../../../core/models/product';
 import { ActionsCellRenderer } from './actions-cell-renderer';
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
 @Component({
   selector: 'app-products-table',
-  imports: [AgGridAngular, FormsModule, AsyncPipe],
+  imports: [AgGridAngular, FormsModule],
   templateUrl: './products-table.html',
   styleUrl: './products-table.css',
   encapsulation: ViewEncapsulation.None,
 })
 export class ProductsTable {
-  @Input() gridTheme: string = 'ag-theme-quartz';
-  @Input() isDarkMode: boolean = false;
-  @Input() quickFilterText: string = '';
-
-  //Inject products service
-  productsService: ProductsService = inject(ProductsService);
+  products = input<Product[]>([]);
+  gridTheme = input<string>('ag-theme-quartz');
+  isDarkMode = input<boolean>(false);
+  quickFilterText = input<string>('');
 
   private gridApi!: GridApi;
   theme = themeQuartz.withParams({
@@ -40,8 +37,11 @@ export class ProductsTable {
     headerBackgroundColor: '#1f2836',
   });
 
-  rowData$ = this.productsService.getProducts();
   columnDefs = [
+    {
+      field: 'id',
+      hide: true,
+    },
     {
       field: 'name',
       headerName: 'Nombre',

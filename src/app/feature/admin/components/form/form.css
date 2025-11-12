@@ -1,0 +1,48 @@
+input, textarea, select{
+    margin-top: 5px;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* textarea */
+textarea{
+    resize: none;
+    height: 60px;
+}
+
+/* input number without spinner controls */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+  appearance: textfield; /* Other modern browsers */
+  -webkit-appearance: none; /* WebKit browsers like Safari and Chrome */
+  margin: 0; /* Removes default margin */
+  outline: none;
+  -webkit-box-shadow: none; /* Removes inner shadow on iOS */
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/* Removes spinner controls for WebKit browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #404041;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #eeeeee70;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #eeeeee;
+}

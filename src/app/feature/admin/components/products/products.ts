@@ -1,13 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
+import { ProductsService } from '../../../../core/service/products/products';
+import { Modal } from '../modal/modal';
+import { ModalService } from '../modal/service/modal';
 import { ProductsTable } from '../products-table/products-table';
 import { SearchBar } from '../search-bar/search-bar';
 
 @Component({
   selector: 'app-products',
-  imports: [SearchBar, ProductsTable],
+  imports: [SearchBar, ProductsTable, Modal],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
-export class Products {
+export class Products implements OnInit {
   quickFilterText: string = '';
+
+  productsService = inject(ProductsService);
+  modalService = inject(ModalService);
+
+  rowData = computed(() => this.productsService.data);
+
+  ngOnInit(): void {
+    this.productsService.getProducts();
+  }
+
+  openModal() {
+    this.modalService.open();
+  }
+
+  closeModal() {
+    this.modalService.close();
+  }
 }

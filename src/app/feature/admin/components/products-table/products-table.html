@@ -1,20 +1,18 @@
 <div class="h-full" data-ag-theme-mode="dark">
   <!--Wait for data -->
-  @if(rowData$ | async; as rowData){
   <ag-grid-angular
     style="height: 100%"
     (gridReady)="onGridReady($event)"
     [theme]="theme"
     [columnDefs]="columnDefs"
-    [rowData]="rowData"
+    [rowData]="products()"
     [defaultColDef]="defaultColDef"
     [rowHeight]="rowHeight"
     [autoSizeStrategy]="autoSizeStrategy"
     [pagination]="pagination"
     [paginationPageSize]="paginationPageSize"
     [paginationPageSizeSelector]="paginationPageSizeSelector"
-    [quickFilterText]="quickFilterText"
+    [quickFilterText]="quickFilterText()"
     [detailRowAutoHeight]="detailRowAutoHeight"
   ></ag-grid-angular>
-  }
 </div>
