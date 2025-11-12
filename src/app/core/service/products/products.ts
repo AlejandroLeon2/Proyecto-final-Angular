@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, take, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { ICustomResponse } from '../../models/customResponse';
 import { Product } from '../../models/product';
 
 @Injectable({
@@ -36,8 +37,17 @@ export class ProductsService {
   }
 
   addProduct(product: Product) {
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('price', product.price.toString());
+    formData.append('description', product.description);
+    formData.append('stock', product.stock.toString());
+    formData.append('category', product.category);
+    formData.append('image', product.image);
+    formData.append('status', product.status);
+
     this.http
-      .post<Product>(environment.apiURL + '/product', product)
+      .post<ICustomResponse<Product>>(environment.apiURL + '/product', formData)
       .pipe(
         take(1),
         catchError((error) => {
@@ -47,8 +57,7 @@ export class ProductsService {
       )
       .subscribe({
         next: (response) => {
-          console.log('ProductsService: ', response);
-          this._data.update((data) => [...data, response]);
+          this._data.update((data) => [...data, response.data!]);
         },
         error: () => {
           console.error('ThrowError: Error al obtener los productos');
@@ -58,7 +67,7 @@ export class ProductsService {
 
   updateProduct(product: Product) {
     this.http
-      .put<Product>(environment.apiURL + '/product', product)
+      .put<ICustomResponse<Product>>(environment.apiURL + '/product', product)
       .pipe(
         take(1),
         catchError((error) => {
@@ -67,11 +76,11 @@ export class ProductsService {
         })
       )
       .subscribe({
-        next: (product) => {
+        next: (response) => {
           this._data.update((data) => {
-            const index = data.findIndex((p) => p.id === product.id);
+            const index = data.findIndex((p) => p.id === response.data!.id);
             if (index !== -1) {
-              data[index] = product;
+              data[index] = response.data!;
             }
             return [...data];
           });

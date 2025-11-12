@@ -43,6 +43,15 @@ export class ProductsTable {
       hide: true,
     },
     {
+      hide: true,
+      field: 'image',
+      headerName: 'Imagen',
+      minWidth: 180,
+      cellRenderer: (params: any) => {
+        return `<img src="${params.value}" alt="${params.data.name}" style="width: 50px; height: 50px; object-fit: cover;" />`;
+      },
+    },
+    {
       field: 'name',
       headerName: 'Nombre',
       minWidth: 180,
