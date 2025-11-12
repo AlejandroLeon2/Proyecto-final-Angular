@@ -22,7 +22,9 @@ export class Auth {
 
   // La URL base de tu líder
   private apiUrl =
-    'https://proyecto-final-api-ecommerce-production.up.railway.app/v1/auth';
+
+  //  se quito auth para separar responsavilidad de acion
+    'https://proyecto-final-api-ecommerce-production.up.railway.app/v1';
 
   constructor() {}
 
@@ -33,7 +35,7 @@ export class Auth {
    */
   register(data: any): Observable<any> {
     // Esta ruta SÍ existe en el nuevo repo (POST .../v1/auth/register)
-    return this.http.post(this.apiUrl + '/register', data);
+    return this.http.post(this.apiUrl + '/auth/register', data);
   }
 
   /**
@@ -41,7 +43,7 @@ export class Auth {
    */
   login(data: any): Observable<any> {
     // Esta ruta SÍ existe en el nuevo repo (POST .../v1/auth/login)
-    return this.http.post(this.apiUrl + '/login', data);
+    return this.http.post(this.apiUrl + '/auth/login', data);
   }
 
   // --- Flujo de Google (Frontend de Firebase + Backend) ---
@@ -68,7 +70,30 @@ export class Auth {
 
     // Esta ruta SÍ existe en el nuevo repo (POST .../v1/auth/)
     // Enviamos un body vacío ({}) 
-    const request$ = this.http.post(this.apiUrl, {}, { headers });
+    const request$ = this.http.post(`${this.apiUrl}/auth/`, {}, { headers });
     return firstValueFrom(request$);
+  }
+
+// funciones para guards
+  getUidUser(): string {
+
+    const LocalData:any = localStorage.getItem('auth');
+    const storage = JSON.parse(LocalData)
+
+    if (!storage) return "no-auth";
+
+
+   return storage.uid;
+
+  };
+
+  async getUserRol(uid:string):Promise<string>{
+    const apiResponse:any = await firstValueFrom(
+      this.http.get(this.apiUrl + `/usuario/${uid}`)
+    );
+
+    const rol:string = apiResponse?.rol ?? "unknown";
+
+    return rol;
   }
 }
