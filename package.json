@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "config": "node ./config/set-env.config.js",
+    "start": "npm run config -- --environment=dev && ng serve",
+    "build": "npm run config -- --environment=prod && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -30,14 +31,17 @@
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
     "@tailwindcss/postcss": "^4.1.16",
-    "lucide-angular": "^0.553.0",
-    "firebase": "^12.5.0",
     "ag-grid-angular": "^34.3.1",
     "ag-grid-community": "^34.3.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "firebase": "^12.5.0",
+    "lucide-angular": "^0.553.0",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.16",
     "tslib": "^2.3.0",
+    "yargs": "^18.0.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
