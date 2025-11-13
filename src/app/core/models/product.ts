@@ -6,7 +6,7 @@ export interface Product {
   createdAt?: string;
   updatedAt?: string;
   stock: number;
-  category: string;
+  category: number;
   status: 'active' | 'inactive';
   image: string | File;
 }
