@@ -36,10 +36,10 @@ export const routes: Routes = [
         path: 'cart',
         loadComponent: () => import('./page/cart/cart').then((c) => c.Cart),
       },
-      {
-        path: '**',
-        redirectTo: 'home',
-      },
+      // {
+      //   path: '**',
+      //   redirectTo: 'home',
+      // },
     ],
   },
 
@@ -117,8 +117,13 @@ export const routes: Routes = [
     ],
   },
 
+  // {
+  //   path: '**',
+  //   redirectTo: 'home',
+  // },
+   // Ruta 404 (debe ir al final)
   {
     path: '**',
-    redirectTo: 'home',
+    loadComponent: () => import('./page/not-found/not-found').then((m) => m.NotFound),
   },
 ];
