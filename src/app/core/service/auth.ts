@@ -87,6 +87,7 @@ export class Auth {
 
   };
 
+  // funcion para obtener rol de usuario
   async getUserRol(uid:string):Promise<string>{
     const apiResponse:any = await firstValueFrom(
       this.http.get(this.apiUrl + `/usuario/${uid}`)

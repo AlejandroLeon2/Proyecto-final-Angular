@@ -79,7 +79,8 @@ export class Login implements OnInit {
       const backendResponse = await this.auth.saveGoogleUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
 
-      // condicion para redirigir a admin o user
+      // obtenemos rol de visitante    movido  aqui para que objeto que se guarda el LocalStorage  pueda almacenar rol
+      const rol: string = await this.auth.getUserRol(userCredential.user.uid);
 
       localStorage.setItem(
         'auth',
@@ -93,12 +94,12 @@ export class Login implements OnInit {
           providerId: userCredential.user.providerId,
           creationTime: userCredential.user.metadata.creationTime,
           lastSignInTime: userCredential.user.metadata.lastSignInTime,
+          //agregado de clave rol
+          rol: rol
         })
       );
 
-      const rol: string = await this.auth.getUserRol(userCredential.user.uid);
-      console.log(rol);
-
+      // condicion para redirigir a admin o user
       if (rol === `usuario`) {
 
         this.router.navigate(['/user']);
