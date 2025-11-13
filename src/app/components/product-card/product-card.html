@@ -1,1 +1,82 @@
-<p>product-card works!</p>
+<div
+  class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 max-w-sm"
+>
+  <!-- Imagen del producto -->
+  <div class="relative h-64 overflow-hidden bg-gray-100">
+    <img
+      [src]="product.image"
+      [alt]="product.name"
+      class="w-full h-full object-cover"
+      loading="lazy"
+    />
+
+    <!-- Badge de estado -->
+    <div
+      class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold text-white uppercase shadow-md"
+      [ngClass]="getStatusClass()"
+    >
+      {{ getStatusText() }}
+    </div>
+
+    <!-- Badge de sin stock -->
+    @if (isOutOfStock()) {
+    <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+      <span class="text-white text-2xl font-bold">SIN STOCK</span>
+    </div>
+    }
+  </div>
+
+  <!-- Contenido del producto -->
+  <div class="p-5">
+    <!-- Nombre del producto -->
+    <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2 min-h-14">
+      {{ product.name }}
+    </h3>
+
+    <!-- Descripción -->
+    <p class="text-gray-600 text-sm mb-4 line-clamp-3 min-h-[60px]">
+      {{ product.description }}
+    </p>
+
+    <!-- Categoría -->
+    <div class="mb-4">
+      <span
+        class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full"
+      >
+        {{ product.category }}
+      </span>
+    </div>
+
+    <!-- Stock -->
+    <div class="flex justify-end items-center mb-4 pb-4 border-b border-gray-200">
+      <div class="flex flex-col items-end">
+        <span
+          class="text-xs font-semibold px-2 py-1 rounded"
+          [ngClass]="{
+            'bg-red-100 text-red-700': isOutOfStock(),
+            'bg-orange-100 text-orange-700': isLowStock(),
+            'bg-green-100 text-green-700': !isLowStock() && !isOutOfStock()
+          }"
+        >
+          @if (isOutOfStock()) { Sin stock } @else if (isLowStock()) { ¡Últimas
+          {{ product.stock }} unidades! } @else { Stock: {{ product.stock }}
+          }
+        </span>
+      </div>
+    </div>
+
+    <!-- Botón agregar al carrito -->
+    <div class="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
+      <!-- Precio a la izquierda -->
+      <span class="text-3xl font-bold text-green-600"> ${{ product.price.toFixed(2) }} </span>
+      <!-- Botón del carrito a la derecha -->
+      <button
+        (click)="addToCart()"
+        [disabled]="isOutOfStock()"
+        class="py-3 px-4 rounded-lg font-semibold text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-700 active:scale-95"
+      >
+        🛒
+      </button>
+    </div>
+  </div>
+</div>
