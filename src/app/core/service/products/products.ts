@@ -37,14 +37,7 @@ export class ProductsService {
   }
 
   addProduct(product: Product) {
-    const formData = new FormData();
-    formData.append('name', product.name);
-    formData.append('price', product.price.toString());
-    formData.append('description', product.description);
-    formData.append('stock', product.stock.toString());
-    formData.append('category', product.category);
-    formData.append('image', product.image);
-    formData.append('status', product.status);
+    const formData = this.getFormData(product);
 
     this.http
       .post<ICustomResponse<Product>>(environment.apiURL + '/product', formData)
@@ -66,8 +59,10 @@ export class ProductsService {
   }
 
   updateProduct(product: Product) {
+    const formData = this.getFormData(product);
+
     this.http
-      .put<ICustomResponse<Product>>(environment.apiURL + '/product', product)
+      .put<ICustomResponse<Product>>(environment.apiURL + '/product/' + product.id, formData)
       .pipe(
         take(1),
         catchError((error) => {
@@ -89,5 +84,17 @@ export class ProductsService {
           console.error('ThrowError: Error al obtener los productos');
         },
       });
+  }
+
+  getFormData(product: Product) {
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('price', product.price.toString());
+    formData.append('description', product.description);
+    formData.append('stock', product.stock.toString());
+    formData.append('category', product.category);
+    formData.append('image', product.image);
+    formData.append('status', product.status);
+    return formData;
   }
 }
