@@ -1,11 +1,14 @@
-<aside [ngClass]="{ 'max-w-60': close}"
-
-  class="fixed top-13 left-0 z-50 duration-500 flex flex-col w-full max-w-14 h-full max-h-[91svh] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-xl"
+<aside
+  [ngClass]="{ 'max-w-60': close }"
+  class="fixed top-13 left-0 z-50 duration-500 flex flex-col w-full max-w-14 h-full max-h-[93svh] bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-xl"
 >
-  <header [ngClass]="{ 'px-2' : close }"  class="relative px-0.5    pt-10 pb-6 border-b border-gray-200 dark:border-gray-800">
+  <header
+    [ngClass]="{ 'px-2': close }"
+    class="relative px-0.5 pt-10 pb-6 border-b border-gray-200 dark:border-gray-800"
+  >
     <button
       (click)="onClose()"
-      class="absolute top-1 -right-4 border border-gray-200 dark:border-none sha w-8 h-8  bg-secondary dark:bg-primary flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+      class="absolute top-1 -right-4 border border-gray-200 dark:border-none sha w-8 h-8 bg-secondary dark:bg-primary flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
       aria-label="Cerrar menú"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,21 +22,27 @@
     </button>
 
     <div
-    [ngClass]="{'gap-3 px-2  transition-all bg-gray-50 dark:bg-gray-800 border-gray-200': close}" 
-      class="flex items-center border duration-500 justify-center py-3 rounded-lg  bg-white border-gray-50 dark:border-gray-700"
+      [ngClass]="{ 'gap-3 px-2  transition-all bg-gray-50  border-gray-200': close }"
+      class="flex items-center border duration-500 justify-center py-3 rounded-lg dark:bg-gray-800 bg-white border-gray-50 dark:border-gray-700"
     >
       <img
-        src="/images/gato.jpg"
-        class="rounded-full h-12 w-12 object-cover ring-2 ring-gray-300 dark:ring-gray-600"
+        [src]="image"
+        class="rounded-full h-12 w-12 mx-auto object-cover ring-2 ring-gray-300 dark:ring-gray-600"
         alt="Avatar del usuario"
       />
-      <div [ngClass]="{'w-0 opacity-0': !close}" class="flex-1 min-w-0">
-        <p class="text-sm font-semibold w-full opacity-100 text-gray-900 dark:text-white truncate">Nombre Usuario</p>
-        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">correo@ejemplo.com</p>
+      <div [ngClass]="{ 'w-0 opacity-0': !close }" class="flex-1 min-w-0">
+        <p class="text-sm font-semibold w-full opacity-100 text-gray-900 dark:text-white truncate">
+          {{ name }}
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ email }}</p>
       </div>
     </div>
   </header>
-  <nav [ngClass]="{'px-2 ': close}"  class="flex-1 duration-500 overflow-hidden px-1 py-6 " aria-label="Navegación principal">
+  <nav
+    [ngClass]="{ 'px-2 ': close }"
+    class="flex-1 duration-500 overflow-hidden px-1 py-6"
+    aria-label="Navegación principal"
+  >
     <ul class="space-y-1">
       @for (item of navlinks; track $index) {
       <li class="">
@@ -41,8 +50,8 @@
           [routerLink]="['/user', item.links]"
           routerLinkActive="bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400 font-semibold"
           [title]="item.title"
-          [ngClass]="{'px-4 justify-start gap-3': close}" 
-          class="flex items-center  justify-center   px-1 py-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+          [ngClass]="{ 'px-4 justify-start gap-3': close }"
+          class="flex items-center justify-center px-1 py-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
         >
           @if (item.icon) {
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,19 +69,6 @@
               stroke-width="2"
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
             />
-            } @case ('settings') {
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-            />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            />
             } @default {
             <path
               stroke-linecap="round"
@@ -83,18 +79,25 @@
             } }
           </svg>
           }
-          <span [ngClass]="{ 'w-full opacity-100': close }" class="w-0 whitespace-nowrap opacity-0 duration-500">{{ item.nombre }}</span>
+          <span
+            [ngClass]="{ 'w-full opacity-100': close }"
+            class="w-0 whitespace-nowrap opacity-0 duration-500"
+            >{{ item.nombre }}</span
+          >
         </a>
       </li>
       }
     </ul>
   </nav>
-  <footer [ngClass]="{'px-2 ': close}" class="px-1 py-4 border-t border-gray-200 dark:border-gray-800">
+  <footer
+    [ngClass]="{ 'px-2 ': close }"
+    class="px-1 py-4 border-t border-gray-200 dark:border-gray-800"
+  >
     <a
-    title="Cerrar Sesión"
-    routerLink="/shop"
+      title="Cerrar Sesión"
+      routerLink="/shop"
       (click)="onLogout()"
-      [ngClass]="{'px-4  gap-2': close}"
+      [ngClass]="{ 'px-4  gap-2': close }"
       class="flex items-center justify-center duration-500 w-full px-0 py-3 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +108,11 @@
           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
         />
       </svg>
-      <span [ngClass]="{' w-full opacity-100': close}" class="w-0 duration-500 whitespace-nowrap opacity-0">Cerrar Sesión</span>
+      <span
+        [ngClass]="{ ' w-full opacity-100': close }"
+        class="w-0 duration-500 whitespace-nowrap opacity-0"
+        >Cerrar Sesión</span
+      >
     </a>
   </footer>
 </aside>

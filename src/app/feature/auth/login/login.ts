@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 import { IconBrandLogo } from '../../../icons/IconBrandLogo/IconBrandLogo';
 import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
-import { Auth } from '../../../core/service/auth';
+import { Auth } from '../../../core/service/auth/auth';
 
 @Component({
   selector: 'app-login',
