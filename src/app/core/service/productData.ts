@@ -30,7 +30,7 @@ export class ProductService {
   /**
    * Obtener productos por categoría
    */
-  getProductsByCategory(category: number): Observable<Product[]> {
+  getProductsByCategory(category: string): Observable<Product[]> {
     const filtered = this.products.filter((p) => p.category === category);
     return of(filtered);
   }
