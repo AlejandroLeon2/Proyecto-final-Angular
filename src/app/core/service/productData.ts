@@ -22,15 +22,15 @@ export class ProductService {
   /**
    * Obtener producto por ID
    */
-  getProductById(id: number): Observable<Product | undefined> {
-    const product = this.products.find((p) => p.id === id);
+  getProductById(id: number): Observable<Product | null> {
+    const product = this.products.find((p) => p.id === id) ?? null;
     return of(product);
   }
 
   /**
    * Obtener productos por categoría
    */
-  getProductsByCategory(category: string): Observable<Product[]> {
+  getProductsByCategory(category: number): Observable<Product[]> {
     const filtered = this.products.filter((p) => p.category === category);
     return of(filtered);
   }
