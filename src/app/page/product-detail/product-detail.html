@@ -100,7 +100,7 @@
                   <button
                     (click)="decreaseQuantity()"
                     [disabled]="quantity <= 1 || isOutOfStock()"
-                    class="w-12 h-12 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg font-bold text-lg transition flex items-center justify-center"
+                    class="w-12 h-12 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg font-bold text-lg transition flex items-center justify-center cursor-pointer"
                   >
                     <lucide-icon [img]="Minus" size="20"></lucide-icon>
                   </button>
@@ -117,7 +117,7 @@
                   <button
                     (click)="increaseQuantity()"
                     [disabled]="quantity >= product.stock || isOutOfStock()"
-                    class="w-12 h-12 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg font-bold text-lg transition flex items-center justify-center"
+                    class="w-12 h-12 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg font-bold text-lg transition flex items-center justify-center cursor-pointer"
                   >
                     <lucide-icon [img]="Plus" size="20"></lucide-icon>
                   </button>
