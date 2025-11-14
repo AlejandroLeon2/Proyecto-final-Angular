@@ -2,7 +2,10 @@
   class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 max-w-sm"
 >
   <!-- Imagen del producto -->
-  <div class="relative h-64 overflow-hidden bg-gray-100">
+  <div
+    [routerLink]="['/shop', 'product-detail', product.id]"
+    class="relative h-64 overflow-hidden bg-gray-100 cursor-pointer hover:opacity-80 transition-opacity duration-300"
+  >
     <img
       [src]="product.image"
       [alt]="product.name"
