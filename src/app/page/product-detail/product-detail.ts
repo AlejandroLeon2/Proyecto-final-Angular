@@ -8,11 +8,12 @@ import { takeUntil } from 'rxjs/operators';
 import { Product } from '../../core/models/product';
 import { ProductService } from '../../core/service/productData';
 import { CATEGORIES } from '../../core/constants/categories';
+import { LucideAngularModule, Plus, Minus, ShoppingCart } from 'lucide-angular';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: './product-detail.html',
   styleUrls: ['./product-detail.css'],
 })
@@ -23,6 +24,10 @@ export class ProductDetail implements OnInit, OnDestroy {
   error: string | null = null;
   CATEGORIES = CATEGORIES;
   private destroy$ = new Subject<void>();
+
+  Plus = Plus;
+  Minus = Minus;
+  shoppingCartIcon = ShoppingCart;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,15 +50,11 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  /**
-   * Carga los detalles del producto
-   */
   loadProduct(id: string | number): void {
     this.isLoading = true;
     this.error = null;
 
     const numericId = Number(id);
-
     if (isNaN(numericId)) {
       this.error = 'ID de producto inválido';
       this.isLoading = false;
@@ -66,6 +67,9 @@ export class ProductDetail implements OnInit, OnDestroy {
       .subscribe({
         next: (product) => {
           this.product = product ?? null;
+          if (this.product && this.product.stock < this.quantity) {
+            this.quantity = this.product.stock > 0 ? this.product.stock : 1;
+          }
           this.isLoading = false;
         },
         error: (err) => {
@@ -76,42 +80,27 @@ export class ProductDetail implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Incrementa la cantidad
-   */
   increaseQuantity(): void {
     if (this.product && this.quantity < this.product.stock) {
       this.quantity++;
     }
   }
 
-  /**
-   * Decrementa la cantidad
-   */
   decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
     }
   }
 
-  /**
-   * Valida si está sin stock
-   */
   isOutOfStock(): boolean {
     return this.product?.stock === 0;
   }
 
-  /**
-   * Valida si el stock es bajo
-   */
   isLowStock(): boolean {
     if (!this.product) return false;
     return this.product.stock > 0 && this.product.stock < 10;
   }
 
-  /**
-   * Agrega al carrito
-   */
   addToCart(): void {
     if (!this.product || this.isOutOfStock()) return;
 
@@ -122,19 +111,12 @@ export class ProductDetail implements OnInit, OnDestroy {
 
     console.log('✅ Agregado al carrito:', cartItem);
     // TODO: Conectar con CartService
-    // this.cartService.addItem(cartItem);
   }
 
-  /**
-   * Vuelve atrás
-   */
   goBack(): void {
     this.location.back();
   }
 
-  /**
-   * Formatea la fecha
-   */
   formatDate(dateString: string | undefined): string {
     if (!dateString) return 'N/A';
     try {
