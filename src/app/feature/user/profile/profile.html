@@ -13,8 +13,8 @@
       >
         <figure class="relative group">
           <img
-            src="/images/gato.jpg"
-            [alt]="'Foto de perfil de '"
+            [src]="image"
+            [alt]="'Foto de perfil de ' + name"
             class="w-32 h-32 rounded-full border-4 border-celeste shadow-lg object-cover ring-2 ring-azule"
           />
           <figcaption class="sr-only">nombre usuario</figcaption>
@@ -29,18 +29,8 @@
 
         <div class="text-center sm:text-left flex-1">
           <h2 class="text-3xl font-bold text-white mb-8 font-bebas tracking-wide">
-            nombre usuario
+            {{ name }}
           </h2>
-          <nav
-            class="flex flex-wrap gap-2 justify-center sm:justify-start"
-            aria-label="Insignias del usuario"
-          >
-            <span
-              class="px-4 py-1.5 bg-white text-slate-900 text-sm font-semibold rounded-full font-poppins"
-            >
-              rol usuario
-            </span>
-          </nav>
         </div>
       </div>
 
@@ -67,8 +57,8 @@
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <a [href]="'mailto:'" class="hover:text-yellow-400 transition-colors">
-                  correo usuario
+                <a [href]="'mailto:' + email" class="hover:text-yellow-400 transition-colors">
+                  {{ email }}
                 </a>
               </dd>
             </div>
