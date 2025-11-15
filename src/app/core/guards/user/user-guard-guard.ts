@@ -9,18 +9,18 @@ export const userGuardGuard: CanActivateFn = async(route, state) => {
   const router = inject(Router);
 
   //obtenermos token de ususario
-  const token:string = Auth.getUidUser();
-  console.log(token);
-  if(token =="no-auth" ){
-    router.navigate(['/login'])
+  const token:string|null = Auth.getCookie(`token`);
+
+  if(token === null){
+    return false
   }
 
-  const rol = await Auth.getUserRol(token);
+  const rolResponce:string = await Auth.tryUserRol(`usuario`,token);
 
-  if(rol === 'usuario'){
+  if(rolResponce === 'usuario'){
     return true
   }
 
-  router.navigate(['/user'])
+  router.navigate(['/'])
   return false;
 };

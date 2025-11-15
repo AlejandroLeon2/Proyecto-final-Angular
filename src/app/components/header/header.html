@@ -30,8 +30,8 @@
         <div class="flex items-center gap-3">
 
             <!-- User with menu -->
-            <div class="relative"
-                (mouseenter)="(showUserMenu = true && src.length > 5)"
+            <div class="relative h-11 w-11"
+                (mouseenter)="showUserMenu()"
                 (mouseleave)="leaveUserMenu()">
 
                 <button 
@@ -51,14 +51,23 @@
                     }
                 </button>
 
-                @if (showUserMenu){
-                    <div class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col
+                @if (userMenu){
+                    <div class="absolute left-1/2 -translate-x-1/2 mt-1 w-32 flex flex-col
                                 bg-[var(--bg-card)] border border-[var(--border)]
                                 shadow-lg rounded-lg p-2 z-50">
-
-                        <button routerLink="/login"  class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2">
+                    @if (src !== ``) {
+                        <button (click)="signOut()"  class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-center py-1 px-2">
                             Outh
                         </button>
+                    }@else{
+                        <button routerLink="/login"  class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-center py-1 px-2">
+                            Login
+                        </button>
+                        <button routerLink="/register"  class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-center py-1 px-2">
+                            Register
+                        </button>
+                    }
+                        
                     </div>
                 }
             </div>

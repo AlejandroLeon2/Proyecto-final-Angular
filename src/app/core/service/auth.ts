@@ -9,6 +9,8 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   UserCredential,
+  getAuth,
+  user
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -74,27 +76,117 @@ export class Auth {
     return firstValueFrom(request$);
   }
 
-// funciones para guards
-  getUidUser(): string {
+  // funcion para obtener token de usuario
+  async getUserToken(): Promise<string> {
+    try {
+      const auth = getAuth();
+      const data = auth.currentUser;
 
-    const LocalData:any = localStorage.getItem('auth');
-    const storage = JSON.parse(LocalData)
+      if (!data) return "no-auth";
 
-    if (!storage) return "no-auth";
+      const token = await data.getIdToken();
+      return token;
 
-
-   return storage.uid;
-
-  };
-
-  // funcion para obtener rol de usuario
-  async getUserRol(uid:string):Promise<string>{
-    const apiResponse:any = await firstValueFrom(
-      this.http.get(this.apiUrl + `/usuario/${uid}`)
-    );
-
-    const rol:string = apiResponse?.rol ?? "unknown";
-
-    return rol;
+    } catch (err) {
+      console.error("Error getting UID:", err);
+      return "no-auth";
+    }
   }
+
+  // funcion para obtener uid de usuario
+  async getUserUid(): Promise<string> {
+    try {
+      const auth = getAuth();
+      const data = auth.currentUser;
+
+      if (!data) return "no-auth";
+
+      const uid = await data.uid;
+      return uid;
+
+    } catch (err) {
+      console.error("Error getting UID:", err);
+      return "no-auth";
+    }
+  }
+
+  // funcion para obtener uid de usuario
+  async getUserPhoto(): Promise<string |null> {
+    try {
+      const auth = getAuth();
+      const data = auth.currentUser;
+
+      if (!data) return "no-auth";
+
+      const token:string|null = await data.photoURL;
+      return token;
+
+    } catch (err) {
+      console.error("Error getting UID:", err);
+      return "no-auth";
+    }
+  }
+
+  // funcion para obtener rol de usuario logeado
+  async getUserRol(uid: string): Promise<string> {
+    try {
+      const apiResponse: any = await firstValueFrom(
+        this.http.get(this.apiUrl + `/usuario/${uid}`)
+      );
+
+      const rol = apiResponse?.rol;
+
+      if (rol === 'admin' || rol === 'usuario') {
+        return rol;
+      }
+
+      return 'unknown';
+    } catch (error) {
+      console.error('Error obteniendo rol:', error);
+      return 'unknown';
+    }
+  }
+
+  // funcion para obtener rol de usuario en guard
+  async tryUserRol(rol:string, token: string): Promise<string> {
+    try {
+      const trueRol: any = await firstValueFrom(
+  //peticion de validacion de token y rol en backEnd
+        this.http.get(this.apiUrl + `/usuario/${token}`)
+      );
+
+      const rol = trueRol?.rol;
+
+      if (rol === 'admin' || rol === 'user') {
+        return rol;
+      }
+
+      return 'unknown';
+    } catch (error) {
+      console.error('Error obteniendo rol:', error);
+      return 'unknown';
+    }
+  }
+  
+  //funcion para guardar en cookies
+  sabeCookies(name: string, data: string): void {
+    const encoded = encodeURIComponent(data);
+    document.cookie = `${name}=${encoded}; Path=/; Max-Age=86400; SameSite=Lax`;
+    console.log("COOKIE GUARDADA:", name);
+  }
+
+  //funcion para extraer datos de cookies
+  getCookie(name: string): string | null {
+    const value = document.cookie
+      .split("; ")
+      .find(c => c.startsWith(name + "="));
+
+    return value ? decodeURIComponent(value.split("=")[1]) : null;
+  }
+  // funcion para borrar cookie
+  deleteCookie(name: string): void {
+    document.cookie = `${name}=; Path=/; Max-Age=0; SameSite=Lax`;
+  }
+
+
 }

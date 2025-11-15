@@ -14,7 +14,6 @@ export function getUserDataLocal(): Response<UserData> {
 
   // Convertir a objeto
   const storage: AuthStorage = JSON.parse(localData);
-  console.log(storage);
   
   // Retornar solo los datos necesarios
   return {

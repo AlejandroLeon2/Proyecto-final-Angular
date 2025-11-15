@@ -76,12 +76,24 @@ export class Login implements OnInit {
       console.log('****************************************');
       // --- FIN DE LA CAPTURA ---
 
+
       const backendResponse = await this.auth.saveGoogleUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
 
-      // obtenemos rol de visitante    movido  aqui para que objeto que se guarda el LocalStorage  pueda almacenar rol
-      const rol: string = await this.auth.getUserRol(userCredential.user.uid);
+      
+    
 
+    // obtenremos toekn de firebaseLocalStorage y Guardamos Token en cookie
+    const userToken:string = await this.auth.getUserToken();
+    this.auth.sabeCookies(`token`, userToken);
+    // obtenremos toekn de firebaseLocalStorage y Guardamos Token en cookie
+    const userUid:string = await this.auth.getUserUid();
+    this.auth.sabeCookies(`uid`, userUid);
+    // obtenemos rol de visitante guardado en cookies
+    const rol: string = await this.auth.getUserRol(userUid);
+    this.auth.sabeCookies(`rol`, rol);
+
+  // para observar. 
       localStorage.setItem(
         'auth',
         JSON.stringify({
@@ -94,15 +106,14 @@ export class Login implements OnInit {
           providerId: userCredential.user.providerId,
           creationTime: userCredential.user.metadata.creationTime,
           lastSignInTime: userCredential.user.metadata.lastSignInTime,
-          //agregado de clave rol
-          rol: rol
+
         })
       );
 
       // condicion para redirigir a admin o user
       if (rol === `usuario`) {
 
-        this.router.navigate(['/user']);
+        this.router.navigate(['/shop']);
       }
 
       if (rol === `admin`) {

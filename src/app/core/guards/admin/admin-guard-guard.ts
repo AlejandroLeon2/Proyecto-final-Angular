@@ -9,15 +9,15 @@ export const adminGuardGuard: CanActivateFn = async(route, state) => {
   const router = inject(Router);
 
   //obtenermos token de ususario
-  const token:string = Auth.getUidUser();
+  const token:string|null = Auth.getCookie(`token`);
 
-  if(!token){
-    router.navigate(['/login'])
+  if(token === null){
+    return false
   }
 
-  const rol = await Auth.getUserRol(token);
+  const rolResponce:string = await Auth.tryUserRol(`admin`,token);
 
-  if(rol === 'admin'){
+  if(rolResponce === 'admin'){
     return true
   }
 
