@@ -1,13 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface CarouselSlide { //mover la interface a otro lado
-  image: string;
-  title: string;
-  description: string;
-  buttonText: string;
-  buttonLink: string;
-}
+import { CarouselSlide } from '../../core/models/CarouselSlide';
 
 @Component({
   selector: 'app-hero-carrusel',
@@ -19,7 +12,7 @@ export class HeroCarrusel implements OnInit, OnDestroy {
 
   currentIndex: number = 0;
   autoplayInterval: any;
-  autoplayDelay: number = 90000; // 90 seconds
+  autoplayDelay: number = 90000; // 90 secondsfexfix
 
   slides: CarouselSlide[] = [
     {
