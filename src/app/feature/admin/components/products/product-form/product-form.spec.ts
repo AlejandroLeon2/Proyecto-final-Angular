@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Form } from './form';
+import { Form } from './product-form';
 
 describe('Form', () => {
   let component: Form;
@@ -8,9 +8,8 @@ describe('Form', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Form]
-    })
-    .compileComponents();
+      imports: [Form],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Form);
     component = fixture.componentInstance;
