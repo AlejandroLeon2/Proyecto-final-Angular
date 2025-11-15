@@ -14,7 +14,7 @@ import {
   themeQuartz,
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { Product } from '../../../../core/models/product';
+import { Product } from '../../../../../core/models/product.model';
 import { ActionsCellRenderer } from './actions-cell-renderer';
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
