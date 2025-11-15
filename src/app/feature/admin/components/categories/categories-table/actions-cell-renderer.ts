@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import type { ICellRendererAngularComp } from 'ag-grid-angular';
 import type { ICellRendererParams } from 'ag-grid-community';
 import { LucideAngularModule, PenLine, Trash } from 'lucide-angular';
-import { Product } from '../../../../core/models/product';
-import { ModalService } from '../modal/service/modal';
+import { Category } from '../../../../../core/models/category.model';
+import { ModalService } from '../../modal/service/modal';
 
 @Component({
   selector: 'app-actions-cell-renderer',
@@ -14,13 +14,13 @@ import { ModalService } from '../modal/service/modal';
     <span :class="missionSpan">
       <div class="flex gap-2">
         <button
-          (click)="editProduct()"
+          (click)="editItem()"
           class="bg-blue-600 hover:bg-blue-500 text-white px-2 py-1 rounded flex items-center"
         >
           <lucide-icon [img]="penLine" size="18" class="icon"></lucide-icon>
         </button>
         <button
-          (click)="deleteProduct()"
+          (click)="deleteItem()"
           class="bg-gray-600 hover:bg-gray-500 text-white px-2 py-1 rounded flex items-center"
         >
           <lucide-icon [img]="trash" size="18" class="icon"></lucide-icon>
@@ -33,9 +33,9 @@ import { ModalService } from '../modal/service/modal';
   ],
 })
 export class ActionsCellRenderer implements ICellRendererAngularComp {
-  data = signal<Product | undefined>(undefined);
+  data = signal<Category | undefined>(undefined);
 
-  modalService = inject(ModalService);
+  modalService = inject(ModalService<Category>);
 
   // Icons
   penLine = PenLine;
@@ -50,11 +50,11 @@ export class ActionsCellRenderer implements ICellRendererAngularComp {
     return true;
   }
 
-  editProduct() {
+  editItem() {
     this.modalService.open(this.data()!);
   }
 
-  deleteProduct() {
-    console.log('deleteProduct');
+  deleteItem() {
+    console.log('deleteItem');
   }
 }

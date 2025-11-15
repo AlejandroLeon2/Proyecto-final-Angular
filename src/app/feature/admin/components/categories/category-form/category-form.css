@@ -1,0 +1,39 @@
+@reference 'tailwindcss';
+
+.custom-input {
+  @apply border border-gray-300 rounded w-full p-2
+}
+
+input, textarea, select{
+    border-radius: 8px;
+    outline: none;
+}
+
+label{
+    color: #e5e7eb;
+    margin-bottom:10px
+}
+
+/* textarea */
+textarea{
+    resize: none;
+    height: 60px;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #404041;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #eeeeee70;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #eeeeee;
+}

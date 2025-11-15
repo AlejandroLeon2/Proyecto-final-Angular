@@ -14,15 +14,15 @@ import {
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, XIcon } from 'lucide-angular';
 import { Subscription } from 'rxjs';
-import { Product } from '../../../../core/models/product';
-import { ProductsService } from '../../../../core/service/products/products';
+import { Product } from '../../../../../core/models/product.model';
+import { ProductsService } from '../../../../../core/service/products/products';
 
 @Component({
-  selector: 'app-form',
+  selector: 'app-product-form',
   standalone: true,
   imports: [CommonModule, FormsModule, LucideAngularModule],
-  templateUrl: './form.html',
-  styleUrl: './form.css',
+  templateUrl: './product-form.html',
+  styleUrl: './product-form.css',
 })
 export class Form implements OnDestroy {
   // Input signals with default values

@@ -14,19 +14,19 @@ import {
   themeQuartz,
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { Product } from '../../../../core/models/product';
+import { Category } from '../../../../../core/models/category.model';
 import { ActionsCellRenderer } from './actions-cell-renderer';
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
 @Component({
-  selector: 'app-products-table',
+  selector: 'app-categories-table',
   imports: [AgGridAngular, FormsModule],
-  templateUrl: './products-table.html',
-  styleUrl: './products-table.css',
+  templateUrl: './categories-table.html',
+  styleUrl: './categories-table.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class ProductsTable {
-  products = input<Product[]>([]);
+export class CategoriesTable {
+  categories = input<Category[]>([]);
   gridTheme = input<string>('ag-theme-quartz');
   isDarkMode = input<boolean>(false);
   quickFilterText = input<string>('');
@@ -42,24 +42,13 @@ export class ProductsTable {
       field: 'id',
       hide: true,
     },
-    {
-      hide: true,
-      field: 'image',
-      headerName: 'Imagen',
-      minWidth: 180,
-      cellRenderer: (params: any) => {
-        return `<img src="${params.value}" alt="${params.data.name}" style="width: 50px; height: 50px; object-fit: cover;" />`;
-      },
-    },
+
     {
       field: 'name',
       headerName: 'Nombre',
       minWidth: 180,
     },
-    { field: 'category', headerName: 'Categoría', minWidth: 150 },
     { field: 'description', headerName: 'Descripción', minWidth: 200 },
-    { field: 'price', headerName: 'Precio' },
-    { field: 'stock', headerName: 'Stock' },
     {
       field: 'status',
       headerName: 'Estado',
