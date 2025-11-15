@@ -4,6 +4,7 @@ import type { ICellRendererAngularComp } from 'ag-grid-angular';
 import type { ICellRendererParams } from 'ag-grid-community';
 import { LucideAngularModule, PenLine, Trash } from 'lucide-angular';
 import { Category } from '../../../../../core/models/category.model';
+import { CategoriesService } from '../../../../../core/service/categories/categories';
 import { ModalService } from '../../modal/service/modal';
 
 @Component({
@@ -36,6 +37,7 @@ export class ActionsCellRenderer implements ICellRendererAngularComp {
   data = signal<Category | undefined>(undefined);
 
   modalService = inject(ModalService<Category>);
+  categoryService = inject(CategoriesService);
 
   // Icons
   penLine = PenLine;
@@ -55,6 +57,6 @@ export class ActionsCellRenderer implements ICellRendererAngularComp {
   }
 
   deleteItem() {
-    console.log('deleteItem');
+    this.categoryService.deleteCategory(this.data()!.id);
   }
 }

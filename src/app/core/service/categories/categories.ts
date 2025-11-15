@@ -37,10 +37,8 @@ export class CategoriesService {
   }
 
   addCategory(category: Category) {
-    const formData = this.getFormData(category);
-
     this.http
-      .post<ICustomResponse<Category>>(environment.apiURL + '/category', formData)
+      .post<ICustomResponse<Category>>(environment.apiURL + '/category', category)
       .pipe(
         take(1),
         catchError((error) => {
@@ -59,10 +57,8 @@ export class CategoriesService {
   }
 
   updateCategory(category: Category) {
-    const formData = this.getFormData(category);
-
     this.http
-      .put<ICustomResponse<Category>>(environment.apiURL + '/category/' + category.id, formData)
+      .put<ICustomResponse<Category>>(environment.apiURL + '/category/' + category.id, category)
       .pipe(
         take(1),
         catchError((error) => {
@@ -86,11 +82,29 @@ export class CategoriesService {
       });
   }
 
-  getFormData(category: Category) {
-    const formData = new FormData();
-    formData.append('name', category.name);
-    formData.append('description', category.description);
-    formData.append('status', category.status);
-    return formData;
+  deleteCategory(id: string) {
+    this.http
+      .delete<ICustomResponse<Category>>(environment.apiURL + '/category/' + id)
+      .pipe(
+        take(1),
+        catchError((error) => {
+          console.error('CategoriesService: Error al obtener las categorías', error);
+          return throwError(() => error);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this._data.update((data) => {
+            const index = data.findIndex((p) => p.id === id);
+            if (index !== -1) {
+              data.splice(index, 1);
+            }
+            return [...data];
+          });
+        },
+        error: () => {
+          console.error('ThrowError: Error al obtener las categorías');
+        },
+      });
   }
 }
