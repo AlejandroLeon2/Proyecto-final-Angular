@@ -36,10 +36,11 @@ export class CartService {
     this._items.next(items);
   }
 
-  updateQuantity(id: number, cantidad: number): void {
+  updateQuantity(id: number, quantity: number): void {
     const items = this._items.value.map((item) =>
-      item.id === id ? { ...item, cantidad: cantidad > 0 ? cantidad : 1 } : item
+      item.id === id ? { ...item, quantity: quantity > 0 ? quantity : 1 } : item
     );
+
     this._items.next(items);
   }
 }
