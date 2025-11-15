@@ -1,14 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Product } from '../../core/models/product';
-import { ProductService } from '../../core/service/productData';
 import { CATEGORIES } from '../../core/constants/categories';
-import { LucideAngularModule, Plus, Minus, ShoppingCart } from 'lucide-angular';
+import { Product } from '../../core/models/product.model';
+import { ProductService } from '../../core/service/productData';
 
 @Component({
   selector: 'app-product-detail',
