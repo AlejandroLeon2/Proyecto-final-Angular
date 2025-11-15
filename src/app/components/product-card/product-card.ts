@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Product } from '../../core/models/product';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
+import { Product } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-product-card',
