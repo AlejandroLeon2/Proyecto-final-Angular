@@ -1,1 +1,91 @@
-<p>product-catalog works!</p>
+<div class="container mx-auto px-4 py-8">
+  <div class="w-full @container mb-12">
+    <div
+      class="flex flex-col gap-6 rounded-xl bg-gray-100 dark:bg-gray-900/50 p-6 @[864px]:flex-row @[864px]:items-center"
+    >
+      <div class="flex flex-col gap-6 @[864px]:w-1/2 @[864px]:justify-center">
+        <div class="flex flex-col gap-3 text-left">
+          <h1
+            class="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-tighter @[480px]:text-5xl"
+          >
+            Summer Sale: Up to 50% Off
+          </h1>
+          <p class="text-gray-600 dark:text-gray-300 text-base font-normal @[480px]:text-lg">
+            Discover amazing deals on our latest summer collection. Don't miss out on the season's
+            best prices.
+          </p>
+        </div>
+        <div class="flex">
+          <button
+            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors shadow-sm"
+          >
+            <span class="truncate">Shop Now</span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg @[864px]:w-1/2"
+        style="
+          background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8nGQh9y8PM7VkNuFrThF1GBBR24Hq2ZbzgZRANUNWZHXrRsMsQOMKnWFqDSb9oJQ2tpWLS94s7tYSrLSPa4Pp5f1ZO-cmsYRx5gJFt0zaRfTscTHm-GrggmwGPKjJKEkZvGwY1uDVF24WJ-uGHXbSmyIvV6tn7-Wj4wBQ_uME_AvzFAHlNsvNU4VybnIZK_WiepTILzhw1VwpoeYTbHhMYxeUsoCFB-1hE_hbhqPsPdcg32dHj0nFDuVgXfC7943mnJUx1jW25wg');
+        "
+      ></div>
+    </div>
+  </div>
+
+  <section class="py-4">
+    <h2
+      class="text-gray-900 dark:text-white text-2xl font-bold leading-tight tracking-tight px-4 pb-5"
+    >
+      Featured Picks
+    </h2>
+
+    <div class="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 min-h-[500px]">
+      @for (product of displayedProducts(); track product.id) {
+
+      <div
+        class="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200/80 dark:border-gray-800/80 bg-white dark:bg-background-dark shadow-sm hover:shadow-lg transition-all duration-300"
+      >
+        <div class="aspect-square w-full overflow-hidden">
+          <img
+            class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+            [ngSrc]="product.image"
+            [alt]="product.name"
+            width="400"
+            height="400"
+            priority
+          />
+        </div>
+
+        <div class="flex flex-1 flex-col p-4">
+          <h3 class="text-base font-semibold text-gray-800">
+            {{ product.name }}
+          </h3>
+
+          <div class="mt-2 flex flex-1 items-end justify-between">
+            <p class="text-lg font-bold text-gray-900">${{ product.price | number : '1.2-2' }}</p>
+
+            <button
+              class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/20 text-primary transition-colors group-hover:bg-primary group-hover:text-white cursor-pointer"
+            >
+              <span class="material-symbols-outlined !text-[20px]">add_shopping_cart</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      } @if (displayedProducts().length === 0) {
+      <p class="col-span-full text-center text-gray-500 py-10">
+        No se encontraron productos para esta página.
+      </p>
+      }
+    </div>
+  </section>
+
+  <div class="mt-12 border-t border-gray-200 dark:border-gray-700">
+    @if (totalPages() > 1) {
+    <app-pagination 
+    [(currentPage)]="currentPage" 
+    [totalPages]="totalPages">
+    </app-pagination>
+    }
+  </div>
+</div>
