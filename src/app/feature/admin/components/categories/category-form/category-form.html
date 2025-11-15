@@ -1,0 +1,62 @@
+<h2 class="text-lg font-semibold text-gray-300 pb-4 text-center">
+  {{ category()?.id ? 'Actualizar' : 'Agregar' }} categoría
+</h2>
+
+<form [formGroup]="form" (submit)="onSubmit()" class="space-y-4 text-gray-300" novalidate>
+  <!-- Nombre del Producto -->
+  <div>
+    <label for="name" class="block text-sm font-medium">Nombre de la categoría</label>
+    <input formControlName="name" class="custom-input" />
+    @if (name.touched || name.dirty) { @if (name.errors?.['required']) {
+    <small class="text-gray-600">El nombre es obligatorio</small>
+    } @if (name.errors?.['minlength']) {
+    <small class="text-gray-600">
+      Mínimo {{name.errors?.['minlength'].requiredLength}} caracteres. (tienes
+      {{name.errors?.['minlength'].actualLength}})
+    </small>
+    } @if (name.errors?.['pattern']) {
+    <small class="text-gray-600">La categoría solo puede contener caracteres alfanuméricos</small>
+    } }
+  </div>
+  <div>
+    <label for="description" class="block text-sm font-medium">Descripción</label>
+    <textarea formControlName="description" class="custom-input"></textarea>
+    @if (description.touched || description.dirty) { @if (description.errors?.['required']) {
+    <small class="text-gray-600">La descripción es obligatoria</small>
+    } @if (description.errors?.['minlength']) {
+    <small class="text-gray-600">
+      Mínimo {{description.errors?.['minlength'].requiredLength}} caracteres. (tienes
+      {{description.errors?.['minlength'].actualLength}})
+    </small>
+    } @if (description.errors?.['maxlength']) {
+    <small class="text-gray-600">
+      Máximo {{description.errors?.['maxlength'].requiredLength}} caracteres. (tienes
+      {{description.errors?.['maxlength'].actualLength}})
+    </small>
+    } }
+  </div>
+  <div class="flex gap-2">
+    <input type="checkbox" formControlName="status" class="w-4 h-4" />
+    <label for="status" class="block text-sm font-medium">Activo</label>
+  </div>
+  <!-- Botones -->
+  <menu class="flex justify-end gap-2 mt-6">
+    <button
+      type="button"
+      class="text-gray-400 bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-950 transition-colors"
+      (click)="closeModal()"
+    >
+      Cancelar
+    </button>
+
+    <button
+      type="submit"
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+      [disabled]="form.invalid"
+      [class.opacity-50]="form.invalid"
+      [class.cursor-not-allowed]="form.invalid"
+    >
+      {{ category()?.id ? 'Actualizar' : 'Agregar' }}
+    </button>
+  </menu>
+</form>
