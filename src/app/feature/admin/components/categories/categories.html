@@ -1,7 +1,7 @@
 <div class="flex flex-col h-full">
   <div class="flex flex-col justify-between px-6 py-4 border-b border-gray-700">
-    <h1 class="text-2xl font-semibold pb-2">Administrador de productos</h1>
-    <h2 class="text-sm text-gray-400">Administra el catálogo de productos y detalles</h2>
+    <h1 class="text-2xl font-semibold pb-2">Administrador de Categorías</h1>
+    <h2 class="text-sm text-gray-400">Administra el catálogo de categorías</h2>
   </div>
   <div class="flex items-center justify-between px-6 py-4 gap-4 lg:gap-16 md:gap-12">
     <div class="flex flex-1 items-center gap-4 w-full">
@@ -29,11 +29,11 @@
 
   <!--ag grid table-->
   <div class="px-6 flex-1">
-    <app-products-table
-      [products]="rowData()"
+    <app-categories-table
+      [categories]="rowData()"
       [quickFilterText]="quickFilterText"
-    ></app-products-table>
+    ></app-categories-table>
   </div>
 </div>
 
-<app-modal [type]="'product'"></app-modal>
+<app-modal [type]="'category'"></app-modal>

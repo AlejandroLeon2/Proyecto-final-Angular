@@ -2,27 +2,27 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, take, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { Category } from '../../models/category.model';
 import { ICustomResponse } from '../../models/customResponse';
-import { Product } from '../../models/product.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService {
-  private _data = signal<Product[]>([]);
+export class CategoriesService {
+  private _data = signal<Category[]>([]);
   private http = inject(HttpClient);
 
   get data() {
     return this._data();
   }
 
-  getProducts(): void {
+  getCategories(): void {
     this.http
-      .get<Product[]>(environment.apiURL + '/product/all')
+      .get<Category[]>(environment.apiURL + '/category/all')
       .pipe(
         take(1),
         catchError((error) => {
-          console.error('ProductsService: Error al obtener los productos', error);
+          console.error('CategoriesService: Error al obtener las categorías', error);
           return throwError(() => error);
         })
       )
@@ -31,20 +31,20 @@ export class ProductsService {
           this._data.set(response);
         },
         error: () => {
-          console.error('ThrowError: Error al obtener los productos');
+          console.error('ThrowError: Error al obtener las categorías');
         },
       });
   }
 
-  addProduct(product: Product) {
-    const formData = this.getFormData(product);
+  addCategory(category: Category) {
+    const formData = this.getFormData(category);
 
     this.http
-      .post<ICustomResponse<Product>>(environment.apiURL + '/product', formData)
+      .post<ICustomResponse<Category>>(environment.apiURL + '/category', formData)
       .pipe(
         take(1),
         catchError((error) => {
-          console.error('ProductsService: Error al obtener los productos', error);
+          console.error('CategoriesService: Error al obtener las categorías', error);
           return throwError(() => error);
         })
       )
@@ -53,20 +53,20 @@ export class ProductsService {
           this._data.update((data) => [...data, response.data!]);
         },
         error: () => {
-          console.error('ThrowError: Error al obtener los productos');
+          console.error('ThrowError: Error al obtener las categorías');
         },
       });
   }
 
-  updateProduct(product: Product) {
-    const formData = this.getFormData(product);
+  updateCategory(category: Category) {
+    const formData = this.getFormData(category);
 
     this.http
-      .put<ICustomResponse<Product>>(environment.apiURL + '/product/' + product.id, formData)
+      .put<ICustomResponse<Category>>(environment.apiURL + '/category/' + category.id, formData)
       .pipe(
         take(1),
         catchError((error) => {
-          console.error('ProductsService: Error al obtener los productos', error);
+          console.error('CategoriesService: Error al obtener las categorías', error);
           return throwError(() => error);
         })
       )
@@ -81,20 +81,16 @@ export class ProductsService {
           });
         },
         error: () => {
-          console.error('ThrowError: Error al obtener los productos');
+          console.error('ThrowError: Error al obtener las categorías');
         },
       });
   }
 
-  getFormData(product: Product) {
+  getFormData(category: Category) {
     const formData = new FormData();
-    formData.append('name', product.name);
-    formData.append('price', product.price.toString());
-    formData.append('description', product.description);
-    formData.append('stock', product.stock.toString());
-    formData.append('category', product.category.toString());
-    formData.append('image', product.image);
-    formData.append('status', product.status);
+    formData.append('name', category.name);
+    formData.append('description', category.description);
+    formData.append('status', category.status);
     return formData;
   }
 }

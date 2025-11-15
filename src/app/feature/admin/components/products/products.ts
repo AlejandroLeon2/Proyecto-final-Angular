@@ -2,8 +2,8 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 import { ProductsService } from '../../../../core/service/products/products';
 import { Modal } from '../modal/modal';
 import { ModalService } from '../modal/service/modal';
-import { ProductsTable } from '../products-table/products-table';
 import { SearchBar } from '../search-bar/search-bar';
+import { ProductsTable } from './products-table/products-table';
 
 @Component({
   selector: 'app-products',
