@@ -1,26 +1,24 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { Auth as authservice} from '../../service/auth';
+import { Auth } from '../../service/auth/auth';
+import { User } from '@angular/fire/auth';
 
 
 export const adminGuardGuard: CanActivateFn = async(route, state) => {
 
-  const Auth = inject(authservice);
+  const AuhtService = inject(Auth);
   const router = inject(Router);
 
-  //obtenermos token de ususario
-  const token:string = Auth.getUidUser();
-
-  if(!token){
-    router.navigate(['/login'])
+  const user: User | null = AuhtService.getCurrentUser();
+  if (!user) {
+    return router.parseUrl('/login');
   }
+  const token = user.uid;
 
-  const rol = await Auth.getUserRol(token);
+  const rol = await AuhtService.getUserRol(token);
 
-  if(rol === 'admin'){
-    return true
+  if (rol === 'admin') {
+    return true;
   }
-
-  router.navigate(['/'])
-  return false;
+  return router.parseUrl('/admin');
 };
