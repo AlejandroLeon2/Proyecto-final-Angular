@@ -1,45 +1,37 @@
-import { Component } from '@angular/core';
+// src/app/components/cart-dropdown/cart-dropdown.ts
+import { Component, OnInit } from '@angular/core';
+import { CartService } from '../../core/service/cart/cart';
+import { CartItem } from '../../core/models/cart-item.model';
 import { CartItemComponent } from '../cart-item/cart-item';
-
-interface CartItem {
-  id: number;
-  nombre: string;
-  precio: number;
-  categoria: string;
-  imagen: string;
-  cantidad: number;
-}
+import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 
 @Component({
   selector: 'app-cart-dropdown',
   standalone: true,
-  imports: [CartItemComponent],
+  imports: [CartItemComponent, LucideAngularModule],
   templateUrl: './cart-dropdown.html',
   styleUrl: './cart-dropdown.css',
 })
-export class CartDropdown {
+export class CartDropdown implements OnInit {
   cartItems: CartItem[] = [];
   isDropdownOpen = false;
   totalItems = 0;
   totalPrice = 0;
 
-  constructor() {
-    this.loadCartData();
-  }
+  shoppingCartIcon = ShoppingCart;
 
-  private loadCartData(): void {
-    fetch('data/carrito-compras.json')
-      .then(response => response.json())
-      .then(data => {
-        this.cartItems = data;
-        this.calculateTotals();
-      })
-      .catch(error => console.error('Error loading cart data:', error));
+  constructor(private cartService: CartService) {}
+
+  ngOnInit(): void {
+    this.cartService.items$.subscribe((items) => {
+      this.cartItems = items;
+      this.calculateTotals();
+    });
   }
 
   calculateTotals(): void {
-    this.totalItems = this.cartItems.reduce((sum, item) => sum + item.cantidad, 0);
-    this.totalPrice = this.cartItems.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+    this.totalItems = this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    this.totalPrice = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 
   toggleDropdown(): void {
@@ -47,19 +39,10 @@ export class CartDropdown {
   }
 
   removeItem(itemId: number): void {
-    this.cartItems = this.cartItems.filter(item => item.id !== itemId);
-    this.calculateTotals();
+    this.cartService.removeItem(itemId);
   }
 
   updateQuantity(itemId: number, newQuantity: number): void {
-    for (let i = 0; i < this.cartItems.length; i++) {
-      if (this.cartItems[i].id === itemId) {
-        if (newQuantity > 0) {
-          this.cartItems[i].cantidad = newQuantity;
-          this.calculateTotals();
-        }
-        break;
-      }
-    }
+    this.cartService.updateQuantity(itemId, newQuantity);
   }
 }
