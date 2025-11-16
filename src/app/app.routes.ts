@@ -121,7 +121,7 @@ export const routes: Routes = [
   //   path: '**',
   //   redirectTo: 'home',
   // },
-   // Ruta 404 (debe ir al final)
+  // Ruta 404 (debe ir al final)
   {
     path: '**',
     loadComponent: () => import('./page/not-found/not-found').then((m) => m.NotFound),
