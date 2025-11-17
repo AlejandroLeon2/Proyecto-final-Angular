@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ProductCardComponent } from '../../components/product-card/product-card';
+import { ProductCarouselComponent } from '../../components/product-carousel/product-carousel'; // 👈 importa el carrusel
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/service/productData';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent, ProductCarouselComponent],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
