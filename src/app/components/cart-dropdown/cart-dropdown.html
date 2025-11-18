@@ -1,6 +1,6 @@
 <div class="cart-dropdown-container">
-  <button class="cart-button" (click)="toggleDropdown()">
-    <lucide-icon [img]="shoppingCartIcon" size="24"></lucide-icon>
+  <button class="cart-button p-1 " (click)="toggleDropdown()">
+    <lucide-icon [img]="shoppingCartIcon" class="text-[var(--icon)]" ></lucide-icon>
     @if (totalItems > 0) {
     <span class="cart-count">{{ totalItems }}</span>
     }

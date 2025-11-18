@@ -4,20 +4,22 @@ import { Search } from '../search/search';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../core/service/cart/cart';
 import { CartDropdown } from '../cart-dropdown/cart-dropdown';
+import { ButtonTheme } from "../button-theme/button-theme";
+import { LucideAngularModule, TextAlignJustify,UserRound} from "lucide-angular";
+
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, Search, CartDropdown, RouterLink],
+  imports: [CommonModule, Search, CartDropdown, RouterLink, ButtonTheme,LucideAngularModule],
   templateUrl:'./header.html',
   styleUrls: [ './header.css'],
 
 })
 export class Header implements OnInit {
   menu = false;
-
-  theme: 'light' | 'dark' = 'light';
-
+  TextAlignJustify = TextAlignJustify;
+UserRound=UserRound;
   totalCartItems = 0;
 
   showCartDropdown = true;
@@ -45,11 +47,5 @@ export class Header implements OnInit {
   toggleMenu() {
     this.menu = !this.menu;
   }
-  toggleTheme() {
-    // Cambia el valor
-    this.theme = this.theme === 'light' ? 'dark' : 'light';
 
-    // Cambia el atributo del body
-    document.body.setAttribute('data-theme', this.theme);
-  }
 }
