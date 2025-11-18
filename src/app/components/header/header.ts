@@ -8,7 +8,7 @@ import { CartDropdown } from '../cart-dropdown/cart-dropdown';
 @Component({
   selector: 'app-header',
   imports: [CommonModule, Search, CartDropdown, RouterLink],
-  templateUrl: './header.html',
+  templateUrl:[ './header.html'],
   styleUrls: [ './header.css'],
 
 })
