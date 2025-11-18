@@ -4,16 +4,22 @@ import { Search } from '../search/search';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../core/service/cart/cart';
 import { CartDropdown } from '../cart-dropdown/cart-dropdown';
+import { ButtonTheme } from "../button-theme/button-theme";
+import { LucideAngularModule, TextAlignJustify,UserRound} from "lucide-angular";
+
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, Search, CartDropdown, RouterLink],
-  templateUrl: './header.html',
-  styleUrls: ['./header.css'],
+  standalone: true,
+  imports: [CommonModule, Search, CartDropdown, RouterLink, ButtonTheme,LucideAngularModule],
+  templateUrl:'./header.html',
+  styleUrls: [ './header.css'],
+
 })
 export class Header implements OnInit {
   menu = false;
-
+  TextAlignJustify = TextAlignJustify;
+UserRound=UserRound;
   totalCartItems = 0;
 
   showCartDropdown = true;
@@ -35,9 +41,11 @@ export class Header implements OnInit {
     setTimeout(() => {
       this.showUserMenu = false;
     }, 200);
+
   }
 
   toggleMenu() {
     this.menu = !this.menu;
   }
+
 }

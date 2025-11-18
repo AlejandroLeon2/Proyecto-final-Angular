@@ -37,13 +37,14 @@
     </div>
 
     <!-- Right buttons -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 md:gap-3">
+      <app-button-theme />
       <!-- User with menu -->
       <div class="relative" (mouseenter)="showUserMenu = true" (mouseleave)="leaveUserMenu()">
         <button
-          class="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--bg-card)] text-[var(--icon)] hover:bg-[var(--bg-main)] hover:text-[var(--text-main)] transition-colors"
+          class="flex items-center justify-center rounded-lg  text-[var(--icon)]  hover:text-[var(--text-main)] "
         >
-          <span class="material-symbols-outlined">person</span>
+          <lucide-icon [img]="UserRound"></lucide-icon>
         </button>
 
         @if (showUserMenu){
@@ -67,16 +68,17 @@
         }
       </div>
 
+      <!-- Cart -->
       @if (showCartDropdown) {
       <app-cart-dropdown></app-cart-dropdown>
       }
-
       <!-- Mobile menu -->
-      <div class="md:hidden">
-        <span (click)="toggleMenu()" class="material-symbols-outlined text-[var(--text-main)]"
-          >menu</span
-        >
-      </div>
+      <button
+        (click)="toggleMenu()"
+        class="material-symbols-outlined  text-[var(--text-main)]"
+      >
+        <lucide-icon [img]="TextAlignJustify" class="md:hidden"></lucide-icon>
+      </button>
     </div>
   </div>
 
