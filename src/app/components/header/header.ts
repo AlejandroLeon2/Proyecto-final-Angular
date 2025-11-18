@@ -15,8 +15,6 @@ import { CartDropdown } from '../cart-dropdown/cart-dropdown';
 export class Header implements OnInit {
   menu = false;
 
-
-  menu = false
   theme: 'light' | 'dark' = 'light';
 
   totalCartItems = 0;
