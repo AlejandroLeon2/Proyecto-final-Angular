@@ -5,23 +5,28 @@
 >
   <!-- Botón anterior -->
   <button class="carousel-btn prev" (click)="prev()" [disabled]="!canGoPrev">
-    <lucide-icon name="ChevronLeft" [size]="26"></lucide-icon>
+    <lucide-icon [img]="ChevronLeft" [size]="24"></lucide-icon>
   </button>
 
   <!-- Carrusel -->
   <div class="carousel-track-wrapper">
     <ul class="carousel-track" [style.transform]="translateX">
-      <li class="product-card" *ngFor="let product of products">
+      <li class="product-card" *ngFor="let product of products()">
         <img [src]="product.image" [alt]="product.name" />
         <h3>{{ product.name }}</h3>
         <p class="desc">{{ product.description }}</p>
         <span class="price">${{ product.price | number : '1.2-2' }}</span>
+
+        <!-- Botón de acción -->
+        <button class="add-btn" (click)="addToCart(product)">
+          Agregar al carrito
+        </button>
       </li>
     </ul>
   </div>
 
   <!-- Botón siguiente -->
   <button class="carousel-btn next" (click)="next()" [disabled]="!canGoNext">
-    <lucide-icon name="ChevronRight" [size]="26"></lucide-icon>
+    <lucide-icon [img]="ChevronRight" [size]="24"></lucide-icon>
   </button>
 </section>

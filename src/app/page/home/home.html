@@ -8,20 +8,18 @@
   </section>
 
   <section class="home-section">
-    <!-- Si hay productos, muestra el carrusel -->
-    <app-product-carousel 
-      *ngIf="featuredProducts.length > 0"
-      [products]="featuredProducts" 
+  @if (featuredProducts.length > 0) {
+    <app-product-carousel
+      [products]="featuredProducts"
       [itemsPerView]="4"
       [autoPlay]="true"
       [autoPlayInterval]="4000">
     </app-product-carousel>
-
-    <!-- Si no hay productos aún -->
-    <p *ngIf="featuredProducts.length === 0" class="loading-text">
-      Cargando productos destacados...
-    </p>
+  } @else {
+    <p class="loading-text">Cargando productos destacados...</p>
+  }
 </section>
+
 
   <!-- Productos Destacados -->
   <section class="mb-16">

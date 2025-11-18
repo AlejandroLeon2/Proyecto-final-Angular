@@ -29,4 +29,7 @@ export class Home implements OnInit {
       },
     });
   }
+  onAddToCart(product: Product) {
+  console.log('Producto agregado:', product);
+  }
 }
