@@ -84,7 +84,7 @@
     font-display: swap;
 }
 /* ===================== LIGHT THEME ===================== */
-[data-theme=light]{
+[data-theme=light] {
    --primary: #137fec;           /* Color principal/acento (botones, links, iconos destacados) */
 
   /* TEXTOS */

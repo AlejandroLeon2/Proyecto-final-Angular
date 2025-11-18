@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { ProductCardComponent } from '../../components/product-card/product-card';
-import { Product } from '../../core/models/product';
+import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/service/productData';
+import { HeroCarrusel } from '../../components/hero-carrusel/hero-carrusel';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent],
+  imports: [CommonModule, ProductCardComponent, HeroCarrusel],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })

@@ -80,19 +80,89 @@
                     <span (click)="toggleMenu()" class="material-symbols-outlined text-[var(--text-main)]">menu</span>
                 
             </div>
+
         </div>
+      </a>
+
+      <!-- Navigation -->
+      <nav class="hidden md:flex items-center gap-6">
+        <a
+          routerLink="/shop/home"
+          class="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors"
+          >Home</a
+        >
+        <a
+          routerLink="/shop/catalogo-product"
+          class="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors"
+          >Catalogo</a
+        >
+      </nav>
     </div>
 
-    <!-- Mobile dropdown -->
-    @if (menu) {
-        <div class="flex flex-col md:hidden px-4 py-3 gap-3 bg-[var(--bg-main)] border-b border-[var(--border)]">
-            <button class="text-sm font-medium text-[var(--text-main)] hover:text-[var(--primary)] transition-colors py-2">
-                Categories
-            </button>
-            <button class="text-sm font-medium text-[var(--text-main)] hover:text-[var(--primary)] transition-colors py-2">
-                Shop
-            </button>
+    <!-- Search -->
+    <div class="w-full mx-6 max-w-xl md:block">
+      <app-search />
+    </div>
 
+    <!-- Right buttons -->
+    <div class="flex items-center gap-3">
+      <!-- User with menu -->
+      <div class="relative" (mouseenter)="showUserMenu = true" (mouseleave)="leaveUserMenu()">
+        <button
+          class="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--bg-card)] text-[var(--icon)] hover:bg-[var(--bg-main)] hover:text-[var(--text-main)] transition-colors"
+        >
+          <span class="material-symbols-outlined">person</span>
+        </button>
+
+        @if (showUserMenu){
+        <div
+          class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col bg-[var(--bg-card)] border border-[var(--border)] shadow-lg rounded-lg p-2 z-50"
+        >
+          <a
+            routerLink="/login"
+            class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
+          >
+            Login
+          </a>
+
+          <a
+            routerLink="/register"
+            class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
+          >
+            Register
+          </a>
         </div>
-    }
+        }
+      </div>
+
+      @if (showCartDropdown) {
+      <app-cart-dropdown></app-cart-dropdown>
+      }
+
+      <!-- Mobile menu -->
+      <div class="md:hidden">
+        <span (click)="toggleMenu()" class="material-symbols-outlined text-[var(--text-main)]"
+          >menu</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile dropdown -->
+  @if (menu) {
+  <div
+    class="flex flex-col md:hidden px-4 py-3 gap-3 bg-[var(--bg-main)] border-b border-[var(--border)]"
+  >
+    <button
+      class="text-sm font-medium text-[var(--text-main)] hover:text-[var(--primary)] transition-colors py-2"
+    >
+      Categories
+    </button>
+    <button
+      class="text-sm font-medium text-[var(--text-main)] hover:text-[var(--primary)] transition-colors py-2"
+    >
+      Shop
+    </button>
+  </div>
+  }
 </header>

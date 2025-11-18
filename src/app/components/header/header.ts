@@ -1,29 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Search } from '../search/search';
-import { RouterLink } from "@angular/router";
+import { RouterLink } from '@angular/router';
+import { CartService } from '../../core/service/cart/cart';
+import { CartDropdown } from '../cart-dropdown/cart-dropdown';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, Search, RouterLink],
+  imports: [CommonModule, Search, CartDropdown, RouterLink],
   templateUrl: './header.html',
   styleUrls: [ './header.css'],
+
 })
-export class Header {
+export class Header implements OnInit {
+  menu = false;
+
 
   menu = false
   theme: 'light' | 'dark' = 'light';
 
-  showUserMenu = false;
-  isDark = false;
-  leaveUserMenu():void{
-    setTimeout(()=>{
-      this.showUserMenu = false
-    },200)
+  totalCartItems = 0;
+
+  showCartDropdown = true;
+
+  toggleCartDropdown() {
+    this.showCartDropdown = !this.showCartDropdown;
   }
 
-  toggleMenu (){
-    this.menu = !this.menu
+  constructor(private cartService: CartService) {}
+
+  ngOnInit(): void {
+    this.cartService.items$.subscribe((items) => {
+      this.totalCartItems = items.reduce((sum, item) => sum + item.quantity, 0);
+    });
+  }
+
+  showUserMenu = false;
+  leaveUserMenu(): void {
+    setTimeout(() => {
+      this.showUserMenu = false;
+    }, 200);
+
+  }
+
+  toggleMenu() {
+    this.menu = !this.menu;
   }
   toggleTheme() {
     // Cambia el valor

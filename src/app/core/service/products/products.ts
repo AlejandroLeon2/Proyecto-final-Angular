@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { catchError, take, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ICustomResponse } from '../../models/customResponse';
-import { Product } from '../../models/product';
+import { Product } from '../../models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -92,7 +92,7 @@ export class ProductsService {
     formData.append('price', product.price.toString());
     formData.append('description', product.description);
     formData.append('stock', product.stock.toString());
-    formData.append('category', product.category);
+    formData.append('category', product.category.toString());
     formData.append('image', product.image);
     formData.append('status', product.status);
     return formData;

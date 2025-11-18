@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Product } from '../../core/models/product';
+import { Product } from '../../core/models/product.model';
+import { CartItem } from '../../core/models/cart-item.model';
 import { ProductService } from '../../core/service/productData';
-import { CATEGORIES } from '../../core/constants/categories';
-import { LucideAngularModule, Plus, Minus, ShoppingCart } from 'lucide-angular';
+import { CartService } from '../../core/service/cart/cart';
 
 @Component({
   selector: 'app-product-detail',
@@ -22,7 +22,7 @@ export class ProductDetail implements OnInit, OnDestroy {
   quantity: number = 1;
   isLoading: boolean = true;
   error: string | null = null;
-  CATEGORIES = CATEGORIES;
+
   private destroy$ = new Subject<void>();
 
   Plus = Plus;
@@ -33,7 +33,8 @@ export class ProductDetail implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private location: Location
+    private location: Location,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -104,13 +105,12 @@ export class ProductDetail implements OnInit, OnDestroy {
   addToCart(): void {
     if (!this.product || this.isOutOfStock()) return;
 
-    const cartItem = {
-      product: this.product,
-      quantity: this.quantity,
-    };
+    this.cartService.addItem(this.product, this.quantity);
 
-    console.log('✅ Agregado al carrito:', cartItem);
-    // TODO: Conectar con CartService
+    console.log('🛒 Producto añadido:', {
+      id: this.product.id,
+      quantity: this.quantity,
+    });
   }
 
   goBack(): void {

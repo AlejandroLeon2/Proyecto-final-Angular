@@ -19,7 +19,13 @@
     aria-labelledby="modalTitle"
     aria-describedby="modalDesc"
   >
-    <app-form [product]="data()" (close)="closeModal()"></app-form>
+    @switch (type()) { @case ('product') {
+    <app-product-form [product]="data()" (close)="closeModal()"></app-product-form>
+    } @case ('category') {
+    <app-category-form [category]="data()" (close)="closeModal()"></app-category-form>
+    } @default {
+    <p>Información no disponible</p>
+    } }
   </dialog>
 </div>
 }

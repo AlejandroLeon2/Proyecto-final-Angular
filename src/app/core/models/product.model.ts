@@ -3,8 +3,8 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: number;
+  updatedAt?: number;
   stock: number;
   category: string;
   status: 'active' | 'inactive';

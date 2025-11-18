@@ -6,15 +6,13 @@ import {
   AllCommunityModule,
   ClientSideRowModelModule,
   ColDef,
-  GetDetailRowDataParams,
   GridApi,
   GridReadyEvent,
   ModuleRegistry,
-  SizeColumnsToContentStrategy,
   themeQuartz,
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import { Product } from '../../../../core/models/product';
+import { Product } from '../../../../../core/models/product.model';
 import { ActionsCellRenderer } from './actions-cell-renderer';
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
@@ -54,50 +52,32 @@ export class ProductsTable {
     {
       field: 'name',
       headerName: 'Nombre',
-      minWidth: 180,
+      minWidth: 100,
+      flex: 1,
     },
-    { field: 'category', headerName: 'Categoría', minWidth: 150 },
-    { field: 'description', headerName: 'Descripción', minWidth: 200 },
-    { field: 'price', headerName: 'Precio' },
-    { field: 'stock', headerName: 'Stock' },
+    { field: 'category', headerName: 'Categoría', minWidth: 100, flex: 1 },
+    { field: 'description', headerName: 'Descripción', minWidth: 250, flex: 2 },
+    { field: 'price', headerName: 'Precio', minWidth: 80, flex: 1 },
+    { field: 'stock', headerName: 'Stock', minWidth: 80, flex: 1 },
     {
       field: 'status',
       headerName: 'Estado',
       filter: true,
       filterParams: { active: 'Activo', inactive: 'Inactivo' },
+      minWidth: 100,
+      flex: 1,
     },
     {
       headerName: 'Acciones',
       cellRenderer: ActionsCellRenderer,
+      minWidth: 100,
+      flex: 1,
     },
   ];
   defaultColDef: ColDef = {
     resizable: false,
   };
-  autoSizeStrategy: SizeColumnsToContentStrategy = {
-    type: 'fitCellContents',
-  };
-  detailCellRendererParams = {
-    detailGridOptions: {
-      columnDefs: [
-        { field: 'title', flex: 1.5 },
-        { field: 'available', maxWidth: 120 },
-        { field: 'format', flex: 2 },
-        { field: 'label', flex: 1 },
-        { field: 'country', flex: 0.66 },
-        {
-          field: 'cat',
-          headerName: 'Cat#',
-          type: 'rightAligned',
-          flex: 0.66,
-        },
-        { field: 'year', type: 'rightAligned', maxWidth: 80 },
-      ],
-      headerHeight: 38,
-    },
-    getDetailRowData: ({ successCallback, data: { variantDetails } }: GetDetailRowDataParams) =>
-      successCallback(variantDetails),
-  };
+
   rowHeight = 48;
   paginationPageSizeSelector = [5, 10, 20];
   pagination = true;

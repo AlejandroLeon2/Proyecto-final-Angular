@@ -1,16 +1,20 @@
 <div class="cart-item">
-  <img [src]="item.imagen" [alt]="item.nombre" class="item-image">
+  <img [src]="item.image" [alt]="item.name" class="item-image" />
   <div class="item-details">
-    <h4 class="item-name">{{item.nombre}}</h4>
-    <p class="item-category">{{item.categoria}}</p>
+    <h4 class="item-name">{{ item.name }}</h4>
+    <p class="item-category">{{ item.category }}</p>
     <div class="item-price-quantity">
-      <span class="item-price">${{item.precio}}</span>
+      <span class="item-price">${{ item.price }}</span>
       <div class="quantity-controls">
-        <button class="quantity-btn" (click)="updateQuantity(item.id, item.cantidad - 1)">-</button>
-        <span class="quantity">{{item.cantidad}}</span>
-        <button class="quantity-btn" (click)="updateQuantity(item.id, item.cantidad + 1)">+</button>
+        <button class="quantity-btn" (click)="updateQuantity(item.id!, item.quantity - 1)">
+          -
+        </button>
+        <span class="quantity">{{ item.quantity }}</span>
+        <button class="quantity-btn" (click)="updateQuantity(item.id!, item.quantity + 1)">
+          +
+        </button>
       </div>
     </div>
   </div>
-  <button class="remove-btn" (click)="onRemoveItem(item.id)">🗑️</button>
+  <button class="remove-btn" (click)="onRemoveItem(item.id!)">🗑️</button>
 </div>
