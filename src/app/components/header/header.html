@@ -42,7 +42,7 @@
                     (click)="navigate()"
                            >
                     @if (src !== ``){
-                        <picture class="rounded-[100%] w-full h-full ">
+                        <picture [routerLink]="route" class="rounded-[100%] w-full h-full ">
                             <img class="rounded-[100%] w-full h-full " [src]="src" alt="User">
                         </picture>
                     } @else {

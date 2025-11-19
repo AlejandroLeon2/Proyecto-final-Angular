@@ -90,6 +90,8 @@ export class Login implements OnInit {
     const userUid:string = await this.auth.getUserUid();
     this.auth.sabeCookies(`uid`, userUid);
     // obtenemos rol de visitante guardado en cookies
+    console.log(`dsadas`);
+    
     const rol: string = await this.auth.getUserRol(userUid);
     this.auth.sabeCookies(`rol`, rol);
 

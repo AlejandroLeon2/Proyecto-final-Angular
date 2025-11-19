@@ -69,6 +69,7 @@ ngOnInit(): void {
     // Asignar ruta según el rol del usuario
     if (rol === `usuario`) {
       this.route = `/user`;
+      
     } else {
       this.route = `/admin`;
     }

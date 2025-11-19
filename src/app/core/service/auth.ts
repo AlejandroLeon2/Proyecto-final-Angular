@@ -9,8 +9,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   UserCredential,
-  getAuth,
-  user
+  getAuth
 } from '@angular/fire/auth';
 
 @Injectable({
@@ -26,7 +25,7 @@ export class Auth {
   private apiUrl =
 
   //  se quito auth para separar responsavilidad de acion
-    'https://proyecto-final-api-ecommerce-production.up.railway.app/v1';
+    'http://localhost:3000/v1';
 
   constructor() {}
 
@@ -147,26 +146,31 @@ export class Auth {
     }
   }
 
-  // funcion para obtener rol de usuario en guard
-  async tryUserRol(rol:string, token: string): Promise<string> {
-    try {
-      const trueRol: any = await firstValueFrom(
-  //peticion de validacion de token y rol en backEnd
-        this.http.get(this.apiUrl + `/usuario/${token}`)
-      );
+  // funcion para obtener rol de usuario logeado
+async guardUserRol(token: string): Promise<string> {
+  try {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Token enviado en header
+    });
 
-      const rol = trueRol?.rol;
+    // Llamada al endpoint del backend para obtener el rol
+    const response: any = await firstValueFrom(
+      this.http.get(`${this.apiUrl}/auth/me/rol`, { headers })
+    );
+    // Extraemos el rol de la respuesta
+    const rol = response?.rol;
 
-      if (rol === 'admin' || rol === 'user') {
-        return rol;
-      }
-
-      return 'unknown';
-    } catch (error) {
-      console.error('Error obteniendo rol:', error);
-      return 'unknown';
+    if (rol === 'admin' || rol === 'usuario') {
+      return rol;
     }
+    // Si el rol no es válido, retornamos 'unknown'
+    return 'unknown';
+  } catch (error) {
+    console.error('Error obteniendo rol:', error);
+    return 'unknown';
   }
+}
+
   
   //funcion para guardar en cookies
   sabeCookies(name: string, data: string): void {
