@@ -1,0 +1,99 @@
+@reference 'tailwindcss';
+
+.catalog-container {
+  @apply min-h-screen p-6 bg-[var(--bg-main)];
+  font-family: var(--font-poppins);
+}
+
+.search-container {
+  @apply mb-6 max-w-4xl mx-auto;
+}
+
+.search-input {
+  @apply w-full px-4 py-3 rounded-lg;
+  @apply bg-[var(--bg-input)] text-[var(--text-main)];
+  @apply border border-[var(--border-input)];
+  @apply placeholder:text-[var(--text-soft)];
+  @apply focus:outline-none focus:ring-2 focus:ring-[var(--primary)];
+  font-family: var(--font-poppins);
+}
+
+.catalog-layout {
+  @apply flex gap-6 max-w-7xl mx-auto;
+  @apply flex-col lg:flex-row;
+}
+
+.filter-sidebar {
+  @apply w-full lg:w-80 flex-shrink-0;
+}
+
+.products-area {
+  @apply flex-1;
+}
+
+.collection-title {
+  @apply text-3xl font-bold text-[var(--text-main)] mb-6;
+  font-family: var(--font-poppins);
+}
+
+.products-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+.product-placeholder {
+  @apply bg-[var(--bg-card)] rounded-xl shadow-lg overflow-hidden;
+  @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
+  @apply border border-[var(--border)];
+}
+
+.product-image-placeholder {
+  @apply w-full h-64 bg-[var(--bg-input)] relative;
+}
+
+.product-info-placeholder {
+  @apply p-5;
+}
+
+.product-category {
+  @apply inline-block px-3 py-1 mb-2;
+  @apply bg-blue-100 text-blue-700 text-xs font-medium rounded-full;
+  @apply dark:bg-blue-900 dark:text-blue-300;
+}
+
+.product-name {
+  @apply text-xl font-bold text-[var(--text-main)] mb-2 line-clamp-2 min-h-14;
+  font-family: var(--font-poppins);
+}
+
+.product-price {
+  @apply text-3xl font-bold text-[var(--text-main)] mb-4;
+  font-family: var(--font-poppins);
+}
+
+.view-detail-button {
+  @apply w-full px-4 py-2 rounded-lg font-semibold;
+  @apply bg-[var(--primary)] text-white;
+  @apply hover:opacity-90 active:scale-95 transition-all duration-300;
+  font-family: var(--font-poppins);
+}
+
+.no-products {
+  @apply col-span-full flex items-center justify-center py-20;
+}
+
+.no-products-text {
+  @apply text-lg text-[var(--text-muted)];
+  font-family: var(--font-poppins);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .catalog-layout {
+    @apply flex-col;
+  }
+
+  .filter-sidebar {
+    @apply w-full;
+  }
+}
+
