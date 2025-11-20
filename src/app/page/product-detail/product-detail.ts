@@ -1,13 +1,12 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Product } from '../../core/models/product.model';
-import { CartItem } from '../../core/models/cart-item.model';
-import { ProductService } from '../../core/service/productData';
+import { ProductsService } from '../../core/service/products/products';
 import { CartService } from '../../core/service/cart/cart';
 
 @Component({
@@ -32,7 +31,7 @@ export class ProductDetail implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService,
+    private productsService: ProductsService,
     private location: Location,
     private cartService: CartService
   ) {}
@@ -62,8 +61,7 @@ export class ProductDetail implements OnInit, OnDestroy {
       return;
     }
 
-    this.productService
-      .getProductById(id)
+    this.productsService.getProductById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {

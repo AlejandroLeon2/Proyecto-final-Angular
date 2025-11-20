@@ -125,6 +125,25 @@ export class ProductsService {
         },
       });
   }
+  getProductById(id: string) {
+  return this.http
+      .get<Product>(`${environment.apiURL}/product/${id}`)
+    //.get<ICustomResponse<Product>>(environment.apiURL + '/product/' + id)
+    .pipe(
+      take(1),
+      /*map((response) => {
+        if (!response.success || !response.data) {
+          throw new Error(response.message || 'Error al obtener producto');
+        }
+        return response.data;
+      }),*/
+      catchError((error) => {
+        console.error('ProductsService: Error al obtener producto por id', error);
+        return throwError(() => error);
+      })
+    );
+}
+
 
   getFormData(product: Product) {
     const formData = new FormData();

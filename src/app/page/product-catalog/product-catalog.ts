@@ -1,68 +1,8 @@
-// import { Component, OnInit, signal } from '@angular/core';
-// import { FilterComponent, FilterState } from '../../components/filter/filter';
-// import { Product } from '../../core/models/product.model';
-// import { ProductService } from '../../core/service/productData';
-
-// @Component({
-//   selector: 'app-product-catalog',
-//   imports: [FilterComponent],
-//   standalone: true,
-//   templateUrl: './product-catalog.html',
-//   styleUrl: './product-catalog.css',
-// })
-// export class ProductCatalog implements OnInit {
-//   products = signal<Product[]>([]);
-//   filteredProducts = signal<Product[]>([]);
-//   currentFilters = signal<FilterState>({
-//     categories: [],
-//   });
-
-//   constructor(private productService: ProductService) {}
-
-//   ngOnInit(): void {
-//     this.loadProducts();
-//   }
-
-//   loadProducts(): void {
-//     this.productService.getProducts().subscribe({
-//       next: (products) => {
-//         this.products.set(products);
-//         this.filteredProducts.set(products);
-//       },
-//       error: (error) => {
-//         console.error('Error loading products:', error);
-//       },
-//     });
-//   }
-
-//   onFilterChange(filters: FilterState): void {
-//     this.currentFilters.set(filters);
-//     this.applyFilters();
-//   }
-
-//   private applyFilters(): void {
-//     const filters = this.currentFilters();
-//     let filtered = [...this.products()];
-
-//     // Filtrar por categorías
-//     if (filters.categories.length > 0) {
-//       filtered = filtered.filter((product) =>
-//         filters.categories.includes(product.category)
-//       );
-//     }
-
-//     this.filteredProducts.set(filtered);
-//   }
-// }
-
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FilterComponent, FilterState } from '../../components/filter/filter';
 import { ProductCardComponent } from '../../components/product-card/product-card'; // Ajusta la ruta si es necesario
 import { Pagination } from '../../components/pagination/pagination';
 import { Product } from '../../core/models/product.model';
-
-import { ProductService } from '../../core/service/productData';
-
 import { ProductsService } from '../../core/service/products/products'; // Usamos el servicio actualizado
 
 @Component({
@@ -84,7 +24,7 @@ export class ProductCatalog implements OnInit {
   currentPage = signal<number>(1);
   totalPages = signal<number>(1);
   totalItems = signal<number>(0);
-  itemsPerPage = 1; // Configurable
+  itemsPerPage = 12; // Configurable
 
   // Estado de Filtros (Nota: El backend aun no filtra, pero mantenemos el estado)
   currentFilters = signal<FilterState>({ categories: [] });

@@ -109,6 +109,7 @@
 
   /* BORDES */
   --border: #e2e8f0;
+  --border-loading:#000000;
   --border-input: #cbd5e1;
 }
 
@@ -138,6 +139,7 @@
 
   /* BORDES */
   --border: #334155;
+    --border-loading:#fff;
   --border-input: #475569;
 }
 

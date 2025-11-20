@@ -22,15 +22,18 @@
 
     <!-- Grid de productos -->
     <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      @for (product of featuredProducts; track product.id) {
+      @for (product of featuredProducts(); track product.id) {
       <app-product-card [product]="product"></app-product-card>
       }
     </div>
 
-    @if (featuredProducts.length === 0) {
+    @if (featuredProducts().length === 0) {
     <div class="text-center py-12">
       <p class="text-gray-500 text-lg">No hay productos disponibles</p>
     </div>
+          <div class="flex justify-center items-center min-h-[60svh] duration-300">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--border-loading)]"></div>
+        </div>
     }
   </section>
 
