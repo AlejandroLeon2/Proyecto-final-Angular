@@ -15,7 +15,7 @@
 
     @if (cartItems.length > 0) {
     <div class="cart-items">
-      @for (item of cartItems; track item.id) {
+      @for (item of cartItems; track $index) {
       <app-cart-item
         [item]="item"
         (quantityChange)="updateQuantity($event.id, $event.quantity)"
@@ -32,9 +32,9 @@
     <div class="dropdown-footer">
       <div class="total-section">
         <span class="total-label">Total:</span>
-        <span class="total-price">${{ totalPrice.toFixed(2) }}</span>
+        <span class="total-price">{{ totalPrice  | currency: 'PEN':'symbol':'1.2' }}</span>
       </div>
-      <button class="checkout-btn">Proceder al Pago</button>
+      <button (click)="get()" class="checkout-btn">Proceder al Pago</button>
     </div>
     }
   </div>

@@ -1,12 +1,4 @@
-<div class="catalog-container">
-  <!-- Barra de búsqueda (placeholder) -->
-  <div class="search-container">
-    <input
-      type="text"
-      placeholder="Buscar productos..."
-      class="search-input"
-    />
-  </div>
+<section class="catalog-container">
 
   <div class="catalog-layout">
     <!-- Sidebar de Filtros -->
@@ -28,19 +20,11 @@
           </div>
         } @else {
           @for (product of filteredProducts(); track product.id) {
-            <div class="product-placeholder">
-              <div class="product-image-placeholder"></div>
-              <div class="product-info-placeholder">
-                <span class="product-category">{{ product.category }}</span>
-                <h3 class="product-name">{{ product.name }}</h3>
-                <p class="product-price">${{ product.price.toFixed(2) }}</p>
-                <button class="view-detail-button">Ver Detalle</button>
-              </div>
-            </div>
+         <app-product-card [product]="product"></app-product-card>
           }
         }
       </div>
     </main>
   </div>
-</div>
+</section>
 

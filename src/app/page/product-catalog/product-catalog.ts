@@ -2,10 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FilterComponent, FilterState } from '../../components/filter/filter';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/service/productData';
+import { ProductCardComponent } from '../../components/product-card/product-card';
 
 @Component({
   selector: 'app-product-catalog',
-  imports: [FilterComponent],
+  imports: [FilterComponent,ProductCardComponent],
   standalone: true,
   templateUrl: './product-catalog.html',
   styleUrl: './product-catalog.css',
