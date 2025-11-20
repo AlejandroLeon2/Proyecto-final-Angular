@@ -51,19 +51,19 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadProduct(id: string | number): void {
+  loadProduct(id: string ): void {
     this.isLoading = true;
     this.error = null;
 
-    const numericId = Number(id);
-    if (isNaN(numericId)) {
+  
+    if (!id) {
       this.error = 'ID de producto inválido';
       this.isLoading = false;
       return;
     }
 
     this.productService
-      .getProductById(numericId)
+      .getProductById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {

@@ -60,10 +60,14 @@ import { FilterComponent, FilterState } from '../../components/filter/filter';
 import { ProductCardComponent } from '../../components/product-card/product-card'; // Ajusta la ruta si es necesario
 import { Pagination } from '../../components/pagination/pagination';
 import { Product } from '../../core/models/product.model';
+
+import { ProductService } from '../../core/service/productData';
+
 import { ProductsService } from '../../core/service/products/products'; // Usamos el servicio actualizado
 
 @Component({
   selector: 'app-product-catalog',
+
   standalone: true,
   imports: [FilterComponent, ProductCardComponent, Pagination],
   templateUrl: './product-catalog.html',

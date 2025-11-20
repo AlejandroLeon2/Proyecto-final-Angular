@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import productsData from '../../../data/products.json';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 import { Product } from '../models/product.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
   // 👈 Cambiado de 'Product' a 'ProductService'
-  private products: Product[] = productsData as Product[];
+  private products: Product[] = [];
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   /**
    * Obtener todos los productos
    */
-  getProducts(): Observable<Product[]> {
-    return of(this.products);
+ 
+   getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${environment.apiURL}/product/all`).pipe(
+      tap((data) => (this.products = data))
+    );
   }
 
   /**
    * Obtener producto por ID
    */
-  getProductById(id: number): Observable<Product | null> {
+  getProductById(id: string): Observable<Product | null> {
     const product = this.products.find((p) => p.id === id) ?? null;
     return of(product);
   }
@@ -46,10 +51,12 @@ export class ProductService {
   /**
    * Obtener productos destacados (primeros 8)
    */
-  getFeaturedProducts(): Observable<Product[]> {
-    const featured = this.products.slice(0, 8);
-    return of(featured);
-  }
+getFeaturedProducts(): Observable<Product[]> {
+  return this.http.get<Product[]>(`${environment.apiURL}/product/all`).pipe(
+    
+  );
+}
+
 
   /**
    * Buscar productos por nombre o descripción

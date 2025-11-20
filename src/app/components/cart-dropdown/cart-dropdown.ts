@@ -4,11 +4,11 @@ import { CartService } from '../../core/service/cart/cart';
 import { CartItem } from '../../core/models/cart-item.model';
 import { CartItemComponent } from '../cart-item/cart-item';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
-
+import { CurrencyPipe } from '@angular/common';
 @Component({
   selector: 'app-cart-dropdown',
   standalone: true,
-  imports: [CartItemComponent, LucideAngularModule],
+  imports: [CartItemComponent,CurrencyPipe, LucideAngularModule],
   templateUrl: './cart-dropdown.html',
   styleUrl: './cart-dropdown.css',
 })
@@ -38,11 +38,14 @@ export class CartDropdown implements OnInit {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  removeItem(itemId: number): void {
+  removeItem(itemId: string): void {
     this.cartService.removeItem(itemId);
   }
 
-  updateQuantity(itemId: number, newQuantity: number): void {
+  updateQuantity(itemId: string, newQuantity: number): void {
     this.cartService.updateQuantity(itemId, newQuantity);
+  }
+  get(){
+    this.cartService.saveCart();
   }
 }

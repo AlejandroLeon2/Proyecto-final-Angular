@@ -1,14 +1,5 @@
-<div class="catalog-container min-h-screen bg-gray-50">
-  
-  <div class="search-container p-4 bg-white shadow-sm">
-    <div class="max-w-7xl mx-auto">
-      <input
-        type="text"
-        placeholder="Buscar productos..."
-        class="search-input w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-      />
-    </div>
-  </div>
+
+<section class="catalog-container">
 
   <div class="catalog-layout max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-8">
     
@@ -23,6 +14,7 @@
           Mostrando {{ products().length }} de {{ totalItems() }} productos
         </span>
       </div>
+
 
       @if (loading()) {
         <div class="flex justify-center items-center h-64">
@@ -56,4 +48,6 @@
       }
     </main>
   </div>
-</div>
+</section>
+
+
