@@ -1,0 +1,17 @@
+<div class="flex flex-col h-full">
+  <div class="flex flex-col justify-between px-6 py-4 border-b border-gray-700">
+    <h1 class="text-2xl font-semibold pb-2">Lista de Órdenes</h1>
+    <h2 class="text-sm text-gray-400">Lista de órdenes y detalle</h2>
+  </div>
+  <div class="flex items-center justify-between px-6 py-4 gap-4 lg:gap-16 md:gap-12">
+    <div class="flex flex-1 items-center gap-4 w-full">
+      <!--search bar-->
+      <app-search-bar [(quickFilterText)]="quickFilterText" class="flex-1"></app-search-bar>
+    </div>
+  </div>
+
+  <!--ag grid table-->
+  <div class="px-6 flex-1">
+    <app-orders-table [data]="rowData()" [quickFilterText]="quickFilterText"></app-orders-table>
+  </div>
+</div>

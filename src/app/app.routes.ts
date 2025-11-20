@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { userGuardGuard } from './core/guards/user/user-guard-guard';
 import { adminGuardGuard } from './core/guards/admin/admin-guard-guard';
+import { userGuardGuard } from './core/guards/user/user-guard-guard';
 
 export const routes: Routes = [
   {
@@ -81,7 +81,7 @@ export const routes: Routes = [
       {
         path: 'orders',
         loadComponent: () =>
-          import('./feature/admin/components/products/products').then((c) => c.Products),
+          import('./feature/admin/components/orders/orders').then((c) => c.Orders),
       },
       {
         path: '**',
