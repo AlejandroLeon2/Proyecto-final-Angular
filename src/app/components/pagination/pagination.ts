@@ -1,13 +1,16 @@
 // 1. Importamos 'model' desde @angular/core
 import { Component, computed, Input, Signal, model } from '@angular/core';
+import { LucideAngularModule, ArrowBigLeft, ArrowBigRight } from "lucide-angular";
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [],
+  imports: [LucideAngularModule],
   templateUrl: './pagination.html',
 })
 export class Pagination {
+  ArrowBigRight=ArrowBigRight;
+  ArrowBigLeft=ArrowBigLeft;
   // --- ENTRADAS (Inputs) ---
 
   //model() es una API especial que crea un signal que puede ser leído y escrito(two-way binding)

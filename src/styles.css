@@ -84,48 +84,66 @@
     font-display: swap;
 }
 /* ===================== LIGHT THEME ===================== */
-[data-theme=light] {
-   --primary: #137fec;           /* Color principal/acento (botones, links, iconos destacados) */
+[data-theme="light"] {
+  --primary: #2563eb;           /* Azul intenso accesible */
+  --secondary: #9333ea;         /* Púrpura elegante para acentos secundarios */
+
+  /* ESTADOS */
+  --success: #10b981;           /* Verde éxito */
+  --warning: #f59e0b;           /* Amarillo advertencia */
+  --error: #ef4444;             /* Rojo error */
 
   /* TEXTOS */
-  --text-main: #1C1C1E;         /* Texto principal */
-  --text-muted: #4B5563;        /* Texto secundario o deshabilitado */
-  --text-soft: #9CA3AF;         /* Texto de placeholder, hints, textos menos importantes */
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-soft: #94a3b8;
 
   /* FONDOS */
-  --bg-main: #f1f1f1;           /* Fondo general de la app */
-  --bg-card: #ffffff;           /* Fondo de tarjetas o secciones */
-  --bg-input: #e4e4e4;          /* Fondo de inputs, select, textarea */
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-input: #f1f5f9;
+  --bg-alt: #f3f4f6;            /* Fondo alternativo */
 
   /* ICONOS */
-  --icon: #6B7280;              /* Color de iconos por defecto */
+  --icon: #475569;
 
   /* BORDES */
-  --border: #e5e7eb;            /* Bordes generales */
-  --border-input: #d1d5db;      /* Bordes específicos de inputs */
+  --border: #e2e8f0;
+  --border-loading:#000000;
+  --border-input: #cbd5e1;
 }
 
 /* ===================== DARK THEME ===================== */
 [data-theme="dark"] {
-  --primary: #82cfff;           /* Color principal/acento en dark */
+  --primary: #3b82f6;           /* Azul claro accesible en dark */
+  --secondary: #a855f7;         /* Púrpura más brillante en dark */
+
+  /* ESTADOS */
+  --success: #34d399;           /* Verde éxito */
+  --warning: #fbbf24;           /* Amarillo advertencia */
+  --error: #f87171;             /* Rojo error */
 
   /* TEXTOS */
-  --text-main: #FFFFFF;          /* Texto principal */
-  --text-muted: #9CA3AF;         /* Texto secundario */
-  --text-soft: #6B7280;          /* Placeholder, hints, textos menos importantes */
+  --text-main: #f1f5f9;
+  --text-muted: #cbd5e1;
+  --text-soft: #94a3b8;
 
   /* FONDOS */
-  --bg-main: #101922;            /* Fondo general oscuro */
-  --bg-card: #111a22;            /* Fondo de tarjetas o secciones oscuras */
-  --bg-input: #233648;           /* Fondo de inputs en dark */
+  --bg-main: #1e293b;
+  --bg-card: #0f172a;
+  --bg-input: #1e293b;
+  --bg-alt: #111827;            /* Fondo alternativo */
 
   /* ICONOS */
-  --icon: #FFFFFF;               /* Color de iconos por defecto en dark */
+  --icon: #e2e8f0;
 
   /* BORDES */
-  --border: #233648;             /* Bordes generales oscuros */
-  --border-input: #2f455c;       /* Bordes específicos de inputs */
+  --border: #334155;
+    --border-loading:#fff;
+  --border-input: #475569;
 }
+
+
 
 /* transición global suave*/
 html {

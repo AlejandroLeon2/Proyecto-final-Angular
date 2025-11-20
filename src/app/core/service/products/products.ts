@@ -1,9 +1,22 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, take, throwError } from 'rxjs';
+import { catchError, map, take, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ICustomResponse } from '../../models/customResponse';
 import { Product } from '../../models/product.model';
+
+// Interfaces para la respuesta paginada
+export interface PaginationData {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface PaginatedProductResponse {
+  products: Product[];
+  pagination: PaginationData;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +27,33 @@ export class ProductsService {
 
   get data() {
     return this._data();
+  }
+
+  // --- MÉTODO NUEVO: Obtener productos paginados ---
+  getPaginatedProducts(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http
+      .get<ICustomResponse<PaginatedProductResponse>>(
+        `${environment.apiURL}/product/paginated`,
+        { params }
+      )
+      .pipe(
+        take(1),
+        // Extraemos directamente la data relevante de la respuesta CustomResponse
+        map((response) => {
+           if (!response.success || !response.data) {
+             throw new Error(response.message || 'Error al obtener productos');
+           }
+           return response.data; 
+        }),
+        catchError((error) => {
+          console.error('ProductsService: Error al obtener productos paginados', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   getProducts(): void {
@@ -85,6 +125,25 @@ export class ProductsService {
         },
       });
   }
+  getProductById(id: string) {
+  return this.http
+      .get<Product>(`${environment.apiURL}/product/${id}`)
+    //.get<ICustomResponse<Product>>(environment.apiURL + '/product/' + id)
+    .pipe(
+      take(1),
+      /*map((response) => {
+        if (!response.success || !response.data) {
+          throw new Error(response.message || 'Error al obtener producto');
+        }
+        return response.data;
+      }),*/
+      catchError((error) => {
+        console.error('ProductsService: Error al obtener producto por id', error);
+        return throwError(() => error);
+      })
+    );
+}
+
 
   getFormData(product: Product) {
     const formData = new FormData();

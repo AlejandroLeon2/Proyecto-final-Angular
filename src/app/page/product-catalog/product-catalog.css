@@ -2,7 +2,7 @@
 
 .catalog-container {
   @apply min-h-screen p-6 bg-[var(--bg-main)];
-  font-family: var(--font-poppins);
+
 }
 
 .search-container {
@@ -15,13 +15,9 @@
   @apply border border-[var(--border-input)];
   @apply placeholder:text-[var(--text-soft)];
   @apply focus:outline-none focus:ring-2 focus:ring-[var(--primary)];
-  font-family: var(--font-poppins);
+
 }
 
-.catalog-layout {
-  @apply flex gap-6 max-w-7xl mx-auto;
-  @apply flex-col lg:flex-row;
-}
 
 .filter-sidebar {
   @apply w-full lg:w-80 flex-shrink-0;
@@ -33,12 +29,10 @@
 
 .collection-title {
   @apply text-3xl font-bold text-[var(--text-main)] mb-6;
-  font-family: var(--font-poppins);
+
 }
 
-.products-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
-}
+
 
 .product-placeholder {
   @apply bg-[var(--bg-card)] rounded-xl shadow-lg overflow-hidden;
@@ -62,19 +56,19 @@
 
 .product-name {
   @apply text-xl font-bold text-[var(--text-main)] mb-2 line-clamp-2 min-h-14;
-  font-family: var(--font-poppins);
+
 }
 
 .product-price {
   @apply text-3xl font-bold text-[var(--text-main)] mb-4;
-  font-family: var(--font-poppins);
+
 }
 
 .view-detail-button {
   @apply w-full px-4 py-2 rounded-lg font-semibold;
   @apply bg-[var(--primary)] text-white;
   @apply hover:opacity-90 active:scale-95 transition-all duration-300;
-  font-family: var(--font-poppins);
+
 }
 
 .no-products {
@@ -83,7 +77,6 @@
 
 .no-products-text {
   @apply text-lg text-[var(--text-muted)];
-  font-family: var(--font-poppins);
 }
 
 /* Responsive adjustments */

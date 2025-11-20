@@ -1,46 +1,48 @@
-<div class="catalog-container">
-  <!-- Barra de búsqueda (placeholder) -->
-  <div class="search-container">
-    <input
-      type="text"
-      placeholder="Buscar productos..."
-      class="search-input"
-    />
-  </div>
-
-  <div class="catalog-layout">
-    <!-- Sidebar de Filtros -->
-    <aside class="filter-sidebar">
+<section class="catalog-container ">
+  <div
+    class=" max-w-7xl  mx-auto py-8   lg:px-8 flex flex-col md:flex-row gap-8"
+  >
+    <aside class=" w-full md:w-64 ">
       <app-filter (filterChange)="onFilterChange($event)"></app-filter>
     </aside>
 
-    <!-- Área de Productos -->
-    <main class="products-area">
-      <h1 class="collection-title">Nuestra Colección</h1>
-
-      <!-- Lista de productos (placeholder hasta que se implemente product-card) -->
-      <div class="products-grid">
-        @if (filteredProducts().length === 0) {
-          <div class="no-products">
-            <p class="no-products-text">
-              No se encontraron productos con los filtros seleccionados.
-            </p>
-          </div>
-        } @else {
-          @for (product of filteredProducts(); track product.id) {
-            <div class="product-placeholder">
-              <div class="product-image-placeholder"></div>
-              <div class="product-info-placeholder">
-                <span class="product-category">{{ product.category }}</span>
-                <h3 class="product-name">{{ product.name }}</h3>
-                <p class="product-price">${{ product.price.toFixed(2) }}</p>
-                <button class="view-detail-button">Ver Detalle</button>
-              </div>
-            </div>
-          }
-        }
+    <main class="products-area flex-1">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="collection-title text-2xl font-bold text-gray-900">Nuestra Colección</h1>
+        <span class="text-sm text-gray-500">
+          Mostrando {{ products().length }} de {{ totalItems() }} productos
+        </span>
       </div>
+
+      @if (loading()) {
+      <div class="flex justify-center items-center min-h-[60svh] duration-300">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--border-loading)]"
+        ></div>
+      </div>
+      } @else {
+
+      <div
+        class=" grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 min-h-[60svh] duration-300 gap-6"
+      >
+        @if (products().length === 0) {
+        <div class="col-span-full py-12 text-center bg-white rounded-lg shadow">
+          <p class="text-gray-500 text-lg">No hay productos disponibles en esta página.</p>
+        </div>
+        } @else { @for (product of products(); track product.id) {
+        <app-product-card [product]="product"></app-product-card>
+        } }
+      </div>
+
+      } @if (totalPages() > 1) {
+      <div class="mt-12 border-t border-gray-200 pt-6">
+        <app-pagination
+          [(currentPage)]="currentPage"
+          [totalPages]="totalPages"
+          (currentPageChange)="onPageChange($event)"
+        ></app-pagination>
+      </div>
+      }
     </main>
   </div>
-</div>
-
+</section>
