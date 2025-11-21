@@ -23,10 +23,7 @@ export class CartDropdown implements OnInit {
 
   shoppingCartIcon = ShoppingCart;
 
-  constructor(
-    private cartService: CartService,
-    private router: Router
-  ) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.cartService.items$.subscribe((items) => {
@@ -58,12 +55,12 @@ export class CartDropdown implements OnInit {
   }
 
   goToCartPage() {
+        this.cartService.saveCart();
     this.router.navigate(['/shop/cart']);
   }
 
   finalizePurchase() {
-    this.cartService.saveCart();//guardar el carrito antes de ir a checkout --REVISAR
-    this.router.navigate(['/checkout']);//aqui debe verificar si esta logueado
+    this.router.navigate(['/shop/ckeckout']);
   }
 
   continueShopping() {

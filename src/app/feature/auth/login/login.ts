@@ -7,11 +7,12 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { UserCredential } from '@angular/fire/auth'; 
+import { CommonModule, Location } from '@angular/common';
+import { UserCredential } from '@angular/fire/auth';
 import { IconBrandLogo } from '../../../icons/IconBrandLogo/IconBrandLogo';
 import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
 import { Auth } from '../../../core/service/auth/auth';
+import { IconTienda } from '../../../icons/icon-tienda/icon-tienda';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -19,27 +20,28 @@ import { Auth } from '../../../core/service/auth/auth';
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    IconBrandLogo,
     IconGoogleLogo,
+    IconTienda,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
 
-  //ChangeDetectionStrategy.OnPush: Es la estrategia. Solo revisa cambios cuando: 
+  //ChangeDetectionStrategy.OnPush: Es la estrategia. Solo revisa cambios cuando:
   // 1) Un @Input() cambia.
   // 2) Un evento que se dispare dentro de este componente como (ngSubmit).
   // 3) Un Observable al que se suscriba con el pipe async que emite un valor".
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Login { 
-  
+export class Login {
   // --- Inyecciones ---
   private fb: FormBuilder = inject(FormBuilder);
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
+  constructor(private location: Location) {}
 
-   //se crean los controles del formulario reactivo
-  loginForm = this.fb.group({//loginForm es un objeto que representa el formulario reactivo.
+  //se crean los controles del formulario reactivo
+  loginForm = this.fb.group({
+    //loginForm es un objeto que representa el formulario reactivo.
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
@@ -54,8 +56,9 @@ export class Login {
 
   // --- Método de envío (Email/Pass) ---
   async onSubmit(): Promise<void> {
-    if (this.loginForm.invalid) {//si el formulario es inválido
-      this.loginForm.markAllAsTouched();//marcar todos los campos como tocados para mostrar los mensajes de error
+    if (this.loginForm.invalid) {
+      //si el formulario es inválido
+      this.loginForm.markAllAsTouched(); //marcar todos los campos como tocados para mostrar los mensajes de error
       return;
     }
 
@@ -69,14 +72,13 @@ export class Login {
 
       //Espera a que Firebase genere un token de identificación para este usuario.
       const token = await userCredential.user.getIdToken();
-      
+
       //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
 
       // Llamamos al método reutilizable
-      await this.handleSuccessfulLogin(userCredential);//handleSuccessfulLogin: manejar inicio de sesión exitoso.
-
+      await this.handleSuccessfulLogin(userCredential); //handleSuccessfulLogin: manejar inicio de sesión exitoso.
     } catch (error: any) {
       console.error('Error en el login (Email/Pass):', error);
       // TODO: Mostrar error en la UI (ej. "Credenciales incorrectas")
@@ -93,24 +95,23 @@ export class Login {
       // --- PASO 2: Enviar Token al Backend ---
       console.log('Enviando token al backend (Paso 2)...');
       const token = await userCredential.user.getIdToken();
-      
+
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
 
       // ✅ Llamamos al método reutilizable
       await this.handleSuccessfulLogin(userCredential);
-
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);
     }
   }
 
   // --- MÉTODO REUTILIZABLE! ---
-  
-   //Maneja la lógica común post-autenticación (Guardar en localStorage,
-   //obtener rol y redirigir).
-   
-   //recibe las credenciales del usuario autenticado como argumento.
+
+  //Maneja la lógica común post-autenticación (Guardar en localStorage,
+  //obtener rol y redirigir).
+
+  //recibe las credenciales del usuario autenticado como argumento.
   private async handleSuccessfulLogin(userCredential: UserCredential): Promise<void> {
     try {
       console.log('Manejando lógica post-login...');
@@ -142,13 +143,15 @@ export class Login {
       } else {
         // Fallback por si el rol no es reconocido
         console.warn('Rol no reconocido, redirigiendo a la home.');
-        this.router.navigate(['/']); 
+        this.router.navigate(['/']);
       }
-
     } catch (error) {
       console.error('Error durante el manejo post-login:', error);
       // Aquí podrías redirigir a una página de error o al login
       this.router.navigate(['/login']);
     }
+  }
+  goBack(): void {
+    this.location.back();
   }
 }

@@ -16,22 +16,14 @@
   <!-- Carrusel -->
   <div class="carousel-track-wrapper">
     <ul class="carousel-track" [style.transform]="translateX">
-      <!-- 🔧 CORREGIDO: Usar style.flex-basis dinámico -->
+    @for (product of products(); track product.id) {
       <li 
         class="product-card" 
-        *ngFor="let product of products()"
         [style.flex]="'0 0 ' + cardWidth"
       >
-        <div class="card-inner">
-          <img [src]="product.image" [alt]="product.name" />
-          <h3>{{ product.name }}</h3>
-          <p class="desc">{{ product.description }}</p>
-          <span class="price">${{ product.price | number : '1.2-2' }}</span>
-          <button class="add-btn" (click)="addToCart(product)">
-            Agregar al carrito
-          </button>
-        </div>
+<app-product-card [product]="product"/>
       </li>
+    }
     </ul>
   </div>
 

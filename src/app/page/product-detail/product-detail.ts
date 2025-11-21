@@ -1,18 +1,19 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router,RouterLink } from '@angular/router';
 import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Product } from '../../core/models/product.model';
 import { ProductsService } from '../../core/service/products/products';
 import { CartService } from '../../core/service/cart/cart';
+import { ProductCarouselComponent } from "../../components/product-carousel/product-carousel";
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule, ProductCarouselComponent,RouterLink],
   templateUrl: './product-detail.html',
   styleUrls: ['./product-detail.css'],
 })
@@ -27,11 +28,12 @@ export class ProductDetail implements OnInit, OnDestroy {
   Plus = Plus;
   Minus = Minus;
   shoppingCartIcon = ShoppingCart;
-
+  private productsService = inject(ProductsService);
+  featuredProducts = this.productsService['_data'];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productsService: ProductsService,
+
     private location: Location,
     private cartService: CartService
   ) {}
@@ -43,6 +45,7 @@ export class ProductDetail implements OnInit, OnDestroy {
         this.loadProduct(productId);
       }
     });
+    this.productsService.getProducts();
   }
 
   ngOnDestroy(): void {
@@ -50,18 +53,18 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadProduct(id: string ): void {
+  loadProduct(id: string): void {
     this.isLoading = true;
     this.error = null;
 
-  
     if (!id) {
       this.error = 'ID de producto inválido';
       this.isLoading = false;
       return;
     }
 
-    this.productsService.getProductById(id)
+    this.productsService
+      .getProductById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {
