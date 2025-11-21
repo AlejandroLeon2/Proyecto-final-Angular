@@ -1,0 +1,17 @@
+<div class="h-full" data-ag-theme-mode="dark">
+  <!--Wait for data -->
+  <ag-grid-angular
+    style="height: 100%"
+    (gridReady)="onGridReady($event)"
+    [theme]="theme"
+    [columnDefs]="columnDefs"
+    [rowData]="categories()"
+    [defaultColDef]="defaultColDef"
+    [rowHeight]="rowHeight"
+    [pagination]="pagination"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [quickFilterText]="quickFilterText()"
+    [detailRowAutoHeight]="detailRowAutoHeight"
+  ></ag-grid-angular>
+</div>

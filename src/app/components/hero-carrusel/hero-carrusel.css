@@ -1,0 +1,24 @@
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2rem; /* 32px = 8 * 4px */
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  width: 3rem; /* 48px = 12 * 4px */
+  height: 3rem; /* 48px = 12 * 4px */
+  border-radius: 9999px; /* rounded-full */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: #1f2937; 
+}
+
+.nav-button:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: var(--primary);
+}

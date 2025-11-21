@@ -1,27 +1,23 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { Auth as authservice} from '../../service/auth';
+import { User } from '@angular/fire/auth';
+import { Auth } from '../../service/auth/auth';
 
-
-export const userGuardGuard: CanActivateFn = async(route, state) => {
-
-  const Auth = inject(authservice);
+export const userGuardGuard: CanActivateFn = async (route, state) => {
+  const AuhtService = inject(Auth);
   const router = inject(Router);
 
-  //obtenermos token de ususario
-  const token:string|null = Auth.getCookie(`token`);
+  const user: User | null = AuhtService.getCurrentUser();
+  if (!user) {
+    return router.parseUrl('/login');
+  }
+  const token = user.uid;
 
-  if(token === null){
-    return false
+  const rol = await AuhtService.guardUserRol(token);
+
+  if (rol === 'usuario') {
+    return true;
   }
 
-  //obtenemos rol de usuario de api
-  const rolResponce:string = await Auth.guardUserRol(token);
-
-  if(rolResponce === 'usuario'){
-    return true
-  }
-
-  router.navigate(['/'])
-  return false;
+  return router.parseUrl('/user');
 };

@@ -1,0 +1,73 @@
+<div class="filter-container">
+  <h2 class="filter-title">Filtros</h2>
+
+  <!-- Sección de Categorías -->
+  <div class="filter-section">
+    <button
+      type="button"
+      (click)="toggleCategorySection()"
+      class="filter-section-header"
+      aria-expanded="{{ categoryExpanded() }}"
+    >
+      <span class="filter-section-title">Categoría</span>
+      <span class="filter-section-icon">
+        @if (categoryExpanded()) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m18 15-6-6-6 6" />
+          </svg>
+        } @else {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        }
+      </span>
+    </button>
+
+    @if (categoryExpanded()) {
+      <div class="filter-section-content">
+        @for (category of categories; track category) {
+          <label class="filter-checkbox-label">
+            <input
+              type="checkbox"
+              [checked]="isCategorySelected(category)"
+              (change)="onCategoryChange(category, $event)"
+              class="filter-checkbox"
+            />
+            <span class="filter-checkbox-text">{{ category }}</span>
+          </label>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Botón Limpiar Filtros -->
+  <button
+    type="button"
+    (click)="clearFilters()"
+    [disabled]="!hasActiveFilters()"
+    class="clear-filters-button"
+  >
+    Limpiar Filtros
+  </button>
+</div>
+

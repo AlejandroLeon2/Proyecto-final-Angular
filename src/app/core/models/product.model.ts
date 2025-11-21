@@ -1,12 +1,12 @@
 export interface Product {
-  id: number;
+  id?: string;
   name: string;
   description: string;
   price: number;
-  createdAt: string; // timestamp ISO
-  updatedAt?: string; // timestamp ISO (opcional)
+  createdAt?: number;
+  updatedAt?: number;
   stock: number;
   category: string;
   status: 'active' | 'inactive';
-  image: string;
+  image: string | File;
 }

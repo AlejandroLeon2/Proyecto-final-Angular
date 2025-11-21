@@ -1,0 +1,47 @@
+<section
+  class="carousel-container"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+>
+  <!-- Botón anterior -->
+  <button 
+    class="carousel-btn prev" 
+    (click)="prev()" 
+    [disabled]="!canGoPrev && !autoPlay()"
+    [class.hidden]="products().length <= visibleItems()"
+  >
+    <lucide-icon [img]="ChevronLeft" [size]="24"></lucide-icon>
+  </button>
+
+  <!-- Carrusel -->
+  <div class="carousel-track-wrapper">
+    <ul class="carousel-track" [style.transform]="translateX">
+      <!-- 🔧 CORREGIDO: Usar style.flex-basis dinámico -->
+      <li 
+        class="product-card" 
+        *ngFor="let product of products()"
+        [style.flex]="'0 0 ' + cardWidth"
+      >
+        <div class="card-inner">
+          <img [src]="product.image" [alt]="product.name" />
+          <h3>{{ product.name }}</h3>
+          <p class="desc">{{ product.description }}</p>
+          <span class="price">${{ product.price | number : '1.2-2' }}</span>
+          <button class="add-btn" (click)="addToCart(product)">
+            Agregar al carrito
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Botón siguiente -->
+  <button 
+    class="carousel-btn next" 
+    (click)="next()" 
+    [disabled]="!canGoNext && !autoPlay()"
+    [class.hidden]="products().length <= visibleItems()"
+  >
+    <lucide-icon [img]="ChevronRight" [size]="24"></lucide-icon>
+  </button>
+</section>
