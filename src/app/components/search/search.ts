@@ -2,17 +2,22 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { Product } from '../../core/models/product';
+import { Product } from '../../core/models/product.model';
+import { LucideAngularModule, TextAlignJustify, Search as search } from 'lucide-angular';
+
 
 @Component({
   selector: 'app-search',
-  imports: [FormsModule],
+  imports: [FormsModule, LucideAngularModule],
   templateUrl: './search.html',
   styleUrl: './search.css',
 })
 export class Search {
   private http: HttpClient = inject(HttpClient);
   private apiUrl: string = 'http://localhost:3000/v1/products/search';
+
+  TextAlignJustify = TextAlignJustify;
+  search = search;
 
   wordKey:string = '';
   resultados: {} = {}

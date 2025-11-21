@@ -19,5 +19,6 @@ export const userGuardGuard: CanActivateFn = async (route, state) => {
     return true;
   }
 
-  return router.parseUrl('/user');
+  // Si no es usuario, redirige al home
+  return router.parseUrl('/');
 };

@@ -74,7 +74,6 @@ export class Auth {
   }
 
   // --- Métodos de Utilidad---
-
   getCurrentUser() {
     return this.fireAuth.currentUser;
   }
@@ -99,5 +98,10 @@ export class Auth {
       this.http.get<{rol:string}>(`${environment.apiURL}/auth/me/rol`, { headers })
     );
     return apiResponse.rol;
+  }
+
+  //metodo para logout
+  async logOut(): Promise<void> {
+    await this.fireAuth.signOut();
   }
 }

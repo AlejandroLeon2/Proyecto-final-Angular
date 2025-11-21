@@ -20,5 +20,7 @@ export const adminGuardGuard: CanActivateFn = async(route, state) => {
   if (rol === 'admin') {
     return true;
   }
-  return router.parseUrl('/admin');
+
+  // Si no es admin, redirige al home
+  return router.parseUrl('/');
 };

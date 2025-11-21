@@ -134,10 +134,17 @@ export class Login {
       // Obtenemos el rol
       const rol: string = await this.auth.getUserRol(userCredential.user.uid);
       console.log('Rol obtenido:', rol);
+      //verificamos si hay una ruta previa guardada
+      const afterRoute:string| null = localStorage.getItem('previousUrl') || null;
+      if (afterRoute) {
+        this.router.navigate([afterRoute]);
+        localStorage.removeItem('previousUrl');
+        return;
+      }
 
       // Redirigimos
       if (rol === `usuario`) {
-        this.router.navigate(['/user']);
+        this.router.navigate(['/']);
       } else if (rol === `admin`) {
         this.router.navigate(['/admin']);
       } else {
