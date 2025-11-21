@@ -1,0 +1,15 @@
+<div class="h-full" data-ag-theme-mode="dark">
+  <ag-grid-angular
+    style="height: 100%"
+    [rowData]="data()"
+    [theme]="theme"
+    [columnDefs]="colDefs"
+    [rowHeight]="rowHeight"
+    [pagination]="pagination"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [quickFilterText]="quickFilterText()"
+    (rowClicked)="onRowClicked($event)"
+  >
+  </ag-grid-angular>
+</div>

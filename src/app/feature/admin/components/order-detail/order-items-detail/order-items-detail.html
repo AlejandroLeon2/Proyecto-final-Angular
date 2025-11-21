@@ -1,0 +1,17 @@
+<div class="flex items-center gap-4 rounded-xl bg-gray-800 p-3 shadow-sm">
+  <!-- Imagen del producto -->
+  <img
+    [src]="imageUrl()"
+    alt="{{ name() }}"
+    class="h-20 w-20 rounded-lg object-cover bg-gray-100"
+  />
+
+  <div class="flex justify-between w-full">
+    <div class="flex flex-col">
+      <p class="font-medium font-semibold text-gray-200">{{ name() }}</p>
+      <p class="text-sm text-gray-200">Cantidad: {{ quantity() }}</p>
+      <p class="text-sm text-gray-200">Precio: {{ price() | currency }}</p>
+    </div>
+    <div class="font-semibold text-gray-200">{{ price() * quantity() | currency }}</div>
+  </div>
+</div>

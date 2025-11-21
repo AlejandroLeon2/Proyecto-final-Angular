@@ -1,13 +1,13 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CATEGORIES } from '../../core/constants/categories';
 import { Product } from '../../core/models/product.model';
-import { ProductService } from '../../core/service/productData';
+import { ProductsService } from '../../core/service/products/products';
+import { CartService } from '../../core/service/cart/cart';
 
 @Component({
   selector: 'app-product-detail',
@@ -21,7 +21,7 @@ export class ProductDetail implements OnInit, OnDestroy {
   quantity: number = 1;
   isLoading: boolean = true;
   error: string | null = null;
-  CATEGORIES = CATEGORIES;
+
   private destroy$ = new Subject<void>();
 
   Plus = Plus;
@@ -31,8 +31,9 @@ export class ProductDetail implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService,
-    private location: Location
+    private productsService: ProductsService,
+    private location: Location,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -49,19 +50,18 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadProduct(id: string | number): void {
+  loadProduct(id: string ): void {
     this.isLoading = true;
     this.error = null;
 
-    const numericId = Number(id);
-    if (isNaN(numericId)) {
+  
+    if (!id) {
       this.error = 'ID de producto inválido';
       this.isLoading = false;
       return;
     }
 
-    this.productService
-      .getProductById(numericId)
+    this.productsService.getProductById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {
@@ -103,13 +103,12 @@ export class ProductDetail implements OnInit, OnDestroy {
   addToCart(): void {
     if (!this.product || this.isOutOfStock()) return;
 
-    const cartItem = {
-      product: this.product,
-      quantity: this.quantity,
-    };
+    this.cartService.addItem(this.product, this.quantity);
 
-    console.log('✅ Agregado al carrito:', cartItem);
-    // TODO: Conectar con CartService
+    console.log('🛒 Producto añadido:', {
+      id: this.product.id,
+      quantity: this.quantity,
+    });
   }
 
   goBack(): void {
