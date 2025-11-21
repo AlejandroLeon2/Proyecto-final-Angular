@@ -84,6 +84,11 @@ export const routes: Routes = [
           import('./feature/admin/components/orders/orders').then((c) => c.Orders),
       },
       {
+        path: 'orders/:id',
+        loadComponent: () =>
+          import('./feature/admin/components/order-detail/order-detail').then((m) => m.OrderDetail),
+      },
+      {
         path: '**',
 
         redirectTo: '',

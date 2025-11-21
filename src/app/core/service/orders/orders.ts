@@ -31,4 +31,8 @@ export class OrdersService {
         },
       });
   }
+
+  getOrderById(id: string) {
+    return this.http.get<ICustomResponse<Order>>(`${environment.apiURL}/order/${id}`).pipe(take(1));
+  }
 }
