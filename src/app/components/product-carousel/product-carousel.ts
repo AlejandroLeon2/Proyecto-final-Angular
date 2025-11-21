@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
 import { Product } from '../../core/models/product.model';
-import { input } from '@angular/core';
+import { input, signal, computed } from '@angular/core';
 
 @Component({
   selector: 'app-product-carousel',
@@ -11,29 +11,36 @@ import { input } from '@angular/core';
   templateUrl: './product-carousel.html',
   styleUrl: './product-carousel.css',
 })
-
 export class ProductCarouselComponent implements OnInit, OnDestroy {
-  // 🆕 Inputs modernos basados en signals
   products = input<Product[]>([]);
-  autoPlay = input<boolean>(true);       // ❌ da TS2345
-  autoPlayInterval = input<number>(5000); // ❌ da TS2345
+  autoPlay = input<boolean>(true);
+  autoPlayInterval = input<number>(5000);
   itemsPerView = input<number>(4);
 
-  currentIndex = 0;
+  currentIndex = signal(0);
   intervalId: any;
+
+  // 🆕 Items visibles responsive
+  visibleItems = signal(4);
 
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
 
-  // ✅ Nuevo Output para comunicar al padre
   @Output() add = new EventEmitter<Product>();
 
-  addToCart(product: Product): void {
-    this.add.emit(product); // emite el producto al padre
+  // 🆕 Detectar cambios de tamaño de ventana
+  @HostListener('window:resize')
+  onResize() {
+    this.updateVisibleItems();
+    // Ajustar índice si queda fuera de rango
+    if (this.currentIndex() > this.maxIndex) {
+      this.currentIndex.set(this.maxIndex);
+    }
   }
 
   ngOnInit(): void {
-    if (this.autoPlay() && this.products().length > this.itemsPerView()) {
+    this.updateVisibleItems();
+    if (this.autoPlay() && this.products().length > this.visibleItems()) {
       this.startAutoPlay();
     }
   }
@@ -42,36 +49,61 @@ export class ProductCarouselComponent implements OnInit, OnDestroy {
     this.stopAutoPlay();
   }
 
+  // 🆕 Actualizar items visibles según el ancho de pantalla
+  private updateVisibleItems(): void {
+    const width = window.innerWidth;
+    if (width <= 600) {
+      this.visibleItems.set(1);
+    } else if (width <= 992) {
+      this.visibleItems.set(2);
+    } else if (width <= 1400) {
+      this.visibleItems.set(3);
+    } else {
+      this.visibleItems.set(this.itemsPerView());
+    }
+  }
+
   get maxIndex(): number {
-    return Math.max(0, this.products().length - this.itemsPerView());
+    return Math.max(0, this.products().length - this.visibleItems());
   }
 
   get canGoNext(): boolean {
-    return this.currentIndex < this.maxIndex;
+    return this.currentIndex() < this.maxIndex;
   }
 
   get canGoPrev(): boolean {
-    return this.currentIndex > 0;
+    return this.currentIndex() > 0;
   }
 
   next(): void {
     if (this.canGoNext) {
-      this.currentIndex++;
+      this.currentIndex.update(i => i + 1);
     } else if (this.autoPlay()) {
-      this.currentIndex = 0;
+      this.currentIndex.set(0);
     }
   }
 
   prev(): void {
     if (this.canGoPrev) {
-      this.currentIndex--;
+      this.currentIndex.update(i => i - 1);
     } else if (this.autoPlay()) {
-      this.currentIndex = this.maxIndex;
+      this.currentIndex.set(this.maxIndex);
     }
   }
 
+  // 🔧 CORREGIDO: Cálculo correcto del desplazamiento
   get translateX(): string {
-    return `translateX(-${(this.currentIndex * 100) / this.itemsPerView()}%)`;
+    const percentage = (this.currentIndex() * 100) / this.visibleItems();
+    return `translateX(-${percentage}%)`;
+  }
+
+  // 🆕 Ancho dinámico para cada card (usado en el template)
+  get cardWidth(): string {
+    return `calc(100% / ${this.visibleItems()})`;
+  }
+
+  addToCart(product: Product): void {
+    this.add.emit(product);
   }
 
   startAutoPlay(): void {
