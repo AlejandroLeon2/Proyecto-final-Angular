@@ -1,19 +1,32 @@
 <app-hero-carrusel></app-hero-carrusel>
-<div class="container mx-auto px-4 py-8">
+<div class=" max-w-7xl mx-auto px-4 py-8">
   <!-- Hero Section -->
   <section class="mb-12 text-center">
-    <h1 class="text-5xl font-bold text-gray-900 mb-4">Bienvenido a nuestra tienda</h1>
-    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+    <h1 class="text-5xl font-bold text-[var(--text-main)] mb-4">Bienvenido a nuestra tienda</h1>
+    <p class="text-xl text-[var(--text-muted)] max-w-2xl mx-auto">
       Descubre los mejores productos de tecnología y accesorios
     </p>
   </section>
 
+<!--  <section class="home-section">
+  @if (featuredProducts.length > 0) {
+    <app-product-carousel
+      [products]="featuredProducts"
+      [itemsPerView]="4"
+      [autoPlay]="true"
+      [autoPlayInterval]="4000">
+    </app-product-carousel>
+  } @else {
+    <p class="loading-text">Cargando productos destacados...</p>
+  }
+</section>
+-->
   <!-- Productos Destacados -->
   <section class="mb-16">
     <div class="flex justify-between items-center mb-8">
-      <h2 class="text-3xl font-bold text-gray-900">Productos Destacados</h2>
+      <h2 class="text-2xl md:text-3xl font-bold text-[var(--text-main)]">Productos Destacados</h2>
       <a
-        routerLink="/shop/catalogo-product"
+        [routerLink]="['/shop/catalogo-product']"
         class="text-blue-600 hover:text-blue-700 font-semibold"
       >
         Ver todos →
@@ -21,39 +34,21 @@
     </div>
 
     <!-- Grid de productos -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      @for (product of featuredProducts; track product.id) {
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @for (product of featuredProducts(); track product.id) {
       <app-product-card [product]="product"></app-product-card>
       }
     </div>
 
-    @if (featuredProducts.length === 0) {
+    @if (featuredProducts().length === 0) {
     <div class="text-center py-12">
       <p class="text-gray-500 text-lg">No hay productos disponibles</p>
     </div>
+          <div class="flex justify-center items-center min-h-[60svh] duration-300">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--border-loading)]"></div>
+        </div>
     }
   </section>
 
-  <!-- Sección de categorías (opcional) -->
-  <section class="mb-16">
-    <h2 class="text-3xl font-bold text-gray-900 mb-8">Compra por Categoría</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <button class="bg-blue-100 hover:bg-blue-200 p-6 rounded-lg transition-colors">
-        <span class="text-2xl mb-2 block">💻</span>
-        <span class="font-semibold">Electrónica</span>
-      </button>
-      <button class="bg-green-100 hover:bg-green-200 p-6 rounded-lg transition-colors">
-        <span class="text-2xl mb-2 block">🎮</span>
-        <span class="font-semibold">Gaming</span>
-      </button>
-      <button class="bg-purple-100 hover:bg-purple-200 p-6 rounded-lg transition-colors">
-        <span class="text-2xl mb-2 block">⌨️</span>
-        <span class="font-semibold">Accesorios</span>
-      </button>
-      <button class="bg-orange-100 hover:bg-orange-200 p-6 rounded-lg transition-colors">
-        <span class="text-2xl mb-2 block">🎧</span>
-        <span class="font-semibold">Audio</span>
-      </button>
-    </div>
-  </section>
+
 </div>

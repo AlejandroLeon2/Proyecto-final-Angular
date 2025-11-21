@@ -1,141 +1,128 @@
-<div class="bg-gray-50 min-h-screen py-8">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-[var(--bg-main)] min-h-screen py-12">
+  <div class="max-w-5xl mx-auto px-6">
     <!-- Botón volver -->
     <button
       (click)="goBack()"
-      class="mb-6 text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-2 transition cursor-pointer"
+      class="mb-12 text-[var(--text-muted)] hover:text-[var(--text-main)] font-medium flex items-center gap-2 transition"
     >
-      ← Volver atrás
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Volver
     </button>
 
     <!-- Estado de carga -->
     @if (isLoading) {
     <div class="flex justify-center items-center h-96">
-      <div class="text-center">
-        <div
-          class="animate-spin inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full mb-4"
-        ></div>
-        <p class="text-gray-600 font-semibold">Cargando detalles del producto...</p>
-      </div>
+      <div class="w-8 h-8 border-2 border-[var(--text-soft)] border-t-[var(--primary)] rounded-full animate-spin"></div>
     </div>
     }
 
     <!-- Error -->
     @if (error) {
-    <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg mb-6">
-      <p class="text-red-700 font-semibold">⚠️ Error</p>
-      <p class="text-red-600">{{ error }}</p>
+    <div class="border border-[var(--error)] p-4 rounded">
+      <p class="text-[var(--error)] text-sm">{{ error }}</p>
     </div>
     }
 
     <!-- Contenido principal -->
     @if (product && !isLoading) {
-    <div class="overflow-hidden">
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-10 h-full md:min-h-96 items-stretch"
-      >
-        <!-- Columna izquierda: Imagen -->
-        <div class="flex items-center justify-center w-full h-full">
-          <div
-            class="aspect-square w-full max-w-xs md:max-w-md lg:max-w-lg flex items-center justify-center h-full"
-          >
-            <img
-              [src]="product.image"
-              [alt]="product.name"
-              class="object-contain w-full h-full rounded-lg"
-              loading="lazy"
-            />
-          </div>
+    <div class="grid md:grid-cols-2 gap-16">
+      
+      <!-- Imagen -->
+      <div class="flex items-center justify-center">
+        <img
+          [src]="product.image"
+          [alt]="product.name"
+          class="w-full max-h-100 max-w-md object-contain"
+        />
+      </div>
+
+      <!-- Info -->
+      <div class="space-y-8">
+        
+        <!-- Header -->
+        <div class="space-y-4">
+          <span class="text-xs uppercase tracking-wider text-[var(--text-soft)] font-medium">
+            {{ product.category }}
+          </span>
+          
+          <h1 class="text-3xl font-light text-[var(--text-main)]">
+            {{ product.name }}
+          </h1>
+          
+          <p class="text-[var(--text-muted)] leading-relaxed">
+            {{ product.description }}
+          </p>
         </div>
 
-        <!-- Columna derecha: Información -->
-        <div class="flex flex-col justify-between">
-          <!-- Categoría y nombre -->
-          <div>
-            <span
-              class="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-4"
-            >
-              {{ [product.category] }}
-            </span>
+        <!-- Precio -->
+        <div class="pt-6 border-t border-[var(--border)]">
+          <p class="text-2xl font-light text-[var(--text-main)]">
+            {{ product.price  | currency: 'PEN':'symbol':'1.2' }}
+          </p>
+        </div>
 
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              {{ product.name }}
-            </h1>
+        <!-- Stock -->
+        <div>
+          <p class="text-sm text-[var(--text-muted)]">
+            @if (isOutOfStock()) {
+              Sin stock
+            } @else if (isLowStock()) {
+              {{ product.stock }} unidades disponibles
+            } @else {
+              En stock
+            }
+          </p>
+        </div>
 
-            <!-- Descripción -->
-            <p class="text-gray-600 text-lg mb-8 leading-relaxed">
-              {{ product.description }}
-            </p>
-          </div>
-
-          <!-- Precio y Stock -->
-          <div class="py-8 mb-8">
-            <div class="flex items-baseline gap-3 mb-6">
-              <span class="text-5xl font-bold text-black"> ${{ product.price.toFixed(2) }} </span>
-            </div>
-
-            <!-- Estado de stock -->
-            <div
-              class="px-4 py-3 rounded-lg w-fit font-semibold text-sm"
-              [ngClass]="{
-                'bg-red-100 text-red-700': isOutOfStock(),
-                'bg-orange-100 text-orange-700': isLowStock() && !isOutOfStock(),
-                'bg-green-100 text-green-700': !isLowStock() && !isOutOfStock()
-              }"
-            >
-              @if (isOutOfStock()) { ❌ Sin stock disponible } @else if (isLowStock()) { ⚠️ Solo
-              {{ product.stock }} unidades disponibles } @else { ✅ Stock:
-              {{ product.stock }} unidades }
-            </div>
-          </div>
-
-          <!-- Cantidad y acciones -->
-          <div>
-            <label class="block text-sm font-bold text-gray-700 mb-4"> Cantidad: </label>
-
-            <div class="flex items-center gap-4">
-              <!-- Grupo de controles de cantidad -->
-              <div class="flex flex-col gap-2">
-                <div class="flex items-center gap-4">
-                  <button
-                    (click)="decreaseQuantity()"
-                    [disabled]="quantity <= 1 || isOutOfStock()"
-                    class="w-12 h-12 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg font-bold text-lg transition flex items-center justify-center cursor-pointer"
-                  >
-                    <lucide-icon [img]="Minus" size="20"></lucide-icon>
-                  </button>
-
-                  <div class="flex flex-col">
-                    <input
-                      type="number"
-                      [value]="quantity"
-                      readonly
-                      class="w-20 h-12 text-center border-2 rounded-lg"
-                    />
-                  </div>
-
-                  <button
-                    (click)="increaseQuantity()"
-                    [disabled]="quantity >= product.stock || isOutOfStock()"
-                    class="w-12 h-12 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg font-bold text-lg transition flex items-center justify-center cursor-pointer"
-                  >
-                    <lucide-icon [img]="Plus" size="20"></lucide-icon>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Botón agregar al carrito -->
+        <!-- Cantidad -->
+        <div class="space-y-3">
+          <label class="text-sm text-[var(--text-muted)]">Cantidad</label>
+          
+          <div class="flex items-center gap-4">
+            <div class="flex items-center border border-[var(--border)] rounded">
               <button
-                (click)="addToCart()"
-                [disabled]="isOutOfStock()"
-                class="flex-1 h-12 bg-gray-700 hover:bg-black disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold px-6 rounded-lg transition-all duration-200 text-lg cursor-pointer flex items-center justify-center gap-2"
+                (click)="decreaseQuantity()"
+                [disabled]="quantity <= 1 || isOutOfStock()"
+                class="w-10 h-10 border-r border-[var(--border)]  flex justify-center items-center text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-alt)] transition"
               >
-                <lucide-icon [img]="shoppingCartIcon" size="24"></lucide-icon>
-                <span class="hidden lg:inline">Agregar carro</span>
+                <lucide-icon [img]="Minus" size="16"></lucide-icon>
+              </button>
+
+              <span class="w-12 text-center text-[var(--text-main)] text-sm">
+                {{ quantity }}
+              </span>
+
+              <button
+                (click)="increaseQuantity()"
+                [disabled]="quantity >= product.stock || isOutOfStock()"
+                class="w-10 border-l border-[var(--border)]  flex justify-center items-center h-10 text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-alt)] transition"
+              >
+                <lucide-icon [img]="Plus" size="16"></lucide-icon>
               </button>
             </div>
+
+            <button
+              (click)="addToCart()"
+              [disabled]="isOutOfStock()"
+              class="flex gap-4 justify-center items-center px-4 w-full h-10 bg-[var(--text-main)] text-[var(--bg-card)] disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-90 transition text-sm font-medium"
+            >
+              Agregar al carrito <lucide-icon [img]="shoppingCartIcon" size="16"></lucide-icon>
+            </button>
           </div>
         </div>
+
+        <!-- Total -->
+        <div class="pt-6 border-t border-[var(--border)]">
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-[var(--text-muted)]">Total</span>
+            <span class="text-xl font-light text-[var(--text-main)]">
+               {{ product.price * quantity | currency: 'PEN':'symbol':'1.2' }}
+            </span>
+          </div>
+        </div>
+
       </div>
     </div>
     }

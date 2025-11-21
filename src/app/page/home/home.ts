@@ -1,32 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject} from '@angular/core';
 import { ProductCardComponent } from '../../components/product-card/product-card';
+
+import { ProductCarouselComponent } from '../../components/product-carousel/product-carousel'; // 👈 importa el carrusel
 import { Product } from '../../core/models/product.model';
-import { ProductService } from '../../core/service/productData';
+
+import { ProductsService } from '../../core/service/products/products';
 import { HeroCarrusel } from '../../components/hero-carrusel/hero-carrusel';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent, HeroCarrusel],
+  imports: [CommonModule, ProductCardComponent, ProductCarouselComponent,HeroCarrusel, RouterLink],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
 export class Home implements OnInit {
-  featuredProducts: Product[] = [];
-
-  constructor(private productService: ProductService) {} // 👈 Inyectar el servicio
-
+  private productsService = inject(ProductsService);
+  featuredProducts = this.productsService['_data'];
   ngOnInit(): void {
-    // Cargar productos usando el servicio
-    this.productService.getFeaturedProducts().subscribe({
-      next: (products) => {
-        this.featuredProducts = products;
-        console.log('Productos cargados:', this.featuredProducts.length);
-      },
-      error: (error) => {
-        console.error('Error al cargar productos:', error);
-      },
-    });
+    this.productsService.getProducts();
+  }
+  onAddToCart(product: Product) {
+  console.log('Producto agregado:', product);
   }
 }

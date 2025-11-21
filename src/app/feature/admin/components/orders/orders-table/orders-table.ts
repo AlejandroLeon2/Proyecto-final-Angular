@@ -1,5 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
+
 import {
   AllCommunityModule,
   ClientSideRowModelModule,
@@ -25,6 +27,8 @@ export class OrdersTable {
   quickFilterText = input<string>('');
 
   private gridApi!: GridApi;
+  private router = inject(Router);
+
   theme = themeQuartz.withParams({
     backgroundColor: '#1f2836',
     headerBackgroundColor: '#1f2836',
@@ -68,5 +72,13 @@ export class OrdersTable {
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
+  }
+
+  onRowClicked(event: any) {
+    const orderId = event.data.id;
+
+    if (orderId) {
+      this.router.navigate(['/admin/orders', orderId]);
+    }
   }
 }

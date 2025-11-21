@@ -84,6 +84,11 @@ export const routes: Routes = [
           import('./feature/admin/components/orders/orders').then((c) => c.Orders),
       },
       {
+        path: 'orders/:id',
+        loadComponent: () =>
+          import('./feature/admin/components/order-detail/order-detail').then((m) => m.OrderDetail),
+      },
+      {
         path: '**',
 
         redirectTo: '',
@@ -117,11 +122,6 @@ export const routes: Routes = [
     ],
   },
 
-  // {
-  //   path: '**',
-  //   redirectTo: 'home',
-  // },
-  // Ruta 404 (debe ir al final)
   {
     path: '**',
     loadComponent: () => import('./page/not-found/not-found').then((m) => m.NotFound),

@@ -9,6 +9,7 @@
     [paginationPageSize]="paginationPageSize"
     [paginationPageSizeSelector]="paginationPageSizeSelector"
     [quickFilterText]="quickFilterText()"
+    (rowClicked)="onRowClicked($event)"
   >
   </ag-grid-angular>
 </div>

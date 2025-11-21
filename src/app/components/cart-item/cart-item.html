@@ -1,10 +1,10 @@
 <div class="cart-item">
-  <img [src]="item.image" [alt]="item.name" class="item-image" />
+  <img [src]="item.image" [alt]="item.name" class="h-16 max-w-16 rounded-sm object-cover" />
   <div class="item-details">
     <h4 class="item-name">{{ item.name }}</h4>
     <p class="item-category">{{ item.category }}</p>
     <div class="item-price-quantity">
-      <span class="item-price">${{ item.price }}</span>
+      <span class="item-price">{{ item.price  | currency: 'PEN':'symbol':'1.2' }}</span>
       <div class="quantity-controls">
         <button class="quantity-btn" (click)="updateQuantity(item.id!, item.quantity - 1)">
           -
@@ -16,5 +16,5 @@
       </div>
     </div>
   </div>
-  <button class="remove-btn" (click)="onRemoveItem(item.id!)">🗑️</button>
+  <button class="remove-btn" (click)="onRemoveItem(item.id!)"><lucide-icon [img]="Trash2 "  ></lucide-icon></button>
 </div>
