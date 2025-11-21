@@ -46,4 +46,4 @@ Thumbs.db
 # API
 /src/environments/environment.ts
 .env
-/src/environments
+/src/environments.ts
