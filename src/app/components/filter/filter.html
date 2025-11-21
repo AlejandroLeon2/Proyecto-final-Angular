@@ -1,13 +1,12 @@
 <div class="filter-container">
   <h2 class="filter-title">Filtros</h2>
 
-  <!-- Sección de Categorías -->
   <div class="filter-section">
     <button
       type="button"
       (click)="toggleCategorySection()"
       class="filter-section-header"
-      aria-expanded="{{ categoryExpanded() }}"
+      [attr.aria-expanded]="categoryExpanded()"
     >
       <span class="filter-section-title">Categoría</span>
       <span class="filter-section-icon">
@@ -45,22 +44,23 @@
 
     @if (categoryExpanded()) {
       <div class="filter-section-content">
-        @for (category of categories; track category) {
+        @for (cat of categoriesSignal(); track cat.id) {
           <label class="filter-checkbox-label">
             <input
               type="checkbox"
-              [checked]="isCategorySelected(category)"
-              (change)="onCategoryChange(category, $event)"
+              [checked]="isCategorySelected(cat.id)"
+              (change)="onCategoryChange(cat.id, $event)"
               class="filter-checkbox"
             />
-            <span class="filter-checkbox-text">{{ category }}</span>
+            <span class="filter-checkbox-text">{{ cat.name }}</span>
           </label>
+        } @empty {
+            <p class="text-sm text-gray-400 p-2">Cargando...</p>
         }
       </div>
     }
   </div>
 
-  <!-- Botón Limpiar Filtros -->
   <button
     type="button"
     (click)="clearFilters()"
@@ -70,4 +70,3 @@
     Limpiar Filtros
   </button>
 </div>
-

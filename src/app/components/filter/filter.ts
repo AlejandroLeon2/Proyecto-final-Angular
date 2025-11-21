@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';//se agrego inject
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CATEGORIES } from '../../core/constants/categories';
+import { CategoriesService } from '../../core/service/categories/categories'; //Importamos el servicio real
 
 export interface FilterState {
   categories: string[];
@@ -17,31 +17,39 @@ export interface FilterState {
 export class FilterComponent implements OnInit {
   @Output() filterChange = new EventEmitter<FilterState>();
 
+  // <--- Inyección del servicio de categorías --->
+  private categoriesService = inject(CategoriesService);
+
+  // <--- Usamos el Signal del servicio --->
+  // Al no invocarlo con (), guardamos la REFERENCIA al signal
+  categoriesSignal = this.categoriesService.categories;
+
   // Estado de las categorías seleccionadas
   selectedCategories = signal<string[]>([]);
   
   // Estado de expansión de secciones
   categoryExpanded = signal<boolean>(true);
 
-  // Categorías disponibles
-  categories = Object.values(CATEGORIES);
+  // <--- Signal para acceder a las categorías del servicio --->
+  categories = this.categoriesService.data;
 
   ngOnInit(): void {
-    // Inicializar con valores por defecto
-    this.emitFilterChange();
+
+    // <--- Cargar categorías reales al iniciar --->
+    this.categoriesService.getCategories();
   }
 
   /**
    * Maneja el cambio de selección de categoría
    */
-  onCategoryChange(category: string, event: Event): void {
+  onCategoryChange(categoryId: string, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
     const current = this.selectedCategories();
 
     if (isChecked) {
-      this.selectedCategories.set([...current, category]);
+      this.selectedCategories.set([...current, categoryId]);
     } else {
-      this.selectedCategories.set(current.filter((c) => c !== category));
+      this.selectedCategories.set(current.filter((c) => c !== categoryId));
     }
 
     this.emitFilterChange();
@@ -58,8 +66,8 @@ export class FilterComponent implements OnInit {
   /**
    * Verifica si una categoría está seleccionada
    */
-  isCategorySelected(category: string): boolean {
-    return this.selectedCategories().includes(category);
+  isCategorySelected(categoryId: string): boolean {
+    return this.selectedCategories().includes(categoryId);
   }
 
   /**
