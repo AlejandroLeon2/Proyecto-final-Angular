@@ -1,14 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject} from '@angular/core';
 import { ProductCardComponent } from '../../components/product-card/product-card';
+
+import { ProductCarouselComponent } from '../../components/product-carousel/product-carousel'; // 👈 importa el carrusel
+import { Product } from '../../core/models/product.model';
+
 import { ProductsService } from '../../core/service/products/products';
 import { HeroCarrusel } from '../../components/hero-carrusel/hero-carrusel';
 import { RouterLink } from '@angular/router';
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent, HeroCarrusel, RouterLink],
+  imports: [CommonModule, ProductCardComponent, ProductCarouselComponent,HeroCarrusel, RouterLink],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
@@ -17,5 +22,8 @@ export class Home implements OnInit {
   featuredProducts = this.productsService['_data'];
   ngOnInit(): void {
     this.productsService.getProducts();
+  }
+  onAddToCart(product: Product) {
+  console.log('Producto agregado:', product);
   }
 }
