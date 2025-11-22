@@ -7,6 +7,7 @@ import { ApiResponse } from '../../core/models/customResponse';
 import { LucideAngularModule, TextAlignJustify, Search as search } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-search',
@@ -18,7 +19,7 @@ export class Search {
 
   private router: Router = inject(Router);
   private http: HttpClient = inject(HttpClient);
-  private apiUrl: string = 'http://localhost:3000/v1/products/search';
+  private apiUrl: string = environment.apiURL + '/search/product';
 
   TextAlignJustify = TextAlignJustify;
   search = search;
@@ -27,7 +28,7 @@ export class Search {
   resultados: ApiResponse<Product> = {success:false, message:''};
   crono:number = 0;
 
-  async onSearch() {
+  onSearch() {
     
     //filtramos wordKey con trim y lowerCase dentro de la funcion en wordSearch
     let wordSearch =  this.wordKey.trim().toLowerCase();
@@ -42,9 +43,9 @@ export class Search {
         
         const resApi:ApiResponse<Product> = await firstValueFrom(
         // Llamada al endpoint de búsqueda del backend
-        this.http.get<ApiResponse<Product>>(this.apiUrl + `/?q=${encodeURIComponent(wordQuery)}`)
+        this.http.get<ApiResponse<Product>>(this.apiUrl + `/?data=${encodeURIComponent(wordQuery)}`)
         );
-
+        
         //mientras se espera la respuesta verificamos que wordKey no haya cambiado
         if(wordSearch === this.wordKey.trim().toLowerCase()){
 
@@ -63,12 +64,12 @@ export class Search {
   };
 
   onSelectProduct(product: Product) {
-  // ejemplo: limpiar búsqueda
-  this.wordKey = '';
-  this.resultados =  {success:false, message:''};
-  
-  // navegar a detalle
-  this.router.navigate(['/shop', 'product-detail', product.id]);
-}
+    // ejemplo: limpiar búsqueda
+    this.wordKey = '';
+    this.resultados =  {success:false, message:''};
+    
+    // navegar a detalle
+    this.router.navigate(['/shop', 'product-detail', product.id]);
+  }
 
 }
