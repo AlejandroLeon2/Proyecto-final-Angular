@@ -36,31 +36,57 @@
       <app-button-theme />
       <!-- User with menu -->
       <div class="relative" (mouseenter)="showUserMenu = true" (mouseleave)="leaveUserMenu()">
-        <button
-          class="flex items-center justify-center rounded-lg  text-[var(--icon)]  hover:text-[var(--text-main)] "
-        >
-          <lucide-icon [img]="UserRound"></lucide-icon>
-        </button>
+        @if (src === ``) {
+          <!-- si usuario no esta logueado carga lucide-icon UserRound -->
+          <button
+            class="flex items-center justify-center rounded-lg  text-[var(--icon)]  hover:text-[var(--text-main)] "
+          >
+            <lucide-icon [img]="UserRound"></lucide-icon>
+          </button>
+        } @else {
+          <!-- si usuario esta logueado carga la foto de perfil -->
+          <button
+            class="flex items-center justify-center rounded-full w-8 h-8 overflow-hidden border-2 border-[var(--border)] hover:border-[var(--primary)] "
+          >
+            <img [src]="src" alt="User Profile" class="w-full h-full object-cover" />
+          </button>
+        }
+        
 
         @if (showUserMenu){
-        <div
-          class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col bg-[var(--bg-card)] border border-[var(--border)] shadow-lg rounded-lg p-2 z-50"
-        >
-          <a
-            routerLink="/login"
-            class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
-          >
-            Login
-          </a>
+        <!-- panel dropdown de login/register si el usuario no esta logueado -->
+          @if(src == ``) {
+            <div
+            class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col bg-[var(--bg-card)] border border-[var(--border)] shadow-lg rounded-lg p-2 z-50"
+            >
+              <a
+                (click)="redirectAfterAuth(`login`)"
+              class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
+              >
+                Login
+              </a>
 
-          <a
-            routerLink="/register"
-            class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
-          >
-            Register
-          </a>
-        </div>
-        }
+              <a
+                (click)="redirectAfterAuth(`register`)"
+                class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
+              >
+                Register
+              </a>
+            </div>
+          }@else {
+            <div
+              class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col bg-[var(--bg-card)] border border-[var(--border)] shadow-lg rounded-lg p-2 z-50"
+            >
+              <button (click)="closeLog()"
+                class="flex items-center gap-2 text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2 w-full">
+                <lucide-icon [img]="LogOut"></lucide-icon> 
+                  Logout
+              </button>
+            </div>
+            }
+           
+          }
+        
       </div>
 
       <!-- Cart -->

@@ -74,7 +74,6 @@ export class Auth {
   }
 
   // --- Métodos de Utilidad---
-
   getCurrentUser() {
     return this.fireAuth.currentUser;
   }
@@ -86,5 +85,23 @@ export class Auth {
 
     const rol: string = apiResponse?.rol ?? 'unknown';
     return rol;
+  };
+
+  //metodo para obtener rol por api auth/me/rol
+
+  async guardUserRol(token: string): Promise<string> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    const apiResponse: {rol:string} = await firstValueFrom(
+      this.http.get<{rol:string}>(`${environment.apiURL}/auth/me/rol`, { headers })
+    );
+    return apiResponse.rol;
+  }
+
+  //metodo para logout
+  async logOut(): Promise<void> {
+    await this.fireAuth.signOut();
   }
 }

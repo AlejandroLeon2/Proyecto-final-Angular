@@ -13,11 +13,12 @@ export const userGuardGuard: CanActivateFn = async (route, state) => {
   }
   const token = user.uid;
 
-  const rol = await AuhtService.getUserRol(token);
+  const rol = await AuhtService.guardUserRol(token);
 
   if (rol === 'usuario') {
     return true;
   }
 
-  return router.parseUrl('/user');
+  // Si no es usuario, redirige al home
+  return router.parseUrl('/');
 };

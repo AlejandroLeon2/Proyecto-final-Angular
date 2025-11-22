@@ -9,3 +9,14 @@ export interface ICustomResponse<T> {
   data?: T;
   error?: IResponseError;
 }
+
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data?: {
+    products: T[];
+    moreItems: boolean
+  };        
+  errorCode?: string; 
+  message: string;
+}
