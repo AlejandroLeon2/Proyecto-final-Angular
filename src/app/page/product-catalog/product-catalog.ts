@@ -26,7 +26,7 @@ export class ProductCatalog implements OnInit {
   totalItems = signal<number>(0);
   itemsPerPage = 12; // Configurable
 
-  // Estado de Filtros (Nota: El backend aun no filtra, pero mantenemos el estado)
+  // <--- CAMBIO: Estado local de filtros --->
   currentFilters = signal<FilterState>({ categories: [] });
 
   ngOnInit(): void {
@@ -35,10 +35,13 @@ export class ProductCatalog implements OnInit {
 
   loadPaginatedProducts(): void {
     this.loading.set(true);
+
+    // <--- CAMBIO: Obtenemos los filtros actuales --->
+    const filters = this.currentFilters();
     
     // Efecto: Cuando cambia currentPage, llamamos al servicio
     this.productsService
-      .getPaginatedProducts(this.currentPage(), this.itemsPerPage)
+      .getPaginatedProducts(this.currentPage(), this.itemsPerPage, filters.categories) //Pasamos las categorías al servicio
       .subscribe({
         next: (data) => {
           this.products.set(data.products);
@@ -59,9 +62,6 @@ export class ProductCatalog implements OnInit {
   // Este método se conecta con el output (filterChange) del componente Filter
   onFilterChange(filters: FilterState): void {
     this.currentFilters.set(filters);
-    // IMPORTANTE: Como el backend actual no soporta filtros en el endpoint paginado,
-    // aquí deberíamos implementar la lógica. Por ahora, reseteamos a página 1 
-    // para recargar (aunque traerá datos sin filtrar hasta que se actualice el backend).
     this.currentPage.set(1);
     this.loadPaginatedProducts();
   }

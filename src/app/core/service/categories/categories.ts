@@ -12,13 +12,17 @@ export class CategoriesService {
   private _data = signal<Category[]>([]);
   private http = inject(HttpClient);
 
+  // <--- Exponemos el Signal como ReadOnly --->
+  // Esto permite que el componente use () para detectar cambios
+  public readonly categories = this._data.asReadonly();
+
   get data() {
     return this._data();
   }
 
   getCategories(): void {
     this.http
-      .get<Category[]>(environment.apiURL + '/category/all')
+      .get<ICustomResponse<Category[]>>(environment.apiURL + '/category/all')
       .pipe(
         take(1),
         catchError((error) => {
@@ -28,7 +32,10 @@ export class CategoriesService {
       )
       .subscribe({
         next: (response) => {
-          this._data.set(response);
+          // Aseguramos que guardamos el array de categorías
+          // Si devuelve directo el array, usa response.
+          const categoriesData = response.data || (response as any);
+          this._data.set(categoriesData);
         },
         error: () => {
           console.error('ThrowError: Error al obtener las categorías');

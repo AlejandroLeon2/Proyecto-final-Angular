@@ -30,10 +30,16 @@ export class ProductsService {
   }
 
   // --- MÉTODO NUEVO: Obtener productos paginados ---
-  getPaginatedProducts(page: number = 1, limit: number = 10) {
-    const params = new HttpParams()
+  getPaginatedProducts(page: number = 1, limit: number = 10, categories: string[] = []) {//parametro categories agregado opcional
+    let params = new HttpParams() //cambio de const a let porque se va a modificar
       .set('page', page.toString())
       .set('limit', limit.toString());
+
+    // <--- CAMBIO: Si hay categorías, las agregamos a los parámetros --->
+    if (categories.length > 0) {
+      // Unimos el array por comas: ['ID1', 'ID2'] -> "ID1,ID2"
+      params = params.set('categories', categories.join(','));
+    }
 
     return this.http
       .get<ICustomResponse<PaginatedProductResponse>>(
