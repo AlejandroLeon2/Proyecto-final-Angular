@@ -92,7 +92,7 @@
       required
     >
       <option class="bg-gray-800" [ngValue]="''">Seleccionar categoría</option>
-      @for (cat of categories(); track cat.id) {
+      @for (cat of categoriesService.data; track cat.id) {
       <option class="bg-gray-900" [value]="cat.id">{{ cat.name }}</option>
       }
     </select>
