@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
 import { Product } from '../../core/models/product.model';
 import { input, signal, computed } from '@angular/core';
+import { ProductCardComponent } from '../product-card/product-card';
 
 @Component({
   selector: 'app-product-carousel',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, ProductCardComponent],
   templateUrl: './product-carousel.html',
   styleUrl: './product-carousel.css',
 })
@@ -53,11 +54,11 @@ export class ProductCarouselComponent implements OnInit, OnDestroy {
   private updateVisibleItems(): void {
     const width = window.innerWidth;
     if (width <= 600) {
-      this.visibleItems.set(1);
-    } else if (width <= 992) {
       this.visibleItems.set(2);
-    } else if (width <= 1400) {
+    } else if (width <= 992) {
       this.visibleItems.set(3);
+    } else if (width <= 1400) {
+      this.visibleItems.set(5);
     } else {
       this.visibleItems.set(this.itemsPerView());
     }

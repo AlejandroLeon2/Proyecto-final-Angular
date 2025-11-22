@@ -14,13 +14,13 @@
 
 .item-name {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.825rem;
 }
 
 .item-category {
   margin: 0.25rem 0;
   color: #666;
-  font-size: 0.875rem;
+  font-size: 0.825rem;
 }
 
 .item-price-quantity {
@@ -32,6 +32,7 @@
 
 .item-price {
   font-weight: bold;
+  font-size: 0.925rem;
 }
 
 .quantity-controls {

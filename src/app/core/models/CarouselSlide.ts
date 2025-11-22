@@ -4,4 +4,6 @@ export interface CarouselSlide {
   description: string;
   buttonText: string;
   buttonLink: string;
+  rutahija?:string;
+  fragmentlink?:string;
 }

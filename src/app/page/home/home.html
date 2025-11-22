@@ -1,30 +1,16 @@
 <app-hero-carrusel></app-hero-carrusel>
-<div class=" max-w-7xl mx-auto px-4 py-8">
+<section class="max-w-7xl mx-auto px-4 py-8">
   <!-- Hero Section -->
-  <section class="mb-12 text-center">
+  <div class="mb-12 text-center">
     <h1 class="text-5xl font-bold text-[var(--text-main)] mb-4">Bienvenido a nuestra tienda</h1>
     <p class="text-xl text-[var(--text-muted)] max-w-2xl mx-auto">
       Descubre los mejores productos de tecnología y accesorios
     </p>
-  </section>
+  </div>
 
-<!--  <section class="home-section">
-  @if (featuredProducts.length > 0) {
-    <app-product-carousel
-      [products]="featuredProducts"
-      [itemsPerView]="4"
-      [autoPlay]="true"
-      [autoPlayInterval]="4000">
-    </app-product-carousel>
-  } @else {
-    <p class="loading-text">Cargando productos destacados...</p>
-  }
-</section>
--->
-  <!-- Productos Destacados -->
-  <section class="mb-16">
+  <section id="ofertas" class="relative mt-12">
     <div class="flex justify-between items-center mb-8">
-      <h2 class="text-2xl md:text-3xl font-bold text-[var(--text-main)]">Productos Destacados</h2>
+      <h2 class="text-2xl md:text-3xl font-bold text-[var(--text-main)]">Productos Recientes</h2>
       <a
         [routerLink]="['/shop/catalogo-product']"
         class="text-blue-600 hover:text-blue-700 font-semibold"
@@ -33,22 +19,139 @@
       </a>
     </div>
 
-    <!-- Grid de productos -->
-    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      @for (product of featuredProducts(); track product.id) {
-      <app-product-card [product]="product"></app-product-card>
-      }
+    @defer (on viewport) {
+    <app-product-carousel
+      [products]="featuredProducts()"
+      [itemsPerView]="4"
+      [autoPlay]="true"
+      [autoPlayInterval]="4000"
+    >
+    </app-product-carousel>
+    } @placeholder {
+    <div class="h-40 flex items-center justify-center text-gray-400">
+      Carrusel pendiente de carga…
     </div>
-
-    @if (featuredProducts().length === 0) {
-    <div class="text-center py-12">
-      <p class="text-gray-500 text-lg">No hay productos disponibles</p>
+    } @loading {
+    <div class="flex justify-center items-center min-h-[20svh]">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--border-loading)]"
+      ></div>
     </div>
-          <div class="flex justify-center items-center min-h-[60svh] duration-300">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--border-loading)]"></div>
-        </div>
     }
+      @if (featuredProducts().length === 0) {
+  <div class="text-center py-12">
+    <p class="text-gray-500 text-lg">No hay productos disponibles</p>
+  </div>
+  }
   </section>
 
+  <section id="accesorio" class="relative mt-12">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl md:text-3xl font-bold text-[var(--text-main)]">Accesorios</h2>
+      <a
+        [routerLink]="['/shop/catalogo-product']"
+        class="text-blue-600 hover:text-blue-700 font-semibold"
+      >
+        Ver todos →
+      </a>
+    </div>
+    @defer (on viewport) {
+    <app-product-carousel
+      [products]="featuredProducts()"
+      [itemsPerView]="4"
+      [autoPlay]="true"
+      [autoPlayInterval]="4000"
+    >
+    </app-product-carousel>
+    } @placeholder {
+    <div class="h-40 flex items-center justify-center text-gray-400">
+      Carrusel pendiente de carga…
+    </div>
+    } @loading {
+    <div class="flex justify-center items-center min-h-[20svh]">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--border-loading)]"
+      ></div>
+    </div>
+    }
+      @if (featuredProducts().length === 0) {
+  <div class="text-center py-12">
+    <p class="text-gray-500 text-lg">No hay productos disponibles</p>
+  </div>
+  }
+  </section>
+  <section id="mujer" class="relative mt-12">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl md:text-3xl font-bold text-[var(--text-main)]">Moda Mujer</h2>
+      <a
+        [routerLink]="['/shop/catalogo-product']"
+        class="text-blue-600 hover:text-blue-700 font-semibold"
+      >
+        Ver todos →
+      </a>
+    </div>
 
-</div>
+    @defer (on viewport) {
+    <app-product-carousel
+      [products]="featuredProducts()"
+      [itemsPerView]="4"
+      [autoPlay]="true"
+      [autoPlayInterval]="4000"
+    >
+    </app-product-carousel>
+    } @placeholder {
+    <div class="h-40 flex items-center justify-center text-gray-400">
+      Carrusel pendiente de carga…
+    </div>
+    } @loading {
+    <div class="flex justify-center items-center min-h-[20svh]">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--border-loading)]"
+      ></div>
+    </div>
+    }
+      @if (featuredProducts().length === 0) {
+  <div class="text-center py-12">
+    <p class="text-gray-500 text-lg">No hay productos disponibles</p>
+  </div>
+  }
+  </section>
+  <section id="tecnologia" class="relative mt-12">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl md:text-3xl font-bold text-[var(--text-main)]">Tecnología</h2>
+      <a
+        [routerLink]="['/shop/catalogo-product']"
+        class="text-blue-600 hover:text-blue-700 font-semibold"
+      >
+        Ver todos →
+      </a>
+    </div>
+
+    @defer (on viewport) {
+    <app-product-carousel
+      [products]="featuredProducts()"
+      [itemsPerView]="4"
+      [autoPlay]="true"
+      [autoPlayInterval]="4000"
+    >
+    </app-product-carousel>
+    } @placeholder {
+    <!-- Se muestra mientras no entra al viewport -->
+    <div class="h-40 flex items-center justify-center text-gray-400">
+      Carrusel pendiente de carga…
+    </div>
+    } @loading {
+    <!-- Se muestra mientras se carga el módulo -->
+    <div class="flex justify-center items-center min-h-[20svh]">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--border-loading)]"
+      ></div>
+    </div>
+    }
+      @if (featuredProducts().length === 0) {
+  <div class="text-center py-12">
+    <p class="text-gray-500 text-lg">No hay productos disponibles</p>
+  </div>
+  }
+  </section>
+</section>
