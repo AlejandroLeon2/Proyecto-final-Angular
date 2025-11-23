@@ -8,21 +8,13 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
-import { UserCredential } from '@angular/fire/auth';
-import { IconBrandLogo } from '../../../icons/IconBrandLogo/IconBrandLogo';
 import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
 import { Auth } from '../../../core/service/auth/auth';
 import { IconTienda } from '../../../icons/icon-tienda/icon-tienda';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-    IconGoogleLogo,
-    IconTienda,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, IconGoogleLogo, IconTienda],
   templateUrl: './login.html',
   styleUrl: './login.css',
 
@@ -76,9 +68,8 @@ export class Login {
       //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
-
-      // Llamamos al método reutilizable
-      await this.handleSuccessfulLogin(userCredential); //handleSuccessfulLogin: manejar inicio de sesión exitoso.
+      //handleSuccessfulLogin: manejar inicio de sesión exitoso.
+      this.router.navigate(['/shop/home']);
     } catch (error: any) {
       console.error('Error en el login (Email/Pass):', error);
       // TODO: Mostrar error en la UI (ej. "Credenciales incorrectas")
@@ -98,9 +89,7 @@ export class Login {
 
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
-
-      // ✅ Llamamos al método reutilizable
-      await this.handleSuccessfulLogin(userCredential);
+      this.router.navigate(['/shop/home']);
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);
     }
@@ -112,53 +101,6 @@ export class Login {
   //obtener rol y redirigir).
 
   //recibe las credenciales del usuario autenticado como argumento.
-  private async handleSuccessfulLogin(userCredential: UserCredential): Promise<void> {
-    try {
-      console.log('Manejando lógica post-login...');
-      // Guardamos en localStorage
-      localStorage.setItem(
-        'auth',
-        JSON.stringify({
-          uid: userCredential.user.uid,
-          email: userCredential.user.email,
-          displayName: userCredential.user.displayName,
-          photoURL: userCredential.user.photoURL,
-          emailVerified: userCredential.user.emailVerified,
-          phoneNumber: userCredential.user.phoneNumber,
-          providerId: userCredential.user.providerId,
-          creationTime: userCredential.user.metadata.creationTime,
-          lastSignInTime: userCredential.user.metadata.lastSignInTime,
-
-        })
-      );
-
-      // Obtenemos el rol
-      const rol: string = await this.auth.getUserRol(userCredential.user.uid);
-      console.log('Rol obtenido:', rol);
-      //verificamos si hay una ruta previa guardada
-      const afterRoute:string| null = localStorage.getItem('previousUrl') || null;
-      if (afterRoute) {
-        this.router.navigate([afterRoute]);
-        localStorage.removeItem('previousUrl');
-        return;
-      }
-
-      // Redirigimos
-      if (rol === `usuario`) {
-        this.router.navigate(['/']);
-      } else if (rol === `admin`) {
-        this.router.navigate(['/admin']);
-      } else {
-        // Fallback por si el rol no es reconocido
-        console.warn('Rol no reconocido, redirigiendo a la home.');
-        this.router.navigate(['/']);
-      }
-    } catch (error) {
-      console.error('Error durante el manejo post-login:', error);
-      // Aquí podrías redirigir a una página de error o al login
-      this.router.navigate(['/login']);
-    }
-  }
   goBack(): void {
     this.location.back();
   }
