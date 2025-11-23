@@ -12,6 +12,7 @@ import {
   UserCredential,
   // Importamos la función para hacer login con email/pass desde el SDK de CLIENTE
   signInWithEmailAndPassword,
+  sendPasswordResetEmail // Importamos la función para enviar el correo de recuperación
 } from '@angular/fire/auth';
 import { environment } from '../../../../environments/environment';
 
@@ -48,19 +49,7 @@ export class Auth {
     return this.http.post(environment.apiURL + '/auth/register', data);
   }
 
-  // --- ¡MÉTODO ELIMINADO! ---
-  /*
-  login(data: any): Observable<any> {
-    return this.http.post(environment.apiURL + '/auth/login', data);
-  }
-  */
-
-  // --- ¡NUEVO MÉTODO! ---
-  /**
-   * Paso 1 (Frontend): Llama a FIREBASE AUTH con Email/Pass.
-   * Esta es la contraparte de 'loginWithGoogle'.
-   */
-
+  // --- Login con Email/Pass (Frontend) ---
   loginWithEmail(data: any): Promise<UserCredential> {
     // Llamada directa usando la instancia ya inyectada
     return signInWithEmailAndPassword(this.fireAuth, data.email, data.password);
@@ -88,16 +77,26 @@ export class Auth {
       'Content-Type': 'application/json',
     });
 
-    // Llama al endpoint POST /v1/auth/ que usa el middleware 'verifyToken'
-    const request$ = this.http.post(
-      `${environment.apiURL}/auth/`,
-      {}, // Body vacío, toda la info va en el token
-      { headers }
+    return firstValueFrom(
+      this.http.post(
+        `${environment.apiURL}/auth/`,
+        {},
+        { headers }
+      )
     );
-    return firstValueFrom(request$);
   }
 
-  // --- Métodos de Utilidad---
+  // --- Recuperar Contraseña ---
+  async recoverPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.fireAuth, email);
+    } catch (error) {
+      console.error('Error sending password reset email:', error);
+      throw error;
+    }
+  }
+
+  // --- Utilidades ---
   getCurrentUser() {
     return this.fireAuth.currentUser;
   }
@@ -106,12 +105,10 @@ export class Auth {
     const apiResponse: any = await firstValueFrom(
       this.http.get(environment.apiURL + `/usuario/${uid}`)
     );
-
-    const rol: string = apiResponse?.rol ?? 'unknown';
-    return rol;
-  }
-
-  //metodo para obtener rol por api auth/me/rol
+    return apiResponse?.rol ?? 'unknown';
+  };
+  
+    //metodo para obtener rol por api auth/me/rol
 
   async guardUserRol(token: string): Promise<string> {
     const headers = new HttpHeaders({
