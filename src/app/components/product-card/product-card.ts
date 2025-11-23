@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 import { Product } from '../../core/models/product.model';
 import { CartService } from '../../core/service/cart/cart';
+import { Auth } from '../../core/service/auth/auth';
 
 @Component({
   selector: 'app-product-card',
@@ -14,6 +15,7 @@ import { CartService } from '../../core/service/cart/cart';
 })
 export class ProductCardComponent {
   @Input() product!: Product;
+  private authService:Auth= inject(Auth);
 
   shoppingCartIcon = ShoppingCart;
 
@@ -34,7 +36,9 @@ export class ProductCardComponent {
       minute: '2-digit',
     });
   }
-
+  get user() {
+    return this.authService.user();
+  }
   /**
    * Determina si el stock es bajo
    */

@@ -36,7 +36,7 @@
       <app-button-theme />
       <!-- User with menu -->
       <div class="relative" (mouseenter)="showUserMenu = true" (mouseleave)="leaveUserMenu()">
-        @if (src === ``) {
+        @if (!src) {
           <!-- si usuario no esta logueado carga lucide-icon UserRound -->
           <button
             class="flex items-center justify-center rounded-lg  text-[var(--icon)]  hover:text-[var(--text-main)] "
@@ -55,7 +55,7 @@
 
         @if (showUserMenu){
         <!-- panel dropdown de login/register si el usuario no esta logueado -->
-          @if(src == ``) {
+          @if(!src) {
             <div
             class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col bg-[var(--bg-card)] border border-[var(--border)] shadow-lg rounded-lg p-2 z-50"
             >
@@ -77,6 +77,13 @@
             <div
               class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col bg-[var(--bg-card)] border border-[var(--border)] shadow-lg rounded-lg p-2 z-50"
             >
+              <a
+    [routerLink]="profileRoute"
+    class="flex items-center gap-2 text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2 w-full"
+  >
+    <lucide-icon [img]="UserRound"></lucide-icon>
+    Perfil
+  </a>
               <button (click)="closeLog()"
                 class="flex items-center gap-2 text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2 w-full">
                 <lucide-icon [img]="LogOut"></lucide-icon> 

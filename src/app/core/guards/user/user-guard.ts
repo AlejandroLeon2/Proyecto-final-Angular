@@ -6,11 +6,11 @@ export const userGuard: CanActivateFn = async (route, state) => {
   const AuhtService = inject(Auth);
   const router = inject(Router);
 
-  const token = AuhtService.getToken();
-
-  const rol = await AuhtService.guardUserRol(token);
-
-  if (rol === 'usuario') {
+  const role = AuhtService.role();
+  if (role === 'unknown') {
+    return router.parseUrl('/shop/home');
+  }
+  if (role === 'usuario') {
     return true;
   }
 

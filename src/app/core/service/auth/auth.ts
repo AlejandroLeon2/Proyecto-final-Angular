@@ -1,14 +1,19 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'; //HttpHeaders se usa para enviar el token de autorización en la cabecera
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import {
+  authState,
+  browserLocalPersistence,
   Auth as FirebaseAuth,
   GoogleAuthProvider,
-  UserCredential,
+  sendPasswordResetEmail, // Importamos la función para enviar el correo de recuperación
+  setPersistence,
   // Importamos la función para hacer login con email/pass desde el SDK de CLIENTE
   signInWithEmailAndPassword, // Alias para evitar conflicto de nombres
   signInWithPopup,
+  User,
+  UserCredential,
 } from '@angular/fire/auth';
-import { Observable, catchError, firstValueFrom, of } from 'rxjs'; //firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
+import { catchError, firstValueFrom, Observable, of } from 'rxjs'; //firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -18,25 +23,33 @@ export class Auth {
   private fireAuth: FirebaseAuth = inject(FirebaseAuth); // Para Google Pop-up y Email
   private http: HttpClient = inject(HttpClient); // Para llamar al Backend
 
+  user = signal<User | null>(null);
+  role = signal<string>('unknown');
+
+  constructor() {
+    // Configurar persistencia
+    setPersistence(this.fireAuth, browserLocalPersistence);
+
+    // Escuchar cambios de sesión
+    authState(this.fireAuth).subscribe(async (user) => {
+      this.user.set(user);
+
+      if (user) {
+        const token = await user.getIdToken();
+        const rol = await this.guardUserRol(token);
+        this.role.set(rol);
+      } else {
+        this.role.set('unknown');
+      }
+    });
+  }
   // --- Flujo de Registro (Llama al Backend) ---
 
   register(data: any): Observable<any> {
     return this.http.post(environment.apiURL + '/auth/register', data);
   }
 
-  // --- ¡MÉTODO ELIMINADO! ---
-  /*
-  login(data: any): Observable<any> {
-    return this.http.post(environment.apiURL + '/auth/login', data);
-  }
-  */
-
-  // --- ¡NUEVO MÉTODO! ---
-  /**
-   * Paso 1 (Frontend): Llama a FIREBASE AUTH con Email/Pass.
-   * Esta es la contraparte de 'loginWithGoogle'.
-   */
-
+  // --- Login con Email/Pass (Frontend) ---
   loginWithEmail(data: any): Promise<UserCredential> {
     // Llamada directa usando la instancia ya inyectada
     return signInWithEmailAndPassword(this.fireAuth, data.email, data.password);
@@ -64,31 +77,29 @@ export class Auth {
       'Content-Type': 'application/json',
     });
 
-    // Llama al endpoint POST /v1/auth/ que usa el middleware 'verifyToken'
-    const request$ = this.http.post(
-      `${environment.apiURL}/auth/`,
-      {}, // Body vacío, toda la info va en el token
-      { headers }
-    );
-    return firstValueFrom(request$);
+    return firstValueFrom(this.http.post(`${environment.apiURL}/auth/`, {}, { headers }));
   }
 
-  // --- Métodos de Utilidad---
+  // --- Recuperar Contraseña ---
+  async recoverPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.fireAuth, email);
+    } catch (error) {
+      console.error('Error sending password reset email:', error);
+      throw error;
+    }
+  }
+
+  // --- Utilidades ---
   getCurrentUser() {
-    return this.fireAuth.currentUser || JSON.parse(localStorage.getItem('auth') || '{}');
-  }
-
-  getToken() {
-    return localStorage.getItem('token') || '';
+    return this.fireAuth.currentUser;
   }
 
   async getUserRol(uid: string): Promise<string> {
     const apiResponse: any = await firstValueFrom(
       this.http.get(environment.apiURL + `/usuario/${uid}`)
     );
-
-    const rol: string = apiResponse?.rol ?? 'unknown';
-    return rol;
+    return apiResponse?.rol ?? 'unknown';
   }
 
   //metodo para obtener rol por api auth/me/rol
@@ -98,21 +109,21 @@ export class Auth {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    const apiResponse: { rol: string } = await firstValueFrom(
-      this.http.get<{ rol: string }>(`${environment.apiURL}/auth/me/rol`, { headers }).pipe(
+    const apiResponse: { role: string } = await firstValueFrom(
+      this.http.get<{ role: string }>(`${environment.apiURL}/auth/me/rol`, { headers }).pipe(
         catchError((error) => {
           console.error('Error al obtener el rol:', error);
-          return of({ rol: 'unknown' });
+          return of({ role: 'unknown' });
         })
       )
     );
-    return apiResponse.rol;
+    return apiResponse.role;
   }
 
   //metodo para logout
   async logOut(): Promise<void> {
     await this.fireAuth.signOut();
-    localStorage.removeItem('token');
-    localStorage.removeItem('auth');
+    this.user.set(null);
+    this.role.set('unknown');
   }
 }

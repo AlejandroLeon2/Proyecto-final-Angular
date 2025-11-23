@@ -5,8 +5,7 @@
 //UserCredential es una interfaz que representa las credenciales del usuario devueltas por Firebase después de la autenticación.
 
 import { CommonModule, Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { UserCredential } from '@angular/fire/auth';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../core/service/auth/auth';
@@ -30,13 +29,18 @@ export class Login {
   private fb: FormBuilder = inject(FormBuilder);
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
+
+  // --- Signals ---
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+
   constructor(private location: Location) {}
 
   //se crean los controles del formulario reactivo
   loginForm = this.fb.group({
     //loginForm es un objeto que representa el formulario reactivo.
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   // --- Getters ---
@@ -55,6 +59,9 @@ export class Login {
       return;
     }
 
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
       const userCredential = await this.auth.loginWithEmail(this.loginForm.value);
@@ -65,22 +72,24 @@ export class Login {
 
       //Espera a que Firebase genere un token de identificación para este usuario.
       const token = await userCredential.user.getIdToken();
-      localStorage.setItem('token', token);
 
       //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
-
-      // Llamamos al método reutilizable
-      await this.handleSuccessfulLogin(userCredential); //handleSuccessfulLogin: manejar inicio de sesión exitoso.
+      //handleSuccessfulLogin: manejar inicio de sesión exitoso.
+      this.router.navigate(['/shop/home']);
     } catch (error: any) {
       console.error('Error en el login (Email/Pass):', error);
-      // TODO: Mostrar error en la UI (ej. "Credenciales incorrectas")
+      this.errorMessage.set('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
   // --- Método de Google---
   async onGoogleLogin(): Promise<void> {
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
       const userCredential = await this.auth.loginWithGoogle();
@@ -89,15 +98,15 @@ export class Login {
       // --- PASO 2: Enviar Token al Backend ---
       console.log('Enviando token al backend (Paso 2)...');
       const token = await userCredential.user.getIdToken();
-      localStorage.setItem('token', token);
 
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
-
-      // ✅ Llamamos al método reutilizable
-      await this.handleSuccessfulLogin(userCredential);
+      this.router.navigate(['/shop/home']);
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);
+      this.errorMessage.set('Error al iniciar sesión con Google. Inténtalo de nuevo.');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
@@ -107,50 +116,50 @@ export class Login {
   //obtener rol y redirigir).
 
   //recibe las credenciales del usuario autenticado como argumento.
-  private async handleSuccessfulLogin(userCredential: UserCredential): Promise<void> {
+
+  // --- Password Recovery ---
+  showRecoverModal = signal(false);
+  recoverSuccessMessage = signal<string | null>(null);
+  recoverEmailControl = this.fb.control('', [Validators.required, Validators.email]);
+
+  toggleRecoverModal() {
+    this.showRecoverModal.update((v) => !v);
+    if (this.showRecoverModal()) {
+      this.recoverEmailControl.reset();
+      this.recoverSuccessMessage.set(null);
+      this.errorMessage.set(null);
+    }
+  }
+
+  async onRecoverPassword() {
+    if (this.recoverEmailControl.invalid) {
+      this.recoverEmailControl.markAsTouched();
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+    this.recoverSuccessMessage.set(null);
+
+    const email = this.recoverEmailControl.value!;
+
     try {
-      console.log('Manejando lógica post-login...');
-      // Guardamos en localStorage
-      localStorage.setItem(
-        'auth',
-        JSON.stringify({
-          uid: userCredential.user.uid,
-          email: userCredential.user.email,
-          displayName: userCredential.user.displayName,
-          photoURL: userCredential.user.photoURL,
-          emailVerified: userCredential.user.emailVerified,
-          phoneNumber: userCredential.user.phoneNumber,
-          providerId: userCredential.user.providerId,
-          creationTime: userCredential.user.metadata.creationTime,
-          lastSignInTime: userCredential.user.metadata.lastSignInTime,
-        })
+      await this.auth.recoverPassword(email);
+      // Mensaje genérico por seguridad (OWASP)
+      this.recoverSuccessMessage.set(
+        'Si el correo está registrado, recibirás un enlace para restablecer tu contraseña.'
       );
-
-      // Obtenemos el rol
-      const rol: string = await this.auth.getUserRol(userCredential.user.uid);
-      console.log('Rol obtenido:', rol);
-      //verificamos si hay una ruta previa guardada
-      const afterRoute: string | null = localStorage.getItem('previousUrl') || null;
-      if (afterRoute) {
-        this.router.navigate([afterRoute]);
-        localStorage.removeItem('previousUrl');
-        return;
-      }
-
-      // Redirigimos
-      if (rol === `usuario`) {
-        this.router.navigate(['/']);
-      } else if (rol === `admin`) {
-        this.router.navigate(['/admin']);
-      } else {
-        // Fallback por si el rol no es reconocido
-        console.warn('Rol no reconocido, redirigiendo a la home.');
-        this.router.navigate(['/']);
-      }
+      // Opcional: Cerrar modal después de unos segundos
+      // setTimeout(() => this.toggleRecoverModal(), 5000);
     } catch (error) {
-      console.error('Error durante el manejo post-login:', error);
-      // Aquí podrías redirigir a una página de error o al login
-      this.router.navigate(['/login']);
+      console.error('Error recovering password:', error);
+      // Incluso si falla (ej. usuario no encontrado), mostramos éxito o un error genérico
+      // para no revelar información. Solo mostramos error real si es algo de red/servidor crítico.
+      this.recoverSuccessMessage.set(
+        'Si el correo está registrado, recibirás un enlace para restablecer tu contraseña.'
+      );
+    } finally {
+      this.isLoading.set(false);
     }
   }
   goBack(): void {

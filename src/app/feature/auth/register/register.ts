@@ -4,7 +4,7 @@
 //ReactiveFormsModule es un Módulo. Es una "caja de herramientas" completa para usar Formularios Reactivos.
 
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { IconBrandLogo } from '../../../icons/IconBrandLogo/IconBrandLogo';
@@ -36,10 +36,19 @@ export class Register {
     //registerForm es un objeto que representa el formulario reactivo.
 
     //Validaciones para cada campo
-    name: ['', [Validators.required, Validators.minLength(3)]],
+    name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z\s]*$/)]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
-  });
+    password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/)]],
+    confirmPassword: ['', [Validators.required]],
+    terms: [false, [Validators.requiredTrue]]
+  }, { validators: this.matchPasswords });
+
+  // Custom validator for password matching
+  matchPasswords(group: AbstractControl): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { notMatching: true };
+  }
 
   // Getters
   get name() {
@@ -50,6 +59,12 @@ export class Register {
   }
   get password() {
     return this.registerForm.get('password');
+  }
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword');
+  }
+  get terms() {
+    return this.registerForm.get('terms');
   }
 
   // --- Método de envío (Email/Pass) ---
