@@ -4,25 +4,18 @@
 //ReactiveFormsModule es un Módulo. Es una "caja de herramientas" completa para usar Formularios Reactivos.
 //UserCredential es una interfaz que representa las credenciales del usuario devueltas por Firebase después de la autenticación.
 
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { UserCredential } from '@angular/fire/auth';
-import { IconBrandLogo } from '../../../icons/IconBrandLogo/IconBrandLogo';
-import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../core/service/auth/auth';
 import { IconTienda } from '../../../icons/icon-tienda/icon-tienda';
+import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-    IconGoogleLogo,
-    IconTienda,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, IconGoogleLogo, IconTienda],
   templateUrl: './login.html',
   styleUrl: './login.css',
 
@@ -72,6 +65,7 @@ export class Login {
 
       //Espera a que Firebase genere un token de identificación para este usuario.
       const token = await userCredential.user.getIdToken();
+      localStorage.setItem('token', token);
 
       //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
@@ -95,6 +89,7 @@ export class Login {
       // --- PASO 2: Enviar Token al Backend ---
       console.log('Enviando token al backend (Paso 2)...');
       const token = await userCredential.user.getIdToken();
+      localStorage.setItem('token', token);
 
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
@@ -128,7 +123,6 @@ export class Login {
           providerId: userCredential.user.providerId,
           creationTime: userCredential.user.metadata.creationTime,
           lastSignInTime: userCredential.user.metadata.lastSignInTime,
-
         })
       );
 
@@ -136,7 +130,7 @@ export class Login {
       const rol: string = await this.auth.getUserRol(userCredential.user.uid);
       console.log('Rol obtenido:', rol);
       //verificamos si hay una ruta previa guardada
-      const afterRoute:string| null = localStorage.getItem('previousUrl') || null;
+      const afterRoute: string | null = localStorage.getItem('previousUrl') || null;
       if (afterRoute) {
         this.router.navigate([afterRoute]);
         localStorage.removeItem('previousUrl');
