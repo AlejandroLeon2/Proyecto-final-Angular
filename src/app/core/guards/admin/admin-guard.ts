@@ -1,11 +1,9 @@
-import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { Auth } from '../../service/auth/auth';
 import { User } from '@angular/fire/auth';
+import { CanActivateFn, Router } from '@angular/router';
+import { Auth } from '../../service/auth/auth';
 
-
-export const adminGuardGuard: CanActivateFn = async(route, state) => {
-
+export const adminGuard: CanActivateFn = async (route, state) => {
   const AuhtService = inject(Auth);
   const router = inject(Router);
 
