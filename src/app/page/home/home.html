@@ -21,7 +21,7 @@
 
     @defer (on viewport) {
     <app-product-carousel
-      [products]="featuredProducts()"
+      [products]="news()"
       [itemsPerView]="4"
       [autoPlay]="true"
       [autoPlayInterval]="4000"
@@ -38,7 +38,7 @@
       ></div>
     </div>
     }
-      @if (featuredProducts().length === 0) {
+      @if (news().length === 0) {
   <div class="text-center py-12">
     <p class="text-gray-500 text-lg">No hay productos disponibles</p>
   </div>
@@ -57,7 +57,7 @@
     </div>
     @defer (on viewport) {
     <app-product-carousel
-      [products]="featuredProducts()"
+      [products]="accesorios()"
       [itemsPerView]="4"
       [autoPlay]="true"
       [autoPlayInterval]="4000"
@@ -74,7 +74,7 @@
       ></div>
     </div>
     }
-      @if (featuredProducts().length === 0) {
+      @if (accesorios().length === 0) {
   <div class="text-center py-12">
     <p class="text-gray-500 text-lg">No hay productos disponibles</p>
   </div>
@@ -93,7 +93,7 @@
 
     @defer (on viewport) {
     <app-product-carousel
-      [products]="featuredProducts()"
+      [products]="moda()"
       [itemsPerView]="4"
       [autoPlay]="true"
       [autoPlayInterval]="4000"
@@ -110,7 +110,7 @@
       ></div>
     </div>
     }
-      @if (featuredProducts().length === 0) {
+      @if (moda().length === 0) {
   <div class="text-center py-12">
     <p class="text-gray-500 text-lg">No hay productos disponibles</p>
   </div>
@@ -129,7 +129,7 @@
 
     @defer (on viewport) {
     <app-product-carousel
-      [products]="featuredProducts()"
+      [products]="electronica()"
       [itemsPerView]="4"
       [autoPlay]="true"
       [autoPlayInterval]="4000"
@@ -148,7 +148,7 @@
       ></div>
     </div>
     }
-      @if (featuredProducts().length === 0) {
+      @if (electronica().length === 0) {
   <div class="text-center py-12">
     <p class="text-gray-500 text-lg">No hay productos disponibles</p>
   </div>

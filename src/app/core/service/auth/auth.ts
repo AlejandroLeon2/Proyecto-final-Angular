@@ -1,9 +1,13 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';//HttpHeaders se usa para enviar el token de autorización en la cabecera
-import { firstValueFrom, Observable } from 'rxjs';//firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; //HttpHeaders se usa para enviar el token de autorización en la cabecera
+import { firstValueFrom, Observable } from 'rxjs'; //firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
 import {
   Auth as FirebaseAuth, // Alias para evitar conflicto de nombres
   signInWithPopup,
+  authState,
+  browserLocalPersistence,
+  setPersistence,
+  User,
   GoogleAuthProvider,
   UserCredential,
   // Importamos la función para hacer login con email/pass desde el SDK de CLIENTE
@@ -18,8 +22,28 @@ export class Auth {
   private fireAuth: FirebaseAuth = inject(FirebaseAuth); // Para Google Pop-up y Email
   private http: HttpClient = inject(HttpClient); // Para llamar al Backend
 
+  user = signal<User | null>(null);
+  role = signal<string>('unknown');
+
+  constructor() {
+    // Configurar persistencia
+    setPersistence(this.fireAuth, browserLocalPersistence);
+
+    // Escuchar cambios de sesión
+    authState(this.fireAuth).subscribe(async (user) => {
+      this.user.set(user);
+
+      if (user) {
+        const token = await user.getIdToken();
+        const rol = await this.guardUserRol(token);
+        this.role.set(rol);
+      } else {
+        this.role.set('unknown');
+      }
+    });
+  }
   // --- Flujo de Registro (Llama al Backend) ---
-  
+
   register(data: any): Observable<any> {
     return this.http.post(environment.apiURL + '/auth/register', data);
   }
@@ -38,9 +62,9 @@ export class Auth {
    */
 
   loginWithEmail(data: any): Promise<UserCredential> {
-  // Llamada directa usando la instancia ya inyectada
-  return signInWithEmailAndPassword(this.fireAuth, data.email, data.password);
-}
+    // Llamada directa usando la instancia ya inyectada
+    return signInWithEmailAndPassword(this.fireAuth, data.email, data.password);
+  }
 
   // --- Flujo de Google (Frontend de Firebase + Backend) ---
 
@@ -50,8 +74,8 @@ export class Auth {
    */
 
   loginWithGoogle(): Promise<UserCredential> {
-  return signInWithPopup(this.fireAuth, new GoogleAuthProvider());
-}
+    return signInWithPopup(this.fireAuth, new GoogleAuthProvider());
+  }
 
   /**
    * Paso 2 (Backend): Envía el token de Firebase al backend para guardarlo/validarlo.
@@ -85,7 +109,7 @@ export class Auth {
 
     const rol: string = apiResponse?.rol ?? 'unknown';
     return rol;
-  };
+  }
 
   //metodo para obtener rol por api auth/me/rol
 
@@ -94,8 +118,8 @@ export class Auth {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    const apiResponse: {rol:string} = await firstValueFrom(
-      this.http.get<{rol:string}>(`${environment.apiURL}/auth/me/rol`, { headers })
+    const apiResponse: { rol: string } = await firstValueFrom(
+      this.http.get<{ rol: string }>(`${environment.apiURL}/auth/me/rol`, { headers })
     );
     return apiResponse.rol;
   }
@@ -103,5 +127,7 @@ export class Auth {
   //metodo para logout
   async logOut(): Promise<void> {
     await this.fireAuth.signOut();
+    this.user.set(null);
+    this.role.set('unknown');
   }
 }
