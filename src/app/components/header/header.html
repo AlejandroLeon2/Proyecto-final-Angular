@@ -14,12 +14,12 @@
         <a
           routerLink="/shop/home"
           class="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors"
-          >Home</a
+          >Inicio</a
         >
         <a
           routerLink="/shop/catalogo-product"
           class="text-sm font-medium text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors"
-          >Catalogo</a
+          >Catálogo</a
         >
       </nav>
     </div>
@@ -58,14 +58,14 @@
             (click)="redirectAfterAuth(`login`)"
             class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
           >
-            Login
+            Iniciar Sesión
           </a>
 
           <a
             (click)="redirectAfterAuth(`register`)"
             class="text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2"
           >
-            Register
+            Registrarse
           </a>
         </div>
         }@else {
@@ -79,12 +79,19 @@
             <lucide-icon [img]="UserRound"></lucide-icon>
             Perfil
           </a>
+          <a
+            [routerLink]="orderRoute"
+            class="flex items-center gap-2 text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2 w-full"
+          >
+            <lucide-icon [img]="SquareChartGantt"></lucide-icon>
+            Pedidos
+          </a>
           <button
             (click)="closeLog()"
             class="flex items-center gap-2 text-sm text-[var(--text-main)] hover:text-[var(--primary)] text-left py-1 px-2 w-full"
           >
             <lucide-icon [img]="LogOut"></lucide-icon>
-            Logout
+            Cerrar Sesión
           </button>
         </div>
         } }
