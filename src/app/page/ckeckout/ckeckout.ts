@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CartService } from '../../core/service/cart/cart';
 import type { CartItem } from '../../core/models/cart-item.model';
+import { ModalVenta } from '../../components/modal-venta/modal-venta';
+import { Router } from '@angular/router';
 
 interface ShippingMethod {
   id: string;
@@ -15,7 +17,7 @@ interface ShippingMethod {
 @Component({
   selector: 'app-ckeckout',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalVenta],
   templateUrl: './ckeckout.html',
   styleUrl: './ckeckout.css',
 })
@@ -29,13 +31,17 @@ export class Ckeckout implements OnInit {
   paymentMethod: 'card' | 'mercadopago' = 'card';
   
   products: CartItem[] = [];
+
+  // Variables para el modal
+  showSuccessModal: boolean = false;
+  orderNumber: string = '';
   
   shippingMethods: ShippingMethod[] = [
     { id: 'standard', name: 'Envío Estándar', price: 0, estimatedDays: '5-7 días hábiles' },
 
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private router: Router) {}
 
   ngOnInit() {
     this.initForms();
@@ -236,6 +242,14 @@ export class Ckeckout implements OnInit {
     this.cardForm.patchValue({ cvv: value }, { emitEvent: false });
   }
 
+  // ========== GENERADOR DE NÚMERO DE ORDEN ==========
+  
+  generateOrderNumber(): string {
+    const timestamp = Date.now().toString();
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `ORD-${timestamp.slice(-6)}${random}`;
+  }
+
   // ========== CONFIRMACIÓN ==========
   
   confirmOrder() {
@@ -262,8 +276,36 @@ export class Ckeckout implements OnInit {
       total: this.total
     };
 
-    console.log('Order confirmed:', orderData);
+    /*console.log('Order confirmed:', orderData);
     this.cartService.saveCart();
-    alert('¡Orden confirmada! Redirigiendo al pago...');
+    alert('¡Orden confirmada! Redirigiendo al pago...');*/
+
+    // Generar número de orden
+    this.orderNumber = this.generateOrderNumber();
+    
+    // Guardar carrito
+    this.cartService.saveCart();
+    
+    // Mostrar modal
+    this.showSuccessModal = true;
   }
+
+  // ========== CERRAR MODAL ==========
+  
+  closeSuccessModal() {
+  this.showSuccessModal = false;
+
+  setTimeout(() => {
+    // Limpiar formularios
+    this.buyerForm.reset();
+    this.cardForm.reset();
+
+    // Vaciar carrito
+    this.cartService.clearCart();
+
+    // Redirigir al Home
+    this.router.navigate(['/']);
+  }, 350); // coincide con duración del fade-out
+}
+  
 }
