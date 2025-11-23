@@ -1,19 +1,21 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router,RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Product } from '../../core/models/product.model';
 import { ProductsService } from '../../core/service/products/products';
 import { CartService } from '../../core/service/cart/cart';
-import { ProductCarouselComponent } from "../../components/product-carousel/product-carousel";
-
+import { ProductCarouselComponent } from '../../components/product-carousel/product-carousel';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
+import { Auth } from '../../core/service/auth/auth';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule, ProductCarouselComponent,RouterLink],
+  imports: [CommonModule, FormsModule, LucideAngularModule, ProductCarouselComponent, RouterLink],
   templateUrl: './product-detail.html',
   styleUrls: ['./product-detail.css'],
 })
@@ -29,6 +31,7 @@ export class ProductDetail implements OnInit, OnDestroy {
   Minus = Minus;
   shoppingCartIcon = ShoppingCart;
   private productsService = inject(ProductsService);
+  private authService:Auth = inject(Auth);
   featuredProducts = this.productsService['_data'];
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +40,13 @@ export class ProductDetail implements OnInit, OnDestroy {
     private location: Location,
     private cartService: CartService
   ) {}
+  get user() {
+    return this.authService.user();
+  }
+  news = toSignal(
+    this.productsService.getPaginatedProducts(1, 10, []).pipe(map((res) => res.products)),
+    { initialValue: [] }
+  );
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {

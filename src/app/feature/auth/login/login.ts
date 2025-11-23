@@ -8,21 +8,13 @@ import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/cor
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
-import { UserCredential } from '@angular/fire/auth';
-import { IconBrandLogo } from '../../../icons/IconBrandLogo/IconBrandLogo';
 import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
 import { Auth } from '../../../core/service/auth/auth';
 import { IconTienda } from '../../../icons/icon-tienda/icon-tienda';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-    IconGoogleLogo,
-    IconTienda,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, IconGoogleLogo, IconTienda],
   templateUrl: './login.html',
   styleUrl: './login.css',
 
@@ -84,9 +76,8 @@ export class Login {
       //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
-
-      // Llamamos al método reutilizable
-      await this.handleSuccessfulLogin(userCredential); //handleSuccessfulLogin: manejar inicio de sesión exitoso.
+      //handleSuccessfulLogin: manejar inicio de sesión exitoso.
+      this.router.navigate(['/shop/home']);
     } catch (error: any) {
       console.error('Error en el login (Email/Pass):', error);
       this.errorMessage.set('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
@@ -110,9 +101,7 @@ export class Login {
 
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
       console.log('Respuesta del backend (Paso 2):', backendResponse);
-
-      // ✅ Llamamos al método reutilizable
-      await this.handleSuccessfulLogin(userCredential);
+      this.router.navigate(['/shop/home']);
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);
       this.errorMessage.set('Error al iniciar sesión con Google. Inténtalo de nuevo.');
@@ -225,7 +214,6 @@ export class Login {
       this.isLoading.set(false);
     }
   }
-
   goBack(): void {
     this.location.back();
   }

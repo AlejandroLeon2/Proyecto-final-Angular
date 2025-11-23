@@ -1,4 +1,4 @@
-import { Component, OnInit, inject} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Search } from '../search/search';
 import { RouterLink, Router } from '@angular/router';
@@ -6,13 +6,21 @@ import { CartService } from '../../core/service/cart/cart';
 import { CartDropdown } from '../cart-dropdown/cart-dropdown';
 import { ButtonTheme } from '../button-theme/button-theme';
 import { LucideAngularModule, TextAlignJustify, UserRound, LogOut } from 'lucide-angular';
-import { IconTienda } from "../../icons/icon-tienda/icon-tienda";
+import { IconTienda } from '../../icons/icon-tienda/icon-tienda';
 import { Auth } from '../../core/service/auth/auth';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, Search, CartDropdown, RouterLink, ButtonTheme, LucideAngularModule, IconTienda],
+  imports: [
+    CommonModule,
+    Search,
+    CartDropdown,
+    RouterLink,
+    ButtonTheme,
+    LucideAngularModule,
+    IconTienda,
+  ],
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
 })
@@ -30,10 +38,9 @@ export class Header implements OnInit {
   //variable para mostrar/ocultar menu en pantallas pequeñas
   menu = false;
   //variable contenedor de src de perfil de usuario
-  src = ``;
   //variable para mostrar/ocultar dropdown del carrito
   showCartDropdown = true;
-
+  showUserMenu = false;
   toggleCartDropdown() {
     this.showCartDropdown = !this.showCartDropdown;
   }
@@ -42,14 +49,32 @@ export class Header implements OnInit {
 
   ngOnInit(): void {
     //cargar src de perfil de usuario
-    this.loadUserProfileSrc();
-
     this.cartService.items$.subscribe((items) => {
       this.totalCartItems = items.reduce((sum, item) => sum + item.quantity, 0);
     });
   }
+  get role() {
+    return this.auth.role(); // devuelve 'usuario', 'admin', etc.
+  }
 
-  showUserMenu = false;
+  get profileRoute() {
+    switch (this.role) {
+      case 'usuario':
+        return '/user/profile';
+      case 'admin':
+        return '/admin/dashboard';
+      default:
+        return '/login';
+    }
+  }
+  get user() {
+    return this.auth.user();
+  }
+
+  get src() {
+    return this.user?.photoURL ?? '';
+  }
+
   leaveUserMenu(): void {
     setTimeout(() => {
       this.showUserMenu = false;
@@ -60,34 +85,15 @@ export class Header implements OnInit {
     this.menu = !this.menu;
   }
 
-  //metodo para cargar src de perfil de usuario desde localstorage
-  loadUserProfileSrc(): void {
-    const localData = localStorage.getItem('auth');
-    
-    if (!localData) {
-      return;
-    }
-    const authData = JSON.parse(localData);
-
-    console.log(authData.photoURL);
-    
-    this.src = authData.photoURL;
-  }
-
   //metodo para logout
   async closeLog(): Promise<void> {
-    try {
-      await this.auth.logOut();
-      localStorage.removeItem('auth');
-      window.location.reload();
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }   
+    await this.auth.logOut();
+    this.rout.navigate(['/login']);
   }
 
   //metodo para redirigir a ubicacion anteriror despues de login o register
-  redirectAfterAuth(route:string): void {
-    localStorage.setItem( `previousUrl`, this.rout.url );
+  redirectAfterAuth(route: string): void {
+    localStorage.setItem(`previousUrl`, this.rout.url);
     this.rout.navigate([`/${route}`]);
   }
 }
