@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet} from '@angular/router';
-import { Header } from "../../components/header/header";
-import { SidebarUser } from "../../feature/user/Components/sidebar-user/sidebar-user";
+import { RouterOutlet } from '@angular/router';
+import { Header } from '../../components/header/header';
+import { SidebarUser } from '../../feature/user/Components/sidebar-user/sidebar-user';
 
 @Component({
   selector: 'app-usuario-layout',
@@ -9,6 +9,4 @@ import { SidebarUser } from "../../feature/user/Components/sidebar-user/sidebar-
   templateUrl: './usuario-layout.html',
   styleUrl: './usuario-layout.css',
 })
-export class UsuarioLayout {
-
-}
+export class UsuarioLayout {}
