@@ -4,7 +4,7 @@
 //ReactiveFormsModule es un Módulo. Es una "caja de herramientas" completa para usar Formularios Reactivos.
 //UserCredential es una interfaz que representa las credenciales del usuario devueltas por Firebase después de la autenticación.
 
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
@@ -37,13 +37,18 @@ export class Login {
   private fb: FormBuilder = inject(FormBuilder);
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
-  constructor(private location: Location) {}
+
+  // --- Signals ---
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+
+  constructor(private location: Location) { }
 
   //se crean los controles del formulario reactivo
   loginForm = this.fb.group({
     //loginForm es un objeto que representa el formulario reactivo.
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   // --- Getters ---
@@ -61,6 +66,9 @@ export class Login {
       this.loginForm.markAllAsTouched(); //marcar todos los campos como tocados para mostrar los mensajes de error
       return;
     }
+
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
 
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
@@ -81,12 +89,16 @@ export class Login {
       await this.handleSuccessfulLogin(userCredential); //handleSuccessfulLogin: manejar inicio de sesión exitoso.
     } catch (error: any) {
       console.error('Error en el login (Email/Pass):', error);
-      // TODO: Mostrar error en la UI (ej. "Credenciales incorrectas")
+      this.errorMessage.set('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
   // --- Método de Google---
   async onGoogleLogin(): Promise<void> {
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
       const userCredential = await this.auth.loginWithGoogle();
@@ -103,6 +115,9 @@ export class Login {
       await this.handleSuccessfulLogin(userCredential);
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);
+      this.errorMessage.set('Error al iniciar sesión con Google. Inténtalo de nuevo.');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
@@ -135,19 +150,25 @@ export class Login {
       // Obtenemos el rol
       const rol: string = await this.auth.getUserRol(userCredential.user.uid);
       console.log('Rol obtenido:', rol);
-      //verificamos si hay una ruta previa guardada
-      const afterRoute:string| null = localStorage.getItem('previousUrl') || null;
+
+      // 🚨 PRIORIDAD 1: Si es ADMIN, ir directo al dashboard
+      if (rol === 'admin') {
+        localStorage.removeItem('previousUrl'); // Limpiar ruta previa si existía
+        this.router.navigate(['/admin']);
+        return;
+      }
+
+      // PRIORIDAD 2: Si hay ruta previa (y no es admin), volver ahí
+      const afterRoute: string | null = localStorage.getItem('previousUrl') || null;
       if (afterRoute) {
         this.router.navigate([afterRoute]);
         localStorage.removeItem('previousUrl');
         return;
       }
 
-      // Redirigimos
-      if (rol === `usuario`) {
+      // PRIORIDAD 3: Usuario normal sin ruta previa -> Home
+      if (rol === 'usuario') {
         this.router.navigate(['/']);
-      } else if (rol === `admin`) {
-        this.router.navigate(['/admin']);
       } else {
         // Fallback por si el rol no es reconocido
         console.warn('Rol no reconocido, redirigiendo a la home.');
@@ -159,6 +180,52 @@ export class Login {
       this.router.navigate(['/login']);
     }
   }
+  // --- Password Recovery ---
+  showRecoverModal = signal(false);
+  recoverSuccessMessage = signal<string | null>(null);
+  recoverEmailControl = this.fb.control('', [Validators.required, Validators.email]);
+
+  toggleRecoverModal() {
+    this.showRecoverModal.update((v) => !v);
+    if (this.showRecoverModal()) {
+      this.recoverEmailControl.reset();
+      this.recoverSuccessMessage.set(null);
+      this.errorMessage.set(null);
+    }
+  }
+
+  async onRecoverPassword() {
+    if (this.recoverEmailControl.invalid) {
+      this.recoverEmailControl.markAsTouched();
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+    this.recoverSuccessMessage.set(null);
+
+    const email = this.recoverEmailControl.value!;
+
+    try {
+      await this.auth.recoverPassword(email);
+      // Mensaje genérico por seguridad (OWASP)
+      this.recoverSuccessMessage.set(
+        'Si el correo está registrado, recibirás un enlace para restablecer tu contraseña.'
+      );
+      // Opcional: Cerrar modal después de unos segundos
+      // setTimeout(() => this.toggleRecoverModal(), 5000);
+    } catch (error) {
+      console.error('Error recovering password:', error);
+      // Incluso si falla (ej. usuario no encontrado), mostramos éxito o un error genérico
+      // para no revelar información. Solo mostramos error real si es algo de red/servidor crítico.
+      this.recoverSuccessMessage.set(
+        'Si el correo está registrado, recibirás un enlace para restablecer tu contraseña.'
+      );
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
   goBack(): void {
     this.location.back();
   }
