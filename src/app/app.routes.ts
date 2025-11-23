@@ -36,10 +36,9 @@ export const routes: Routes = [
         path: 'cart',
         loadComponent: () => import('./page/cart/cart').then((c) => c.Cart),
       },
-            {
+      {
         path: 'ckeckout',
-        loadComponent: () =>
-          import('./page/ckeckout/ckeckout').then((c) => c.Ckeckout),
+        loadComponent: () => import('./page/ckeckout/ckeckout').then((c) => c.Ckeckout),
       },
       // {
       //   path: '**',
@@ -86,12 +85,14 @@ export const routes: Routes = [
       {
         path: 'orders',
         loadComponent: () =>
-          import('./feature/admin/components/orders/orders').then((c) => c.Orders),
+          import('./feature/user/Components/orders/orders').then((c) => c.OrdersList),
       },
       {
         path: 'orders/:id',
         loadComponent: () =>
-          import('./feature/admin/components/order-detail/order-detail').then((m) => m.OrderDetail),
+          import('./feature/user/Components/orders/orders-detail/orders-detail').then(
+            (c) => c.OrdersDetail
+          ),
       },
       {
         path: '**',
@@ -114,11 +115,18 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('./feature/user/profile/profile').then((c) => c.Profile),
+        loadComponent: () => import('./page/user/profile/profile').then((c) => c.Profile),
       },
       {
         path: 'orders',
-        loadComponent: () => import('./feature/user/order/order').then((c) => c.Order),
+        loadComponent: () => import('./page/user/orders/orders').then((c) => c.Orders),
+      },
+      {
+        path: 'orders/:id',
+        loadComponent: () =>
+          import('./feature/user/Components/orders/orders-detail/orders-detail').then(
+            (c) => c.OrdersDetail
+          ),
       },
       {
         path: '**',
