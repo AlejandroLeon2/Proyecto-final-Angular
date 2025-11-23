@@ -5,8 +5,7 @@ import {
   browserLocalPersistence,
   Auth as FirebaseAuth,
   GoogleAuthProvider,
-  sendPasswordResetEmail, // Importamos la función para enviar el correo de recuperación
-  setPersistence,
+  sendPasswordResetEmail,
   // Importamos la función para hacer login con email/pass desde el SDK de CLIENTE
   signInWithEmailAndPassword, // Alias para evitar conflicto de nombres
   signInWithPopup,
@@ -28,7 +27,7 @@ export class Auth {
 
   constructor() {
     // Configurar persistencia
-    setPersistence(this.fireAuth, browserLocalPersistence);
+    this.fireAuth.setPersistence(browserLocalPersistence);
 
     // Escuchar cambios de sesión
     authState(this.fireAuth).subscribe(async (user) => {
@@ -109,15 +108,15 @@ export class Auth {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    const apiResponse: { role: string } = await firstValueFrom(
-      this.http.get<{ role: string }>(`${environment.apiURL}/auth/me/rol`, { headers }).pipe(
+    const apiResponse: { rol: string } = await firstValueFrom(
+      this.http.get<{ rol: string }>(`${environment.apiURL}/auth/me/rol`, { headers }).pipe(
         catchError((error) => {
           console.error('Error al obtener el rol:', error);
-          return of({ role: 'unknown' });
+          return of({ rol: 'unknown' });
         })
       )
     );
-    return apiResponse.role;
+    return apiResponse.rol;
   }
 
   //metodo para logout
