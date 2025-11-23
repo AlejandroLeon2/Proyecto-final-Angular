@@ -116,59 +116,7 @@ export class Login {
   //obtener rol y redirigir).
 
   //recibe las credenciales del usuario autenticado como argumento.
-  private async handleSuccessfulLogin(userCredential: UserCredential): Promise<void> {
-    try {
-      console.log('Manejando lógica post-login...');
-      // Guardamos en localStorage
-      localStorage.setItem(
-        'auth',
-        JSON.stringify({
-          uid: userCredential.user.uid,
-          email: userCredential.user.email,
-          displayName: userCredential.user.displayName,
-          photoURL: userCredential.user.photoURL,
-          emailVerified: userCredential.user.emailVerified,
-          phoneNumber: userCredential.user.phoneNumber,
-          providerId: userCredential.user.providerId,
-          creationTime: userCredential.user.metadata.creationTime,
-          lastSignInTime: userCredential.user.metadata.lastSignInTime,
 
-        })
-      );
-
-      // Obtenemos el rol
-      const rol: string = await this.auth.getUserRol(userCredential.user.uid);
-      console.log('Rol obtenido:', rol);
-
-      // 🚨 PRIORIDAD 1: Si es ADMIN, ir directo al dashboard
-      if (rol === 'admin') {
-        localStorage.removeItem('previousUrl'); // Limpiar ruta previa si existía
-        this.router.navigate(['/admin']);
-        return;
-      }
-
-      // PRIORIDAD 2: Si hay ruta previa (y no es admin), volver ahí
-      const afterRoute: string | null = localStorage.getItem('previousUrl') || null;
-      if (afterRoute) {
-        this.router.navigate([afterRoute]);
-        localStorage.removeItem('previousUrl');
-        return;
-      }
-
-      // PRIORIDAD 3: Usuario normal sin ruta previa -> Home
-      if (rol === 'usuario') {
-        this.router.navigate(['/']);
-      } else {
-        // Fallback por si el rol no es reconocido
-        console.warn('Rol no reconocido, redirigiendo a la home.');
-        this.router.navigate(['/']);
-      }
-    } catch (error) {
-      console.error('Error durante el manejo post-login:', error);
-      // Aquí podrías redirigir a una página de error o al login
-      this.router.navigate(['/login']);
-    }
-  }
   // --- Password Recovery ---
   showRecoverModal = signal(false);
   recoverSuccessMessage = signal<string | null>(null);
