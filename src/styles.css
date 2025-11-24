@@ -1,46 +1,18 @@
 @import "tailwindcss";
 /* @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *)); */
-
-
 @theme {
     --font-tan: "TAN Nimbus", sans-serif;
     --font-satisfy: "Satisfy", sans-serif;
     --font-poppins: "Poppins", sans-serif;
     --color-celeste: #b6cfe3;
-     --color-azule: #315762;
+    --color-azule: #315762;
     --color-primary:#000000;
     --color-secondary:#ffffff;
 }
 @layer components {
-  .titulo {
-    @apply text-2xl font-semibold text-black dark:text-white;
-  }
-
-  .subtitulo {
-    @apply text-lg font-medium text-neutral-700 dark:text-neutral-300;
-  }
-
-  .parrafo {
-    @apply text-base text-neutral-600 dark:text-neutral-400 leading-relaxed;
-  }
-
-  .texto-pequeno {
-    @apply text-sm text-neutral-500 dark:text-neutral-400;
-  }
-    .boton {
-    @apply px-4 py-2 rounded bg-black text-white hover:bg-neutral-800 active:scale-95 transition-all duration-300 dark:bg-white dark:text-black dark:hover:bg-neutral-200;
-  }
-
-  .boton-secundario {
-    @apply px-4 py-2 rounded  border-neutral-400 text-neutral-700 hover:bg-neutral-100 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-800;
-  }
-    .input {
-    @apply w-full px-3 py-2 border border-neutral-300 rounded bg-white text-black placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-black dark:bg-neutral-900 dark:text-white dark:border-neutral-700 dark:placeholder-neutral-400 dark:focus:ring-white;
-  }
-
-  .label {
-    @apply block mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300;
-  }
+.botonText{
+@apply text-[var(--text-main)] hover:text-[var(--primary-hover)] duration-300 active:text-[var(--primary)] hover:translate-x-2  active:scale-95 active:translate-x-2
+}
 }
 
 
@@ -85,65 +57,67 @@
 }
 /* ===================== LIGHT THEME ===================== */
 [data-theme="light"] {
-  --primary: #2563eb;           /* Azul intenso accesible */
-  --secondary: #9333ea;         /* Púrpura elegante para acentos secundarios */
+  --primary: #F29705;       /* Naranja marca: energía */
+  --primary-hover: #F5A52E; /* Hover más oscuro */
+  --primary-active: #B86A03;/* Active profundo */
+  --secondary: #2563EB;     /* Azul accesible, contraste con naranja */
+  --accent: #10B981;        /* Verde fresco para acentos */
 
-  /* ESTADOS */
-  --success: #10b981;           /* Verde éxito */
-  --warning: #f59e0b;           /* Amarillo advertencia */
-  --error: #ef4444;             /* Rojo error */
+  /* Estados */
+  --success: #10B981;       /* Verde éxito */
+  --warning: #FBBF24;       /* Amarillo cálido advertencia */
+  --error: #DC2626;         /* Rojo más fuerte para legibilidad */
 
-  /* TEXTOS */
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --text-soft: #94a3b8;
+  /* Textos */
+  --text-main: #111827;     /* Gris carbón: máxima legibilidad */
+  --text-muted: #4B5563;    /* Gris medio */
+  --text-soft: #9CA3AF;     /* Gris suave */
 
-  /* FONDOS */
-  --bg-main: #f8fafc;
-  --bg-card: #ffffff;
-  --bg-input: #f1f5f9;
-  --bg-alt: #f3f4f6;            /* Fondo alternativo */
+  /* Fondos */
+  --bg-main: #F9FAFB;       /* Fondo principal claro */
+  --bg-card: #FFFFFF;       /* Tarjetas blancas */
+  --bg-input: #F3F4F6;      /* Inputs claros */
+  --bg-alt: #E5E7EB;        /* Fondo alternativo gris claro */
 
-  /* ICONOS */
-  --icon: #475569;
+  /* Iconos */
+  --icon: #374151;          /* Gris oscuro para íconos */
 
-  /* BORDES */
-  --border: #e2e8f0;
-  --border-loading:#000000;
-  --border-input: #cbd5e1;
+  /* Bordes */
+  --border: #D1D5DB;
+  --border-input: #CBD5E1;
 }
 
 /* ===================== DARK THEME ===================== */
 [data-theme="dark"] {
-  --primary: #3b82f6;           /* Azul claro accesible en dark */
-  --secondary: #a855f7;         /* Púrpura más brillante en dark */
+  --primary: #F29705;       /* Naranja marca */
+  --primary-hover: #F5A52E; /* Hover */
+  --primary-active: #B86A03;/* Active */
+  --secondary: #3B82F6;     /* Azul brillante para contraste en dark */
+  --accent: #22C55E;        /* Verde más vivo en dark */
 
-  /* ESTADOS */
-  --success: #34d399;           /* Verde éxito */
-  --warning: #fbbf24;           /* Amarillo advertencia */
-  --error: #f87171;             /* Rojo error */
+  /* Estados */
+  --success: #22C55E;       /* Verde éxito */
+  --warning: #FACC15;       /* Amarillo más luminoso */
+  --error: #F87171;         /* Rojo accesible en dark */
 
-  /* TEXTOS */
-  --text-main: #f1f5f9;
-  --text-muted: #cbd5e1;
-  --text-soft: #94a3b8;
+  /* Textos */
+  --text-main: #F9FAFB;     /* Texto principal claro */
+  --text-muted: #E5E7EB;    /* Texto secundario */
+  --text-soft: #9CA3AF;     /* Texto suave */
 
-  /* FONDOS */
-  --bg-main: #1e293b;
-  --bg-card: #0f172a;
-  --bg-input: #1e293b;
-  --bg-alt: #111827;            /* Fondo alternativo */
+  /* Fondos */
+  --bg-main: #111827;       /* Fondo principal oscuro */
+  --bg-card: #1F2937;       /* Tarjetas gris oscuro */
+  --bg-input: #1E293B;      /* Inputs oscuros */
+  --bg-alt: #0F172A;        /* Fondo alternativo más profundo */
 
-  /* ICONOS */
-  --icon: #e2e8f0;
+  /* Iconos */
+  --icon: #E5E7EB;          /* Íconos claros */
 
-  /* BORDES */
-  --border: #334155;
-    --border-loading:#fff;
-  --border-input: #475569;
+  /* Bordes */
+  --border: #374151;
+  --border-input: #4B5563;
 }
-
-
 
 /* transición global suave*/
 html {
