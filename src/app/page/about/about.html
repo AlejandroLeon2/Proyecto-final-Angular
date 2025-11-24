@@ -1,0 +1,156 @@
+<section class="bg-[var(--bg-main)] text-[var(--text-main)] flex flex-col w-full min-h-screen">
+
+  <!-- HEADER -->
+  <app-header></app-header>
+
+  <!-- HERO IMAGE -->
+  <picture class="flex justify-center items-center h-[65vh] w-full relative overflow-hidden">
+    <img 
+      src="assets/images/your-about-image.webp"
+      alt="About"
+      class="w-full h-full object-cover brightness-90"
+    />
+    <div class="absolute inset-0 bg-black/40 flex justify-center items-center">
+      <h1 class="text-5xl md:text-7xl font-bold text-white tracking-wide">
+        About Us
+      </h1>
+    </div>
+  </picture>
+
+  <!-- OUR MISSION -->
+  <div class="flex flex-col items-center text-center px-6 md:px-20 py-20">
+    <h2 class="text-4xl md:text-5xl font-semibold mb-10 w-full text-left">
+      Our Mission
+    </h2>
+
+    <ul class="flex flex-wrap justify-center gap-[8vh]">
+
+      <!-- ITEM 1 -->
+      <li class="w-70 h-56 bg-[var(--bg-card)] border border-[var(--border)] shadow-md flex flex-col justify-center items-center rounded-2xl transition hover:shadow-xl hover:-translate-y-1">
+        <div class="text-5xl mb-3">✨</div>
+        <p class="text-[0.85rem] font-medium px-3">
+          We work every day to bring you exceptional products that combine quality, durability, and modern design
+        </p>
+      </li>
+
+      <!-- ITEM 2 -->
+      <li class="w-70 h-56 bg-[var(--bg-card)] border border-[var(--border)] shadow-md flex flex-col justify-center items-center rounded-2xl transition hover:shadow-xl hover:-translate-y-1">
+        <div class="text-5xl mb-3">🚀</div>
+        <p class="text-[0.85rem] font-medium px-3">
+          From quick deliveries to smooth handling of every order, our priority is providing you with a shopping experience that feels effortless from start to finish.
+        </p>
+      </li>
+
+      <!-- ITEM 3 -->
+      <li class="w-70 h-56 bg-[var(--bg-card)] border border-[var(--border)] shadow-md flex flex-col justify-center items-center rounded-2xl transition hover:shadow-xl hover:-translate-y-1">
+        <div class="text-5xl mb-3">🤝</div>
+        <p class="text-[0.85rem] font-medium px-3">
+          Every interaction matters. We listen, guide, and support you with the commitment of a team that genuinely cares about your satisfaction.
+        </p>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- WHAT MAKES US DIFFERENT -->
+  <div class="flex flex-col items-center text-center px-6 md:px-20 py-20 bg-[var(--bg-alt)]">
+    <h2 class="text-4xl md:text-5xl font-semibold mb-14">
+      What Makes Us Different
+    </h2>
+
+    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl">
+
+      <!-- DIFFERENCE 1 -->
+      <li class="bg-[var(--bg-card)] h-40 border border-[var(--border)] shadow-md rounded-2xl flex flex-col items-center justify-center p-6 text-lg font-medium transition hover:shadow-xl hover:-translate-y-1">
+        Premium Quality
+        <span class="block text-sm text-[var(--text-muted)] mt-2 px-2">
+          We partner with trusted suppliers to ensure every item meets strict quality standards.
+        </span>
+      </li>
+
+      <!-- DIFFERENCE 2 -->
+      <li class="bg-[var(--bg-card)] h-40 border border-[var(--border)] shadow-md rounded-2xl flex flex-col items-center justify-center p-6 text-lg font-medium transition hover:shadow-xl hover:-translate-y-1">
+        Fast Delivery
+        <span class="block text-sm text-[var(--text-muted)] mt-2 px-2">
+          Orders are processed with precision, speed, and real-time tracking.
+        </span>
+      </li>
+
+      <!-- DIFFERENCE 3 -->
+      <li class="bg-[var(--bg-card)] h-40 border border-[var(--border)] shadow-md rounded-2xl flex flex-col items-center justify-center p-6 text-lg font-medium transition hover:shadow-xl hover:-translate-y-1">
+        Friendly Support
+        <span class="block text-sm text-[var(--text-muted)] mt-2 px-2">
+          Our dedicated team is ready to assist you at every step of your purchase.
+        </span>
+      </li>
+
+      <!-- DIFFERENCE 4 -->
+      <li class="bg-[var(--bg-card)] h-40 border border-[var(--border)] shadow-md rounded-2xl flex flex-col items-center justify-center p-6 text-lg font-medium transition hover:shadow-xl hover:-translate-y-1">
+        Secure Shopping
+        <span class="block text-sm text-[var(--text-muted)] mt-2 px-2">
+          Every transaction is encrypted and protected with industry-standard security.
+        </span>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- MEET THE TEAM -->
+  <div class="flex flex-col lg:flex-row justify-center items-center gap-16 px-6 md:px-20 py-20">
+
+    <!-- TEAM SECTION -->
+    <div class="flex flex-col items-start max-w-xl">
+      <h2 class="text-4xl md:text-5xl font-semibold mb-10">
+        Meet The Team
+      </h2>
+
+      <ul class="space-y-6 w-full">
+
+        <li class="flex items-center gap-5 bg-[var(--bg-card)] p-5 rounded-xl border border-[var(--border)] shadow hover:shadow-lg transition">
+          <div class="w-20 h-20 rounded-full bg-[var(--primary)] flex items-center justify-center text-white text-3xl">
+            👤
+          </div>
+          <p class="text-lg font-medium">
+            Passionate specialists committed to delivering the best possible shopping experience.
+          </p>
+        </li>
+
+        <li class="flex items-center gap-5 bg-[var(--bg-card)] p-5 rounded-xl border border-[var(--border)] shadow hover:shadow-lg transition">
+          <div class="w-20 h-20 rounded-full bg-[var(--primary)] flex items-center justify-center text-white text-3xl">
+            👤
+          </div>
+          <p class="text-lg font-medium">
+            A customer-centered team always ready to guide, assist, and support your journey.
+          </p>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- RATING CIRCLE -->
+    <div class="w-72 h-72 border-4 border-[var(--primary)] rounded-full flex flex-col justify-center items-center bg-[var(--bg-card)] shadow-xl">
+      <h3 class="text-5xl font-bold text-[var(--primary)]">4.8★</h3>
+      <h4 class="text-xl mt-2 text-[var(--text-muted)]">TrustPilot Rating</h4>
+    </div>
+
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="w-full py-24 px-6 md:px-20 bg-[var(--bg-alt)] flex flex-col items-center text-center">
+
+    <h2 class="text-4xl md:text-5xl font-semibold mb-6">
+        Ready to build your ultimate setup?
+    </h2>
+
+    <p class="text-lg text-[var(--text-muted)] max-w-2xl mb-10">
+        Explore our curated categories and elevate your experience with high-quality gear that fits your lifestyle.
+    </p>
+
+    <button
+        class="px-10 py-4 bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white text-lg font-semibold rounded-xl shadow-md hover:shadow-xl transition">
+        SHOP NOW
+    </button>
+
+  </div>
+
+</section>
