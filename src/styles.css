@@ -85,7 +85,7 @@
 }
 /* ===================== LIGHT THEME ===================== */
 [data-theme="light"] {
-  --primary: #2563eb;           /* Azul intenso accesible */
+  --primary: #ff7a1a;           /* Naranja principal */
   --secondary: #9333ea;         /* Púrpura elegante para acentos secundarios */
 
   /* ESTADOS */
@@ -115,7 +115,7 @@
 
 /* ===================== DARK THEME ===================== */
 [data-theme="dark"] {
-  --primary: #3b82f6;           /* Azul claro accesible en dark */
+  --primary: #ff8b3d;           /* Naranja principal en dark */
   --secondary: #a855f7;         /* Púrpura más brillante en dark */
 
   /* ESTADOS */
@@ -139,7 +139,7 @@
 
   /* BORDES */
   --border: #334155;
-    --border-loading:#fff;
+  --border-loading:#fff;
   --border-input: #475569;
 }
 
