@@ -1,0 +1,163 @@
+/* ===== Overlay general ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== Contenedor del modal ===== */
+.modal-container {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 440px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  transform: translateX(100%);
+  opacity: 0;
+  animation: slideInFromRight 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes slideInFromRight {
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ===== Icono de éxito ===== */
+.success-icon {
+  margin: 0 auto 24px;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkmark {
+  width: 90px;
+  height: 90px;
+  display: block;
+  stroke-width: 3;
+  stroke: #4CAF50;
+  stroke-miterlimit: 10;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: scale 0.3s ease-in-out 0.8s both;
+}
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke: #4CAF50;
+  stroke-width: 3;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke: #4CAF50;
+  stroke-width: 3;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #4CAF50;
+  }
+}
+
+/* ===== Textos ===== */
+.modal-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
+
+.modal-message {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* ===== Detalles de orden ===== */
+.order-details {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.order-number {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 8px;
+}
+
+.order-total {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ===== Botón ===== */
+.close-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.close-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.close-button:active {
+  transform: translateY(0);
+}
