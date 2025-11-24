@@ -78,6 +78,8 @@ export class Header implements OnInit {
     switch (this.role) {
       case 'usuario':
         return '/user/orders';
+        case 'admin':
+          return'/admin/orders';
       default:
         return '/login';
     }

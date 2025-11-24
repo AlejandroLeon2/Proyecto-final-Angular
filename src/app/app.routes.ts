@@ -10,7 +10,6 @@ export const routes: Routes = [
   },
   {
     path: 'shop',
-
     loadComponent: () => import('./layouts/shop-layout/shop-layout').then((c) => c.ShopLayout),
     children: [
       {
@@ -45,10 +44,10 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./page/frequently-questions/frequently-questions').then((c) => c.FrequentlyQuestions),
       },
-      // {
-      //   path: '**',
-      //   redirectTo: 'home',
-      // },
+    {
+      path: '**',
+      redirectTo: 'home',
+       },
     ],
   },
 

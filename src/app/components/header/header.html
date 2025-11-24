@@ -1,6 +1,6 @@
-<header class="sticky top-0 z-50 w-full bg-[var(--bg-card)] shadow backdrop-blur-sm">
+<header class="sticky top-0 z-50 w-full bg-[var(--bg-card)] backdrop-blur-sm">
   <div
-    class="mx-auto max-w-7xl flex items-center justify-between  px-4 py-2"
+    class="mx-auto max-w-7xl flex items-center justify-between border-b border-[var(--border)] px-4 py-2"
   >
     <!-- Left section -->
     <div class="flex items-center gap-8">
@@ -36,7 +36,6 @@
       <div class="relative" (mouseenter)="showUserMenu = true" (mouseleave)="leaveUserMenu()">
         @if (!src) {
         <!-- si usuario no esta logueado carga lucide-icon UserRound -->
-        <!-- si usuario no esta logueado carga lucide-icon UserRound -->
         <button
           class="flex items-center justify-center rounded-lg text-[var(--icon)] hover:text-[var(--text-main)]"
         >
@@ -50,8 +49,8 @@
           <img [src]="src" alt="User Profile" class="w-full h-full object-cover" />
         </button>
         } @if (showUserMenu){
-        <!-- si usuario esta logueado carga la foto de perfil -->
         <!-- panel dropdown de login/register si el usuario no esta logueado -->
+        @if(!user) {
         <div
           class="absolute left-1/2 -translate-x-1/2 mt-0 w-32 flex flex-col bg-[var(--bg-card)] border border-[var(--border)] shadow-lg rounded-lg p-2 z-50"
         >
@@ -117,11 +116,9 @@
     <a
       routerLink="/shop/catalogo-product"
       class="text-sm font-medium text-[var(--text-main)] hover:text-[var(--primary)] transition-colors py-2"
-
     >
       Catalogo
     </a>
-
     <a
       routerLink="/shop/home"
       class="text-sm font-medium text-[var(--text-main)] hover:text-[var(--primary)] transition-colors py-2"

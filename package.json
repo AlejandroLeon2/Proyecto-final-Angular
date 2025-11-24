@@ -1,6 +1,8 @@
 {
   "name": "proyecto-final-ecommerce",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "config": "node ./config/set-env.config.js",
@@ -21,6 +23,10 @@
       }
     ]
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.19.0",
   "private": true,
   "dependencies": {
     "@angular/common": "^20.3.0",
