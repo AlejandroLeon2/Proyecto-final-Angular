@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { adminGuardGuard } from './core/guards/admin/admin-guard-guard';
-import { userGuardGuard } from './core/guards/user/user-guard-guard';
+import { adminGuard } from './core/guards/admin/admin-guard';
+import { userGuard } from './core/guards/user/user-guard';
 
 export const routes: Routes = [
   {
@@ -59,7 +59,7 @@ export const routes: Routes = [
   // ADMIN Routes
   {
     path: 'admin',
-    canActivate: [adminGuardGuard],
+    canActivate: [adminGuard],
     loadComponent: () => import('./layouts/admin-layout/admin-layout').then((c) => c.AdminLayout),
     children: [
       {
@@ -85,12 +85,14 @@ export const routes: Routes = [
       {
         path: 'orders',
         loadComponent: () =>
-          import('./feature/admin/components/orders/orders').then((c) => c.Orders),
+          import('./feature/user/Components/orders/orders').then((c) => c.OrdersList),
       },
       {
         path: 'orders/:id',
         loadComponent: () =>
-          import('./feature/admin/components/order-detail/order-detail').then((m) => m.OrderDetail),
+          import('./feature/user/Components/orders/orders-detail/orders-detail').then(
+            (c) => c.OrdersDetail
+          ),
       },
       {
         path: '**',
@@ -102,7 +104,7 @@ export const routes: Routes = [
 
   {
     path: 'user',
-    canActivate: [userGuardGuard],
+    canActivate: [userGuard],
     loadComponent: () =>
       import('./layouts/usuario-layout/usuario-layout').then((c) => c.UsuarioLayout),
     children: [
@@ -113,11 +115,18 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('./feature/user/profile/profile').then((c) => c.Profile),
+        loadComponent: () => import('./page/user/profile/profile').then((c) => c.Profile),
       },
       {
         path: 'orders',
-        loadComponent: () => import('./feature/user/order/order').then((c) => c.Order),
+        loadComponent: () => import('./page/user/orders/orders').then((c) => c.Orders),
+      },
+      {
+        path: 'orders/:id',
+        loadComponent: () =>
+          import('./feature/user/Components/orders/orders-detail/orders-detail').then(
+            (c) => c.OrdersDetail
+          ),
       },
       {
         path: '**',
