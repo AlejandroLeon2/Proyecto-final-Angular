@@ -5,7 +5,7 @@
   <div class="flex w-full flex-1 rounded-lg h-full">
     <label
       for="searchInput"
-      class="flex items-center justify-center pl-3 rounded-l-lg border-r-0 text-[var(--text-soft)] bg-[var(--bg-input)]"
+      class="flex items-center justify-center pl-2 pr-1 rounded-l-lg border-r-0 text-[var(--text-main)] bg-[var(--border-input)]"
     >
     <lucide-icon [img]="search"></lucide-icon>
     </label>
@@ -16,7 +16,7 @@
 
       (keyup)="onSearch()"
 
-      class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none text-[var(--text-main)] border border-[var(--bg-input)] h-full placeholder:text-[var(--text-soft)] pl-2 text-sm font-normal focus:outline-none focus:ring-0 focus:border-transparent"
+      class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none text-[var(--text-main)] border border-[var(--border-input)] h-full placeholder:text-[var(--text-soft)] pl-2 text-sm font-normal focus:outline-none focus:ring-0 focus:border-transparent"
       placeholder="Search products..."
       [(ngModel)]="wordKey"
     />

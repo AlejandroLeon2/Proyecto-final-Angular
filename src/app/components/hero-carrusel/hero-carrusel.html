@@ -11,14 +11,10 @@
         <div
           class="absolute top-1/2 right-[19%] md:right-[10%] left-[20%] md:left-[10%] lg:left-[15%] xl:left-[20%] -translate-y-1/2 max-w-[70%] md:max-w-[600px] lg:max-w-[700px] xl:max-w-[800px] text-white"
         >
-          <h1
-            class="text-3xl md:text-6xl font-bold mb-4 leading-tight drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)]"
-          >
+          <h2 class="text-5xl md:text-6xl font-light mb-4 leading-tight">
             {{ slide.title }}
-          </h1>
-          <p
-            class="text-base md:text-2xl mb-8 leading-relaxed drop-shadow-[2px_2px_4px_rgba(0,0,0,0.7)]"
-          >
+          </h2>
+          <p class="text-base md:text-xl text-gray-300 mb-8 leading-relaxed">
             {{ slide.description }}
           </p>
           <a
@@ -28,7 +24,7 @@
                 : ['/shop', slide.buttonLink]
             "
             [fragment]="slide.fragmentlink"
-            class="inline-block px-6 py-3 md:px-10 md:py-4 bg-[var(--primary)] text-white no-underline text-base md:text-lg font-semibold rounded-full transition-all duration-300 hover:bg-blue-600 hover:-translate-y-0.5"
+            class="inline-block px-4 py-3 bg-[var(--primary)] text-white no-underline text-sm rounded-lg transition-all duration-300 hover:bg-[var(--primary-hover)] hover:-translate-y-0.5"
           >
             {{ slide.buttonText }}
           </a>
@@ -39,29 +35,11 @@
 
     <!-- Botones de navegación -->
     <button class="nav-button left-8" (click)="previousSlide()" aria-label="Imagen anterior">
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
+      <lucide-angular [img]="ChevronLeft" />
     </button>
 
     <button class="nav-button right-8" (click)="nextSlide()" aria-label="Siguiente imagen">
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
+      <lucide-angular [img]="ChevronRight"/>
     </button>
 
     <!-- Indicadores -->

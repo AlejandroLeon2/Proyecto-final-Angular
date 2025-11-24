@@ -15,7 +15,7 @@
                     @for (item of shopLinks; track $index) {
                         <li>
                             <a 
-                            [href]="item.url" 
+                            [routerLink]="item.url" 
                             class="hover:text-[var(--primary)] transition-colors duration-200 inline-block">
                                 {{ item.label }}
                             </a>
@@ -31,7 +31,7 @@
                     @for (item of aboutLinks; track $index) {
                         <li>
                             <a 
-                            [href]="item.url" 
+                            [routerLink]="item.url" 
                             class="hover:text-[var(--primary)] transition-colors duration-200 inline-block">
                                 {{ item.label }}
                             </a>
@@ -48,7 +48,7 @@
                     @for (item of legalLinks; track $index) {
                         <li>
                             <a 
-                            [href]="item.url" 
+                            [routerLink]="item.url" 
                             class="hover:text-[var(--primary) transition-colors duration-200 inline-block">
                                 {{ item.label }}
                             </a>

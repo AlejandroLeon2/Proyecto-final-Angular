@@ -2,7 +2,14 @@ import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Minus,
+  Plus,
+  ShoppingCart,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Product } from '../../core/models/product.model';
@@ -26,12 +33,13 @@ export class ProductDetail implements OnInit, OnDestroy {
   error: string | null = null;
 
   private destroy$ = new Subject<void>();
-
-  Plus = Plus;
-  Minus = Minus;
-  shoppingCartIcon = ShoppingCart;
+  readonly ChevronLeft = ChevronLeft;
+  readonly ChevronRight = ChevronRight;
+  readonly Plus = Plus;
+  readonly Minus = Minus;
+  readonly shoppingCartIcon = ShoppingCart;
   private productsService = inject(ProductsService);
-  private authService:Auth = inject(Auth);
+  private authService: Auth = inject(Auth);
   featuredProducts = this.productsService['_data'];
   constructor(
     private route: ActivatedRoute,

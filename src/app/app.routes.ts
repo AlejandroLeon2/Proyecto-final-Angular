@@ -40,6 +40,11 @@ export const routes: Routes = [
         path: 'ckeckout',
         loadComponent: () => import('./page/ckeckout/ckeckout').then((c) => c.Ckeckout),
       },
+                  {
+        path: 'frequently-questions',
+        loadComponent: () =>
+          import('./page/frequently-questions/frequently-questions').then((c) => c.FrequentlyQuestions),
+      },
       // {
       //   path: '**',
       //   redirectTo: 'home',

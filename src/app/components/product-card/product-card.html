@@ -1,4 +1,4 @@
-<div class="group max-w-xs bg-[var(--bg-card)] border border-[var(--border)] transition-all duration-300 hover:border-[var(--text-soft)]">
+<div class="group rounded-sm max-w-xs bg-[var(--bg-card)] border border-[var(--border)] transition-all duration-300 hover:border-[var(--text-soft)]">
   
   <!-- Imagen del producto -->
   <div
@@ -29,7 +29,7 @@
         {{ product.category }}
       </span>
       
-      <h3 class="text-base font-medium text-[var(--text-main)] line-clamp-2 leading-snug">
+      <h3 class="text-base min-h-11 font-medium text-[var(--text-main)] line-clamp-2 leading-snug">
         {{ product.name }}
       </h3>
     </div>
@@ -43,7 +43,7 @@
       <button
         (click)="addToCart()"
         [disabled]="!user || isOutOfStock()"
-        class="w-9 h-9 flex items-center justify-center border border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--text-main)] hover:text-[var(--bg-card)] hover:border-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+        class="w-9 h-9 flex items-center active:scale-95 rounded-xs justify-center border border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--text-main)] hover:text-[var(--bg-card)] hover:border-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
         [attr.aria-label]="'Agregar ' + product.name + ' al carrito'"
       >
         <lucide-icon [img]="shoppingCartIcon" size="16"></lucide-icon>

@@ -6,15 +6,17 @@ import { HeroCarrusel } from '../../components/hero-carrusel/hero-carrusel';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
+import { LucideAngularModule,ChevronRight } from 'lucide-angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProductCarouselComponent, HeroCarrusel, RouterLink],
+  imports: [CommonModule, ProductCarouselComponent, HeroCarrusel, RouterLink,LucideAngularModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
 })
 export class Home {
+  readonly ChevronRight =ChevronRight
   private productsService = inject(ProductsService);
     news = toSignal(
     this.productsService.getPaginatedProducts(1, 10, []).pipe(
