@@ -1,0 +1,28 @@
+<h2 class="text-2xl font-bold m-4">Mis Órdenes</h2>
+
+<div class="w-full max-w-2xl px-4 py-6 rounded-xl transition-colors duration-300">
+  <div>
+    <div class="space-y-4">
+      @if (isLoading()) {
+      <div class="flex justify-center items-center">
+        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+      } @else { @if (orders().length > 0) { @for (order of orders(); track $index) {
+      <div
+        class="p-4 border border-gray-200 shadow-sm rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-300"
+        [routerLink]="['/user/orders', order.id]"
+      >
+        <h3 class="font-semibold">
+          Detalle de la orden: <span class="accent">{{ order.id }}</span>
+        </h3>
+        <p class="text-sm text-gray-600">Fecha: {{ order.createdAt | date : 'dd/MM/yyyy' }}</p>
+        <p class="text-sm text-gray-600">
+          Total: {{ order.total | currency : 'PEN' : 'symbol' : '1.2' }}
+        </p>
+      </div>
+      } } @else {
+      <p>No se encontraron órdenes.</p>
+      } }
+    </div>
+  </div>
+</div>

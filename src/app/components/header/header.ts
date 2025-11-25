@@ -1,13 +1,19 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Search } from '../search/search';
-import { RouterLink, Router } from '@angular/router';
-import { CartService } from '../../core/service/cart/cart';
-import { CartDropdown } from '../cart-dropdown/cart-dropdown';
-import { ButtonTheme } from '../button-theme/button-theme';
-import { LucideAngularModule, TextAlignJustify, UserRound, LogOut } from 'lucide-angular';
-import { IconTienda } from '../../icons/icon-tienda/icon-tienda';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import {
+  LogOut,
+  LucideAngularModule,
+  SquareChartGantt,
+  TextAlignJustify,
+  UserRound,
+} from 'lucide-angular';
 import { Auth } from '../../core/service/auth/auth';
+import { CartService } from '../../core/service/cart/cart';
+import { IconTienda } from '../../icons/icon-tienda/icon-tienda';
+import { ButtonTheme } from '../button-theme/button-theme';
+import { CartDropdown } from '../cart-dropdown/cart-dropdown';
+import { Search } from '../search/search';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +38,7 @@ export class Header implements OnInit {
   TextAlignJustify = TextAlignJustify;
   UserRound = UserRound;
   LogOut = LogOut;
+  SquareChartGantt = SquareChartGantt;
 
   totalCartItems = 0;
 
@@ -67,6 +74,17 @@ export class Header implements OnInit {
         return '/login';
     }
   }
+  get orderRoute() {
+    switch (this.role) {
+      case 'usuario':
+        return '/user/orders';
+        case 'admin':
+          return'/admin/orders';
+      default:
+        return '/login';
+    }
+  }
+
   get user() {
     return this.auth.user();
   }

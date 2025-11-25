@@ -1,11 +1,13 @@
 {
   "name": "proyecto-final-ecommerce",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "config": "node ./config/set-env.config.js",
-    "start": "npm run config -- --environment=dev && ng serve",
-    "build": "npm run config -- --environment=prod && ng build --configuration production",
+    "start": "pnpm run config -- --environment=dev && ng serve",
+    "build": "pnpm run config -- --environment=prod && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -21,6 +23,10 @@
       }
     ]
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.19.0",
   "private": true,
   "dependencies": {
     "@angular/common": "^20.3.0",

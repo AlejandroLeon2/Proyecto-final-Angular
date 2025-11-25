@@ -4,13 +4,13 @@
 //ReactiveFormsModule es un Módulo. Es una "caja de herramientas" completa para usar Formularios Reactivos.
 //UserCredential es una interfaz que representa las credenciales del usuario devueltas por Firebase después de la autenticación.
 
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
-import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../core/service/auth/auth';
 import { IconTienda } from '../../../icons/icon-tienda/icon-tienda';
+import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -34,7 +34,7 @@ export class Login {
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 
-  constructor(private location: Location) { }
+  constructor(private location: Location) {}
 
   //se crean los controles del formulario reactivo
   loginForm = this.fb.group({

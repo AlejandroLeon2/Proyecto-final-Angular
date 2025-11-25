@@ -358,6 +358,7 @@
             </div>
 
             <button
+              type="button"
               (click)="confirmOrder()"
               [disabled]="!isFormValid()"
               class="w-full py-4 text-sm font-medium transition-all"
@@ -378,3 +379,11 @@
     </div>
   </div>
 </section>
+
+<!-- MODAL DE ÉXITO -->
+<app-modal-venta
+  [isVisible]="showSuccessModal"
+  [orderNumber]="orderNumber"
+  [total]="total"
+  (closeModal)="closeSuccessModal()">
+</app-modal-venta>

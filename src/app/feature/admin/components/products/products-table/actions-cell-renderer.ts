@@ -4,6 +4,7 @@ import type { ICellRendererAngularComp } from 'ag-grid-angular';
 import type { ICellRendererParams } from 'ag-grid-community';
 import { LucideAngularModule, PenLine, Trash } from 'lucide-angular';
 import { Product } from '../../../../../core/models/product.model';
+import { ProductsService } from '../../../../../core/service/products/products';
 import { ModalService } from '../../modal/service/modal';
 
 @Component({
@@ -36,6 +37,7 @@ export class ActionsCellRenderer implements ICellRendererAngularComp {
   data = signal<Product | undefined>(undefined);
 
   modalService = inject(ModalService);
+  productsService = inject(ProductsService);
 
   // Icons
   penLine = PenLine;
@@ -55,6 +57,6 @@ export class ActionsCellRenderer implements ICellRendererAngularComp {
   }
 
   deleteProduct() {
-    console.log('deleteProduct');
+    this.productsService.deleteProduct(this.data()?.id!);
   }
 }

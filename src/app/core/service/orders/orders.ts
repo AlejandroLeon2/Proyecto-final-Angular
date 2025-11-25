@@ -35,4 +35,8 @@ export class OrdersService {
   getOrderById(id: string) {
     return this.http.get<ICustomResponse<Order>>(`${environment.apiURL}/order/${id}`).pipe(take(1));
   }
+
+  getOrdersByUser(uid: string) {
+    return this.http.get<ICustomResponse<Order[]>>(`${environment.apiURL}/order/user/${uid}`);
+  }
 }

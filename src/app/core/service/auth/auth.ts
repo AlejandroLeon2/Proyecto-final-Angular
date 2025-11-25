@@ -1,19 +1,18 @@
-import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; //HttpHeaders se usa para enviar el token de autorización en la cabecera
-import { firstValueFrom, Observable } from 'rxjs'; //firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
+import { inject, Injectable, signal } from '@angular/core';
 import {
-  Auth as FirebaseAuth, // Alias para evitar conflicto de nombres
-  signInWithPopup,
   authState,
   browserLocalPersistence,
-  setPersistence,
-  User,
+  Auth as FirebaseAuth,
   GoogleAuthProvider,
-  UserCredential,
+  sendPasswordResetEmail,
   // Importamos la función para hacer login con email/pass desde el SDK de CLIENTE
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail // Importamos la función para enviar el correo de recuperación
+  signInWithEmailAndPassword, // Alias para evitar conflicto de nombres
+  signInWithPopup,
+  User,
+  UserCredential,
 } from '@angular/fire/auth';
+import { catchError, firstValueFrom, Observable, of } from 'rxjs'; //firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -28,7 +27,7 @@ export class Auth {
 
   constructor() {
     // Configurar persistencia
-    setPersistence(this.fireAuth, browserLocalPersistence);
+    this.fireAuth.setPersistence(browserLocalPersistence);
 
     // Escuchar cambios de sesión
     authState(this.fireAuth).subscribe(async (user) => {
@@ -77,13 +76,7 @@ export class Auth {
       'Content-Type': 'application/json',
     });
 
-    return firstValueFrom(
-      this.http.post(
-        `${environment.apiURL}/auth/`,
-        {},
-        { headers }
-      )
-    );
+    return firstValueFrom(this.http.post(`${environment.apiURL}/auth/`, {}, { headers }));
   }
 
   // --- Recuperar Contraseña ---
@@ -106,9 +99,9 @@ export class Auth {
       this.http.get(environment.apiURL + `/usuario/${uid}`)
     );
     return apiResponse?.rol ?? 'unknown';
-  };
-  
-    //metodo para obtener rol por api auth/me/rol
+  }
+
+  //metodo para obtener rol por api auth/me/rol
 
   async guardUserRol(token: string): Promise<string> {
     const headers = new HttpHeaders({
@@ -116,7 +109,12 @@ export class Auth {
       'Content-Type': 'application/json',
     });
     const apiResponse: { rol: string } = await firstValueFrom(
-      this.http.get<{ rol: string }>(`${environment.apiURL}/auth/me/rol`, { headers })
+      this.http.get<{ rol: string }>(`${environment.apiURL}/auth/me/rol`, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error al obtener el rol:', error);
+          return of({ rol: 'unknown' });
+        })
+      )
     );
     return apiResponse.rol;
   }
