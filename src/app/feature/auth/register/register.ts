@@ -3,18 +3,19 @@
 //Validators es un objeto que contiene funciones de validación estáticas como required, email, minLength, etc.
 //ReactiveFormsModule es un Módulo. Es una "caja de herramientas" completa para usar Formularios Reactivos.
 
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { IconBrandLogo } from '../../../icons/IconBrandLogo/IconBrandLogo';
 import { Auth } from '../../../core/service/auth/auth';
 import { IconTienda } from '../../../icons/icon-tienda/icon-tienda';
+import { TerminosCondiciones } from '../../../components/terminos-condiciones/terminos-condiciones';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, IconTienda],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, IconTienda, TerminosCondiciones],
   templateUrl: './register.html',
   styleUrl: './register.css',
 
@@ -29,7 +30,9 @@ export class Register {
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
 
-  constructor(private location: Location) {}
+  showTerms = signal(false);
+
+  constructor(private location: Location) { }
 
   //se crean los controles del formulario reactivo
   registerForm = this.fb.group({
@@ -65,6 +68,10 @@ export class Register {
   }
   get terms() {
     return this.registerForm.get('terms');
+  }
+
+  onTermsAccepted() {
+    this.terms?.setValue(true);
   }
 
   // --- Método de envío (Email/Pass) ---
