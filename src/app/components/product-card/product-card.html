@@ -1,5 +1,6 @@
-<div class="group rounded-sm max-w-xs bg-[var(--bg-card)] border border-[var(--border)] transition-all duration-300 hover:border-[var(--text-soft)]">
-  
+<div
+  class="group rounded-sm max-w-xs bg-[var(--bg-card)] border border-[var(--border)] transition-all duration-300 hover:border-[var(--text-soft)]"
+>
   <!-- Imagen del producto -->
   <div
     [routerLink]="['/shop', 'product-detail', product.id]"
@@ -22,13 +23,12 @@
 
   <!-- Contenido -->
   <div class="p-5 space-y-4">
-    
     <!-- Header -->
     <div class="space-y-2">
       <span class="text-xs uppercase tracking-wider text-[var(--text-soft)]">
-        {{ product.category }}
+        {{ product.category.name }}
       </span>
-      
+
       <h3 class="text-base min-h-11 font-medium text-[var(--text-main)] line-clamp-2 leading-snug">
         {{ product.name }}
       </h3>
@@ -37,9 +37,9 @@
     <!-- Footer -->
     <div class="flex items-center justify-between pt-2 border-t border-[var(--border)]">
       <span class="text-lg font-light text-[var(--text-main)]">
-        {{ product.price | currency: 'PEN':'symbol':'1.2' }}
+        {{ product.price | currency : 'PEN' : 'symbol' : '1.2' }}
       </span>
-      
+
       <button
         (click)="addToCart()"
         [disabled]="!user || isOutOfStock()"

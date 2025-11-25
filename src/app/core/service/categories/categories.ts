@@ -4,6 +4,7 @@ import { catchError, take, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Category } from '../../models/category.model';
 import { ICustomResponse } from '../../models/customResponse';
+import { Status } from '../../models/status.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +21,13 @@ export class CategoriesService {
     return this._data();
   }
 
-  getCategories(): void {
+  getCategories(status?: Status): void {
     this.http
-      .get<ICustomResponse<Category[]>>(environment.apiURL + '/category/all')
+      .get<ICustomResponse<Category[]>>(environment.apiURL + '/category/all', {
+        params: {
+          status: status || '',
+        },
+      })
       .pipe(
         take(1),
         catchError((error) => {

@@ -1,6 +1,7 @@
-import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';//se agrego inject
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core'; //se agrego inject
+import { FormsModule } from '@angular/forms';
+import { STATUS } from '../../core/models/status.model';
 import { CategoriesService } from '../../core/service/categories/categories'; //Importamos el servicio real
 
 export interface FilterState {
@@ -26,7 +27,7 @@ export class FilterComponent implements OnInit {
 
   // Estado de las categorías seleccionadas
   selectedCategories = signal<string[]>([]);
-  
+
   // Estado de expansión de secciones
   categoryExpanded = signal<boolean>(true);
 
@@ -34,9 +35,8 @@ export class FilterComponent implements OnInit {
   categories = this.categoriesService.data;
 
   ngOnInit(): void {
-
     // <--- Cargar categorías reales al iniciar --->
-    this.categoriesService.getCategories();
+    this.categoriesService.getCategories(STATUS.active);
   }
 
   /**
@@ -93,4 +93,3 @@ export class FilterComponent implements OnInit {
     this.categoryExpanded.set(!this.categoryExpanded());
   }
 }
-

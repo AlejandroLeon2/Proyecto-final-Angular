@@ -52,6 +52,9 @@ export class CategoriesTable {
       field: 'status',
       headerName: 'Estado',
       filter: true,
+      cellRenderer: (params: any) => {
+        return params.value === 'active' ? 'Activo' : 'Inactivo';
+      },
     },
     {
       headerName: 'Acciones',
