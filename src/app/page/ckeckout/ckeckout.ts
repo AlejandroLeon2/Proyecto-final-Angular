@@ -293,19 +293,19 @@ export class Ckeckout implements OnInit {
   // ========== CERRAR MODAL ==========
   
   closeSuccessModal() {
-  this.showSuccessModal = false;
+    this.showSuccessModal = false;
 
-  setTimeout(() => {
-    // Limpiar formularios
-    this.buyerForm.reset();
-    this.cardForm.reset();
+    setTimeout(() => {
+      // Limpiar formularios
+      this.buyerForm.reset();
+      this.cardForm.reset();
 
-    // Vaciar carrito
-    this.cartService.clearCart();
+      // Vaciar carrito
+      this.cartService.clearCart();
 
-    // Redirigir al Home
-    this.router.navigate(['/']);
-  }, 350); // coincide con duración del fade-out
-}
+      // Redirigir al Home
+      this.router.navigate(['/']);
+    }, 350); // coincide con duración del fade-out
+  }
   
 }
