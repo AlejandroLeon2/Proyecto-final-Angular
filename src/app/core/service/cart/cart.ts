@@ -21,18 +21,37 @@ export class CartService {
   addItem(product: Product, quantity: number = 1): void {
     const items = this._items.value;
     const idx = items.findIndex((i) => i.id === product.id);
+    
+  if (idx > -1) {
+    const currentQuantity = items[idx].quantity;
+    const newQuantity = currentQuantity + quantity;
 
-    if (idx > -1) {
-      items[idx].quantity += quantity;
-    } else {
-      items.push({
-        ...product,
-        quantity,
-      });
+    if (newQuantity > product.stock) {
+      console.warn(`No puedes agregar más de ${product.stock} unidades de ${product.name}`);
+      return;
     }
+
+    items[idx].quantity = newQuantity;
+  } else {
+    if (quantity > product.stock) {
+      console.warn(`Stock insuficiente para ${product.name}`);
+      return;
+    }
+
+    items.push({
+      ...product,
+      quantity,
+    });
+  }
 
     this._items.next([...items]);
   }
+  
+  getQuantity(productId: string): number {
+  const item = this._items.value.find(i => i.id === productId);
+  return item ? item.quantity : 0;
+}
+
 
   removeItem(id: string): void {
     const items = this._items.value.filter((item) => item.id !== id);
@@ -65,6 +84,7 @@ saveCart(): void {
       quantity: item.quantity
     }))   
   };
+  
 
   // Envías al backend
   this.http.post(`${environment.apiURL}/cart`, cartSave).subscribe({
@@ -72,6 +92,8 @@ saveCart(): void {
     error: (err) => console.error('Error al sincronizar carrito', err),
   });
 }
+
+
   /* Limpia completamente el carrito */
   clearCart(): void {
     this._items.next([]);

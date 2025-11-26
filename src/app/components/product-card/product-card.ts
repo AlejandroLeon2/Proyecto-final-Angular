@@ -15,7 +15,7 @@ import { Auth } from '../../core/service/auth/auth';
 })
 export class ProductCardComponent {
   @Input() product!: Product;
-  private authService:Auth= inject(Auth);
+  private authService: Auth = inject(Auth);
 
   shoppingCartIcon = ShoppingCart;
 
@@ -57,10 +57,20 @@ export class ProductCardComponent {
    * Maneja el click en agregar al carrito
    */
   addToCart(): void {
-    if (this.isOutOfStock()) return;
+  if (this.isOutOfStock() || this.isStockExceeded()) {
+    console.warn('No puedes agregar más, stock agotado');
+    return;
+  }
     this.cartService.addItem(this.product);
     console.log('Producto agregado al carrito:', this.product);
   }
+
+isStockExceeded(): boolean {
+  const currentQuantity = this.cartService.getQuantity(this.product.id!);
+  return currentQuantity >= this.product.stock;
+}
+
+
   /**
    * Obtiene la clase CSS según el estado
    */

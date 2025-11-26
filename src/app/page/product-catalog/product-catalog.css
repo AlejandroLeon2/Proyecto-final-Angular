@@ -28,7 +28,7 @@
 }
 
 .collection-title {
-  @apply text-3xl font-bold text-[var(--text-main)] mb-6;
+  @apply text-3xl font-light text-[var(--text-main)] mb-6;
 
 }
 

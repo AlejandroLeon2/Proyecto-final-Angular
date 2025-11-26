@@ -7,7 +7,6 @@ import { ProductsService } from '../../core/service/products/products'; // Usamo
 
 @Component({
   selector: 'app-product-catalog',
-
   standalone: true,
   imports: [FilterComponent, ProductCardComponent, Pagination],
   templateUrl: './product-catalog.html',

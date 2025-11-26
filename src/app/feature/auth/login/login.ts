@@ -65,17 +65,11 @@ export class Login {
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
       const userCredential = await this.auth.loginWithEmail(this.loginForm.value);
-      console.log('¡Login (Email/Pass) exitoso (Paso 1)!', userCredential.user);
-
-      // --- PASO 2: Enviar Token al Backend ---
-      console.log('Enviando token al backend (Paso 2)...');
-
       //Espera a que Firebase genere un token de identificación para este usuario.
       const token = await userCredential.user.getIdToken();
 
       //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
-      console.log('Respuesta del backend (Paso 2):', backendResponse);
       //handleSuccessfulLogin: manejar inicio de sesión exitoso.
       this.router.navigate(['/shop/home']);
     } catch (error: any) {
@@ -93,14 +87,9 @@ export class Login {
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
       const userCredential = await this.auth.loginWithGoogle();
-      console.log('¡Login con Google exitoso (Paso 1)!', userCredential.user);
-
-      // --- PASO 2: Enviar Token al Backend ---
-      console.log('Enviando token al backend (Paso 2)...');
       const token = await userCredential.user.getIdToken();
 
       const backendResponse = await this.auth.validateAndSaveUserToDb(token);
-      console.log('Respuesta del backend (Paso 2):', backendResponse);
       this.router.navigate(['/shop/home']);
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);

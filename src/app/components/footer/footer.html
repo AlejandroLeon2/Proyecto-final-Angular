@@ -1,85 +1,76 @@
 <footer class="w-full bg-[var(--bg-card)] text-[var(--text-muted)] py-12 sm:py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:grid  md:grid-cols-3 justify-center lg:grid-cols-4 gap-8 lg:gap-12">
+      <!-- Brand section -->
+      <div class="">
+        <app-icon-tienda />
+        <p class="text-sm text-[var(--text-muted)] leading-relaxed">
+          Los mejores productos, entregados en su puerta.
+        </p>
+      </div>
 
-            <!-- Brand section -->
-            <div >
-<app-icon-tienda/>
-                <p class="text-sm text-[var(--text-muted)] leading-relaxed">Los mejores productos, entregados en su puerta.</p>
-            </div>
+      <!-- Shpop section -->
+      <div class="">
 
-            <!-- Shpop section -->
-            <div>
-                <h3 class="text-[var(--text-main)] font-semibold text-base mb-4">Tienda</h3>
-                <ul class="space-y-3">
-                    @for (item of shopLinks; track $index) {
-                        <li>
-                            <a 
-                            [routerLink]="item.url" 
-                            class="hover:text-[var(--primary)] transition-colors duration-200 inline-block">
-                                {{ item.label }}
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </div>
+        <h3 class="text-[var(--text-main)] font-semibold text-base mb-4">Tienda</h3>
+        <ul class="space-y-3">
+          @for (item of shopLinks; track $index) {
+          <li>
+            <a
+              [routerLink]="item.url"
+              class="hover:text-[var(--primary)] transition-colors duration-200 inline-block"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+          }
+        </ul>
+      </div>
 
-            <!-- About section -->
-            <div>
-                <h3 class="text-[var(--text-main)] font-semibold text-base mb-4">Sobre nosotros</h3>
-                <ul class="space-y-3">
-                    @for (item of aboutLinks; track $index) {
-                        <li>
-                            <a 
-                            [routerLink]="item.url" 
-                            class="hover:text-[var(--primary)] transition-colors duration-200 inline-block">
-                                {{ item.label }}
-                            </a>
-                        </li>
-                    }
-                </ul>
-                
-            </div>
+      <!-- About section -->
+      <div>
+        <h3 class="text-[var(--text-main)] font-semibold text-base mb-4">Sobre nosotros</h3>
+        <ul class="space-y-3">
+          @for (item of aboutLinks; track $index) {
+          <li>
+            <a
+              [routerLink]="item.url"
+              class="hover:text-[var(--primary)] transition-colors duration-200 inline-block"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+          }
+        </ul>
+      </div>
 
-            <!-- Legal section -->
-            <div>
-                <h3 class="text-[var(--text-main)] font-semibold text-base mb-4">Legal</h3>
-                <ul class="space-y-3">
-                    @for (item of legalLinks; track $index) {
-                        <li>
-                            <a 
-                            [routerLink]="item.url" 
-                            class="hover:text-[var(--primary) transition-colors duration-200 inline-block">
-                                {{ item.label }}
-                            </a>
-                        </li>
-                    }
-                </ul>
 
-            </div>
 
-            <!-- Subscription -->
-            <div class="sm: col-span-2 lg:col-span-1">
-                <h3 class="text-[var(--text-main)] font-semibold text-base mb-4">Suscríbete a nuestro boletín informativo</h3>
-                <p class="text-sm text-[var(--text-muted)] mb-4 leading-relaxed">Entérate de las últimas ofertas y novedades de productos.</p>
-                <form (ngSubmit)="subscribe()" class="flex flex-col sm:flex-row lg:flex-col gap-2">
-                  <input 
-                    type="email" 
-                    [(ngModel)]="email"
-                    name="email"
-                    placeholder="Introduce tu correo electrónico" 
-                    class="flex-1 px-4 py-2.5 bg-[var(--bg-card)] border border-[var(--border)] rounded-md text-sm text-[var(--text-main)] placeholder[var(--text-soft)] focus:outline-none focus:ring-2 focus:ring-var(--primary)] focus:border-transparent transition-all duration-200"
-                    required
-                  />
-                  <button 
-                    type="submit" 
-                    class="px-6 py-2.5 bg-[var(--primary)] hover:bg-blue-600 active:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200 whitespace-nowrap"
-                  >
-                    Suscribirse
-                  </button>
-                </form>
-            </div>
-
-        </div>
+      <!-- Subscription -->
+      <div class="sm: col-span-2 lg:col-span-1">
+        <h3 class="text-[var(--text-main)] font-semibold text-base mb-4">
+          Suscríbete a nuestro boletín informativo
+        </h3>
+        <p class="text-sm text-[var(--text-muted)] mb-4 leading-relaxed">
+          Entérate de las últimas ofertas y novedades de productos.
+        </p>
+        <form (ngSubmit)="subscribe()" class="flex flex-col sm:flex-row lg:flex-col gap-2">
+          <input
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            placeholder="Introduce tu correo electrónico"
+            class="flex-1 px-4 py-2.5 bg-[var(--bg-card)] border border-[var(--border)] rounded-md text-sm text-[var(--text-main)] placeholder[var(--text-soft)] focus:outline-none focus:ring-2 focus:ring-var(--primary)] focus:border-transparent transition-all duration-200"
+            required
+          />
+          <button
+            type="submit"
+            class="px-6 py-2.5 bg-[var(--primary)] hover:bg-blue-600 active:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200 whitespace-nowrap"
+          >
+            Suscribirse
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </footer>

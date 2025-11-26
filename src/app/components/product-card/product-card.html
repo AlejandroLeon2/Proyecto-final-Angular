@@ -42,7 +42,7 @@
       
       <button
         (click)="addToCart()"
-        [disabled]="!user || isOutOfStock()"
+        [disabled]="!user || isOutOfStock()||isStockExceeded()"
         class="w-9 h-9 flex items-center active:scale-95 rounded-xs justify-center border border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--text-main)] hover:text-[var(--bg-card)] hover:border-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
         [attr.aria-label]="'Agregar ' + product.name + ' al carrito'"
       >
