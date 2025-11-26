@@ -289,7 +289,7 @@ export class Ckeckout implements OnInit {
       // ⚠️ Notificación de error de validación
       this.notify.error('Por favor, completa correctamente todos los campos requeridos.');
     
-
+    
       return;
     }
     const items = this.products.map((p) => ({
@@ -359,4 +359,5 @@ export class Ckeckout implements OnInit {
     this.router.navigate(['/']);
   }, 350); // coincide con duración del fade-out
 
+}
 }
