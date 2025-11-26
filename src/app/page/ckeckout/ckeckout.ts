@@ -6,6 +6,7 @@ import { CartService } from '../../core/service/cart/cart';
 import type { CartItem } from '../../core/models/cart-item.model';
 import { ModalVenta } from '../../components/modal-venta/modal-venta';
 import { Router } from '@angular/router';
+import { Notification } from '../../core/service/notification/notification';
 
 interface ShippingMethod {
   id: string;
@@ -41,7 +42,7 @@ export class Ckeckout implements OnInit {
 
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private notify: Notification) {}
 
   ngOnInit() {
     this.initForms();
@@ -264,6 +265,9 @@ export class Ckeckout implements OnInit {
         firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
       
+      // ⚠️ Notificación de error de validación
+      this.notify.error('Por favor, completa correctamente todos los campos requeridos.');
+    
       return;
     }
 
@@ -285,6 +289,9 @@ export class Ckeckout implements OnInit {
     
     // Guardar carrito
     this.cartService.saveCart();
+
+    // Notificación de éxito
+    this.notify.success(`Orden ${this.orderNumber} procesada correctamente 🎉`);
     
     // Mostrar modal
     this.showSuccessModal = true;
@@ -302,6 +309,9 @@ export class Ckeckout implements OnInit {
 
     // Vaciar carrito
     this.cartService.clearCart();
+
+    // Notificación informativa
+    this.notify.info('Regresando al inicio...');
 
     // Redirigir al Home
     this.router.navigate(['/']);
