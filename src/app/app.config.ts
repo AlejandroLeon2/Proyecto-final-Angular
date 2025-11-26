@@ -11,7 +11,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 
 // --- Imports nuevos ---
-import { provideHttpClient } from '@angular/common/http'; // Para tu clase Auth (email/pass)
+import { provideHttpClient,withFetch } from '@angular/common/http'; // Para tu clase Auth (email/pass)
 import { environment } from '../environments/environment'; // Importa el entorno base
 
 // Imports para Firebase (Google Login)
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     // --- Providers nuevos añadidos (CORREGIDOS) ---
 
     // 2. Provider para HttpClient
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
 
     // 3. Providers para Firebase (¡ahora están en el nivel correcto!)
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), 

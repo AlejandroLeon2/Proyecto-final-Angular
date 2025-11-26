@@ -40,7 +40,7 @@ export class ProductDetail implements OnInit, OnDestroy {
   readonly shoppingCartIcon = ShoppingCart;
   private productsService = inject(ProductsService);
   private authService: Auth = inject(Auth);
-  featuredProducts = this.productsService['_data'];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -99,6 +99,12 @@ export class ProductDetail implements OnInit, OnDestroy {
         },
       });
   }
+  isStockExceeded(quantity: number = 1): boolean {
+    const currentQuantity = this.cartService.getQuantity(this.product!.id!);
+      const newTotal = currentQuantity + quantity;
+  return newTotal > this.product!.stock;
+  }
+
 
   increaseQuantity(): void {
     if (this.product && this.quantity < this.product.stock) {
@@ -122,14 +128,10 @@ export class ProductDetail implements OnInit, OnDestroy {
   }
 
   addToCart(): void {
-    if (!this.product || this.isOutOfStock()) return;
+    if (!this.product || this.isOutOfStock() || this.isStockExceeded()) return;
 
     this.cartService.addItem(this.product, this.quantity);
-
-    console.log('🛒 Producto añadido:', {
-      id: this.product.id,
-      quantity: this.quantity,
-    });
+    this.quantity = 1;
   }
 
   goBack(): void {

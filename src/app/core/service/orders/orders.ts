@@ -15,6 +15,12 @@ export class OrdersService {
   get data() {
     return this._data();
   }
+  createOrder(order: Partial<Order>) {
+  return this.http
+    .post<ICustomResponse<Order>>(environment.apiURL + '/order', order)
+    .pipe(take(1));
+}
+
 
   getOrders() {
     this.http
