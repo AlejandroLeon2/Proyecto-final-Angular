@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ICustomResponse } from '../../models/customResponse';
 import { Product } from '../../models/product.model';
 import { Status } from '../../models/status.model';
+import { NotificationService } from '../notification/notification';
 
 // Interfaces para la respuesta paginada
 export interface PaginationData {
@@ -25,6 +26,7 @@ export interface PaginatedProductResponse {
 export class ProductsService {
   private _data = signal<Product[]>([]);
   private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
 
   get data() {
     return this._data();
@@ -99,9 +101,11 @@ export class ProductsService {
       )
       .subscribe({
         next: (response) => {
+          this.notificationService.success('Producto creado correctamente');
           this._data.update((data) => [...data, response.data!]);
         },
         error: () => {
+          this.notificationService.error('Error al crear el producto.');
           console.error('ThrowError: Error al obtener los productos');
         },
       });
@@ -126,10 +130,12 @@ export class ProductsService {
             if (index !== -1) {
               data[index] = response.data!;
             }
+            this.notificationService.success('Producto actualizado correctamente');
             return [...data];
           });
         },
         error: () => {
+          this.notificationService.error('Error al actualizar producto.');
           console.error('ThrowError: Error al obtener los productos');
         },
       });
@@ -172,10 +178,12 @@ export class ProductsService {
             if (index !== -1) {
               data.splice(index, 1);
             }
+            this.notificationService.success('Producto eliminado.');
             return [...data];
           });
         },
         error: () => {
+          this.notificationService.error('Error al eliminar el producto.');
           console.error('ThrowError: Error al obtener los productos');
         },
       });
