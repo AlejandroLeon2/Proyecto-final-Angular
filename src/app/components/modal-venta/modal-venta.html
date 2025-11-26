@@ -1,0 +1,42 @@
+@if (isVisible) {
+  <div 
+    class="modal-overlay" 
+    [class.show]="isVisible"
+    (click)="close()">
+    <div 
+      class="modal-container"
+      [class.show]="isVisible"
+      (click)="$event.stopPropagation()">
+
+      <!-- Icono de éxito -->
+      <div class="success-icon">
+      <svg viewBox="0 0 52 52" class="checkmark">
+          <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+          <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16" />
+      </svg>
+      </div>
+
+      <!-- Contenido -->
+      <h2 class="modal-title">¡Venta Exitosa!</h2>
+      <p class="modal-message">
+        Tu orden ha sido procesada correctamente.
+        <br>
+        Recibirás un correo de confirmación pronto.
+      </p>
+
+      <!-- Detalles de la orden -->
+      @if (orderNumber) {
+        <div class="order-details">
+          <p class="order-number">Orden #{{ orderNumber }}</p>
+          <p class="order-total">Total: S/{{ total | number:'1.2-2' }}</p>
+        </div>
+      }
+
+      <!-- Botón de cerrar -->
+      <button class="close-button" (click)="close()">
+        Aceptar
+      </button>
+    </div>
+  </div>
+}
+

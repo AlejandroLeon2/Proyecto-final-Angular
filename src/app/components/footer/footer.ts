@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconTienda } from "../../icons/icon-tienda/icon-tienda";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-footer',
-  imports: [CommonModule, FormsModule, IconTienda],
+  imports: [CommonModule, FormsModule, IconTienda, RouterLink],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
 })
@@ -21,7 +22,7 @@ export class Footer {
   aboutLinks = [
       { label: 'Sobre Nosotros', url: '/about' },
       { label: 'Contacto', url: '/contact' },
-      { label: 'Preguntas frecuentes', url: '/faq' }
+      { label: 'Preguntas frecuentes', url: '/shop/frequently-questions' }
     ];
 
   legalLinks = [

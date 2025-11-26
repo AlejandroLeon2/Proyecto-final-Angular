@@ -6,7 +6,6 @@ import { CartItem } from '../../models/cart-item.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Auth } from '../auth/auth';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -73,6 +72,16 @@ saveCart(): void {
     error: (err) => console.error('Error al sincronizar carrito', err),
   });
 }
+  /* Limpia completamente el carrito */
+  clearCart(): void {
+    this._items.next([]);
 
-
+    const user = this.auth.getCurrentUser();
+    if (user) {
+      this.http.delete(`${environment.apiURL}/cart/${user.uid}`).subscribe({
+        next: () => console.log('🧹 Carrito vaciado en backend'),
+        error: (err) => console.error('Error al limpiar carrito:', err),
+      });
+    }
+  }
 }

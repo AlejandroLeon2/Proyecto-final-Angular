@@ -1,25 +1,28 @@
 <h2 class="text-lg font-semibold text-gray-300 pb-4 text-center">
-  {{ product()?.id ? 'Actualizar' : 'Agregar' }} producto
+  {{ productForm.get('id')?.value ? 'Actualizar' : 'Agregar' }} producto
 </h2>
 
-@let f = formState();
-<form (submit)="onSubmit($event)" class="space-y-4 text-gray-300">
+<form [formGroup]="productForm" (submit)="onSubmit($event)" class="space-y-4 text-gray-300">
   <!-- Nombre del Producto -->
   <div>
     <label for="name" class="block text-sm font-medium">Nombre del producto</label>
     <input
       id="name"
       type="text"
-      [ngModel]="f.name"
-      (ngModelChange)="updateFormState({ name: $event })"
-      name="name"
+      formControlName="name"
       class="border border-gray-300 rounded w-full p-2"
-      [class.border-red-300]="f.name && f.name.length < 3"
-      required
+      [class.border-red-300]="isFieldInvalid('name')"
     />
-    @if (f.name && f.name.length < 3) {
+    @if (isFieldInvalid('name')) { @if (f['name'].errors?.['required']) {
+    <p class="text-red-500 text-xs mt-1">El nombre es requerido</p>
+    } @if (f['name'].errors?.['minlength']) {
     <p class="text-red-500 text-xs mt-1">El nombre debe tener al menos 3 caracteres</p>
-    }
+    } }
+  </div>
+
+  <div class="flex gap-2">
+    <input type="checkbox" formControlName="status" class="w-4 h-4" />
+    <label for="status" class="block text-sm font-medium">Activo</label>
   </div>
 
   <!-- Precio -->
@@ -28,18 +31,17 @@
     <input
       id="price"
       type="number"
-      min="1"
-      [ngModel]="f.price"
-      (ngModelChange)="updateFormState({ price: $event ? +$event : 0 })"
-      name="price"
+      min="0.01"
+      step="0.01"
+      formControlName="price"
       class="border border-gray-300 rounded w-full p-2"
-      [class.border-red-300]="f.price <= 0"
-      required
+      [class.border-red-300]="isFieldInvalid('price')"
     />
-
-    @if (f.price <= 0) {
+    @if (isFieldInvalid('price')) { @if (f['price'].errors?.['required']) {
+    <p class="text-red-500 text-xs mt-1">El precio es requerido</p>
+    } @if (f['price'].errors?.['min']) {
     <p class="text-red-500 text-xs mt-1">El precio debe ser mayor a 0</p>
-    }
+    } }
   </div>
 
   <!-- Descripción -->
@@ -47,17 +49,16 @@
     <label for="description" class="block text-sm font-medium">Descripción</label>
     <textarea
       id="description"
-      [ngModel]="f.description"
-      (ngModelChange)="updateFormState({ description: $event })"
-      name="description"
+      formControlName="description"
       rows="3"
       class="border border-gray-300 rounded w-full p-2"
-      [class.border-red-300]="f.description && f.description.length < 10"
-      required
+      [class.border-red-300]="isFieldInvalid('description')"
     ></textarea>
-    @if (f.description && f.description.length < 10) {
+    @if (isFieldInvalid('description')) { @if (f['description'].errors?.['required']) {
+    <p class="text-red-500 text-xs mt-1">La descripción es requerida</p>
+    } @if (f['description'].errors?.['minlength']) {
     <p class="text-red-500 text-xs mt-1">La descripción debe tener al menos 10 caracteres</p>
-    }
+    } }
   </div>
 
   <!-- Stock -->
@@ -66,18 +67,17 @@
     <input
       id="stock"
       type="number"
-      min="1"
+      min="0"
       (wheel)="$event.target.blur()"
-      [ngModel]="f.stock"
-      (ngModelChange)="updateFormState({ stock: $event ? +$event : 0 })"
-      name="stock"
+      formControlName="stock"
       class="border border-gray-300 rounded w-full p-2"
-      [class.border-red-300]="f.stock < 0"
-      required
+      [class.border-red-300]="isFieldInvalid('stock')"
     />
-    @if (f.stock < 0) {
+    @if (isFieldInvalid('stock')) { @if (f['stock'].errors?.['required']) {
+    <p class="text-red-500 text-xs mt-1">El stock es requerido</p>
+    } @if (f['stock'].errors?.['min']) {
     <p class="text-red-500 text-xs mt-1">El stock no puede ser negativo</p>
-    }
+    } }
   </div>
 
   <!-- Categoría -->
@@ -85,17 +85,18 @@
     <label for="category" class="block text-sm font-medium">Categoría</label>
     <select
       id="category"
-      [ngModel]="f.category"
-      (ngModelChange)="updateFormState({ category: $event })"
-      name="category"
+      formControlName="category"
       class="border border-gray-300 rounded w-full p-2"
-      required
+      [class.border-red-300]="isFieldInvalid('category')"
     >
       <option class="bg-gray-800" [ngValue]="''">Seleccionar categoría</option>
-      @for (cat of categoriesService.data; track cat.id) {
+      @for (cat of categories(); track cat.id) {
       <option class="bg-gray-900" [value]="cat.id">{{ cat.name }}</option>
       }
     </select>
+    @if (isFieldInvalid('category')) {
+    <p class="text-red-500 text-xs mt-1">La categoría es requerida</p>
+    }
   </div>
 
   <!-- Image Upload -->
@@ -103,11 +104,11 @@
     <label class="block text-sm font-medium">Imagen del producto</label>
 
     <!-- Image preview -->
-    @if (previewUrl || f.image) {
+    @if (previewUrl || productForm.get('image')?.value) {
     <div class="mb-3">
       <div class="relative inline-block">
         <img
-          [src]="previewUrl || (typeof f.image === 'string' ? f.image : '')"
+          [src]="previewUrl || productForm.get('image')?.value"
           alt="Preview"
           class="h-32 w-32 object-cover rounded border border-gray-300"
         />
@@ -144,13 +145,8 @@
       }
     </div>
 
-    <!-- Image URL fallback (hidden but keeps the model binding) -->
-    <input
-      type="hidden"
-      [ngModel]="f.image"
-      (ngModelChange)="updateFormState({ image: $event })"
-      name="image"
-    />
+    <!-- Hidden input for image URL -->
+    <input type="hidden" formControlName="image" />
 
     <p class="text-xs text-gray-600 mt-1">
       Sube una imagen del producto o proporciona una URL. Tamaño máximo: 5MB. Formatos: JPG, PNG,
@@ -170,12 +166,10 @@
 
     <button
       type="submit"
-      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-      [disabled]="!isFormValid()"
-      [class.opacity-50]="!isFormValid()"
-      [class.cursor-not-allowed]="!isFormValid()"
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="!productForm.valid"
     >
-      {{ product()?.id ? 'Actualizar' : 'Agregar' }}
+      {{ productForm.get('id')?.value ? 'Actualizar' : 'Agregar' }}
     </button>
   </menu>
 </form>

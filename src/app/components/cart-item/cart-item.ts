@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CartItem } from '../../core/models/cart-item.model';
 import { CurrencyPipe } from '@angular/common';
-import { LucideAngularModule,Trash2 } from "lucide-angular";
+import { LucideAngularModule,Trash2, Minus,Plus } from "lucide-angular";
 
 @Component({
   selector: 'app-cart-item',
@@ -11,6 +11,8 @@ import { LucideAngularModule,Trash2 } from "lucide-angular";
   styleUrls: ['./cart-item.css'],
 })
 export class CartItemComponent {
+  readonly Minus=Minus;
+  readonly Plus=Plus;
   Trash2 =Trash2 ;
   @Input() item!: CartItem;
 

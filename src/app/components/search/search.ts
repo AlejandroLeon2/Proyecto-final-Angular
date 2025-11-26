@@ -33,7 +33,7 @@ export class Search {
     //filtramos wordKey con trim y lowerCase dentro de la funcion en wordSearch
     let wordSearch =  this.wordKey.trim().toLowerCase();
     //si el usuario sigue escribiendo limpiamos el cronometro y resultados
-    if(this.wordKey.length === 0){
+    if(this.wordKey.length === 0 && this.wordKey.trim() === ''){
       clearTimeout(this.crono);
       this.resultados = {success:false, message:''};
     }

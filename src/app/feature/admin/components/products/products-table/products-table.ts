@@ -55,7 +55,7 @@ export class ProductsTable {
       minWidth: 100,
       flex: 1,
     },
-    { field: 'category', headerName: 'Categoría', minWidth: 100, flex: 1 },
+    { field: 'category.name', headerName: 'Categoría', minWidth: 100, flex: 1 },
     { field: 'description', headerName: 'Descripción', minWidth: 250, flex: 2 },
     { field: 'price', headerName: 'Precio', minWidth: 80, flex: 1 },
     { field: 'stock', headerName: 'Stock', minWidth: 80, flex: 1 },
@@ -63,9 +63,11 @@ export class ProductsTable {
       field: 'status',
       headerName: 'Estado',
       filter: true,
-      filterParams: { active: 'Activo', inactive: 'Inactivo' },
       minWidth: 100,
       flex: 1,
+      cellRenderer: (params: any) => {
+        return params.value === 'active' ? 'Activo' : 'Inactivo';
+      },
     },
     {
       headerName: 'Acciones',

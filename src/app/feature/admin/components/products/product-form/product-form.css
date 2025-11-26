@@ -10,12 +10,15 @@ textarea{
     height: 60px;
 }
 
+input[type="checkbox"] {
+  margin-top: 0;
+}
+
 /* input number without spinner controls */
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
   appearance: textfield; /* Other modern browsers */
   -webkit-appearance: none; /* WebKit browsers like Safari and Chrome */
-  margin: 0; /* Removes default margin */
   outline: none;
   -webkit-box-shadow: none; /* Removes inner shadow on iOS */
   -moz-box-shadow: none;
@@ -26,7 +29,6 @@ input[type="number"] {
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
-  margin: 0;
 }
 
 /* custom scrollbar */

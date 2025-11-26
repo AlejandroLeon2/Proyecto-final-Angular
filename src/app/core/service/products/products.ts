@@ -1,9 +1,10 @@
-import { HttpClient,HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, map, take, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ICustomResponse } from '../../models/customResponse';
 import { Product } from '../../models/product.model';
+import { Status } from '../../models/status.model';
 
 // Interfaces para la respuesta paginada
 export interface PaginationData {
@@ -30,7 +31,8 @@ export class ProductsService {
   }
 
   // --- MÉTODO NUEVO: Obtener productos paginados ---
-  getPaginatedProducts(page: number = 1, limit: number = 10, categories: string[] = []) {//parametro categories agregado opcional
+  getPaginatedProducts(page: number = 1, limit: number = 10, categories: string[] = []) {
+    //parametro categories agregado opcional
     let params = new HttpParams() //cambio de const a let porque se va a modificar
       .set('page', page.toString())
       .set('limit', limit.toString());
@@ -42,18 +44,17 @@ export class ProductsService {
     }
 
     return this.http
-      .get<ICustomResponse<PaginatedProductResponse>>(
-        `${environment.apiURL}/product/paginated`,
-        { params }
-      )
+      .get<ICustomResponse<PaginatedProductResponse>>(`${environment.apiURL}/product/paginated`, {
+        params,
+      })
       .pipe(
         take(1),
         // Extraemos directamente la data relevante de la respuesta CustomResponse
         map((response) => {
-           if (!response.success || !response.data) {
-             throw new Error(response.message || 'Error al obtener productos');
-           }
-           return response.data; 
+          if (!response.success || !response.data) {
+            throw new Error(response.message || 'Error al obtener productos');
+          }
+          return response.data;
         }),
         catchError((error) => {
           console.error('ProductsService: Error al obtener productos paginados', error);
@@ -62,9 +63,11 @@ export class ProductsService {
       );
   }
 
-  getProducts(): void {
+  getProducts(status?: Status[]): void {
     this.http
-      .get<Product[]>(environment.apiURL + '/product/all')
+      .get<Product[]>(environment.apiURL + '/product/all', {
+        params: { status: status?.join(',') || '' },
+      })
       .pipe(
         take(1),
         catchError((error) => {
@@ -132,24 +135,51 @@ export class ProductsService {
       });
   }
   getProductById(id: string) {
-  return this.http
-      .get<Product>(`${environment.apiURL}/product/${id}`)
-    //.get<ICustomResponse<Product>>(environment.apiURL + '/product/' + id)
-    .pipe(
-      take(1),
-      /*map((response) => {
+    return (
+      this.http
+        .get<Product>(`${environment.apiURL}/product/${id}`)
+        //.get<ICustomResponse<Product>>(environment.apiURL + '/product/' + id)
+        .pipe(
+          take(1),
+          /*map((response) => {
         if (!response.success || !response.data) {
           throw new Error(response.message || 'Error al obtener producto');
         }
         return response.data;
       }),*/
-      catchError((error) => {
-        console.error('ProductsService: Error al obtener producto por id', error);
-        return throwError(() => error);
-      })
+          catchError((error) => {
+            console.error('ProductsService: Error al obtener producto por id', error);
+            return throwError(() => error);
+          })
+        )
     );
-}
+  }
 
+  deleteProduct(id: string) {
+    this.http
+      .delete<ICustomResponse<Product>>(environment.apiURL + '/product/' + id)
+      .pipe(
+        take(1),
+        catchError((error) => {
+          console.error('ProductService: Error al obtener los productos', error);
+          return throwError(() => error);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this._data.update((data) => {
+            const index = data.findIndex((p) => p.id === id);
+            if (index !== -1) {
+              data.splice(index, 1);
+            }
+            return [...data];
+          });
+        },
+        error: () => {
+          console.error('ThrowError: Error al obtener los productos');
+        },
+      });
+  }
 
   getFormData(product: Product) {
     const formData = new FormData();

@@ -1,0 +1,53 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in">
+    <div
+        class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-scale-in">
+
+        <!-- Header -->
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h2 class="text-2xl font-bold text-slate-800">Términos y Condiciones</h2>
+            <button (click)="closeModal()"
+                class="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-full hover:bg-slate-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6 overflow-y-auto text-slate-600 space-y-4 leading-relaxed text-justify custom-scrollbar">
+            <p>Bienvenido a nuestra plataforma. Al acceder y utilizar nuestros servicios, usted acepta cumplir con los
+                siguientes términos y condiciones:</p>
+
+            <h3 class="text-lg font-semibold text-slate-800 mt-4">1. Uso del Servicio</h3>
+            <p>Usted se compromete a utilizar nuestros servicios únicamente con fines legales y de acuerdo con todas las
+                leyes aplicables. No debe utilizar nuestros servicios para ninguna actividad fraudulenta o dañina.</p>
+
+            <h3 class="text-lg font-semibold text-slate-800 mt-4">2. Privacidad de Datos</h3>
+            <p>Respetamos su privacidad y protegemos sus datos personales de acuerdo con nuestra Política de Privacidad.
+                Al registrarse, acepta el procesamiento de sus datos para la prestación del servicio.</p>
+
+            <h3 class="text-lg font-semibold text-slate-800 mt-4">3. Propiedad Intelectual</h3>
+            <p>Todo el contenido, marcas registradas y propiedad intelectual en esta plataforma son propiedad exclusiva
+                de la empresa o sus licenciantes. Queda prohibida su reproducción sin autorización.</p>
+
+            <h3 class="text-lg font-semibold text-slate-800 mt-4">4. Modificaciones</h3>
+            <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Las modificaciones entrarán
+                en vigor inmediatamente después de su publicación en la plataforma.</p>
+
+            <p class="text-sm text-slate-500 mt-6 italic">Última actualización: Noviembre 2025</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="p-6 border-t border-gray-100 bg-gray-50/50 flex justify-end gap-3">
+            <button (click)="closeModal()"
+                class="px-5 py-2.5 rounded-lg text-slate-600 font-medium hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-200">
+                Cerrar
+            </button>
+            <button (click)="acceptTerms()"
+                class="px-5 py-2.5 rounded-lg bg-[#F29706] text-white font-bold shadow-lg shadow-[#F29706]/20 hover:bg-[#F29706]/90 hover:shadow-[#F29706]/30 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#F29706]/50 focus:ring-offset-2">
+                Aceptar y Continuar
+            </button>
+        </div>
+    </div>
+</div>
