@@ -1,19 +1,22 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http'; //HttpHeaders se usa para enviar el token de autorización en la cabecera
 import { inject, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import {
   authState,
   browserLocalPersistence,
   Auth as FirebaseAuth,
   GoogleAuthProvider,
   sendPasswordResetEmail,
+  setPersistence,
   // Importamos la función para hacer login con email/pass desde el SDK de CLIENTE
   signInWithEmailAndPassword, // Alias para evitar conflicto de nombres
   signInWithPopup,
   User,
   UserCredential,
 } from '@angular/fire/auth';
-import { catchError, firstValueFrom, Observable, of } from 'rxjs'; //firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
+import { catchError, filter, firstValueFrom, Observable, of } from 'rxjs'; //firstValueFrom se usa para convertir un Observable en una Promesa y retornar el primer valor emitido
 import { environment } from '../../../../environments/environment';
+import { ROLE } from '../../models/role.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,11 +26,15 @@ export class Auth {
   private http: HttpClient = inject(HttpClient); // Para llamar al Backend
 
   user = signal<User | null>(null);
-  role = signal<string>('unknown');
+  role = signal<string | null>(null);
+
+  getRole$(): Observable<string | null> {
+    return toObservable(this.role).pipe(filter((role) => role !== null));
+  }
 
   constructor() {
     // Configurar persistencia
-    this.fireAuth.setPersistence(browserLocalPersistence);
+    setPersistence(this.fireAuth, browserLocalPersistence);
 
     // Escuchar cambios de sesión
     authState(this.fireAuth).subscribe(async (user) => {
@@ -38,7 +45,7 @@ export class Auth {
         const rol = await this.guardUserRol(token);
         this.role.set(rol);
       } else {
-        this.role.set('unknown');
+        this.role.set(ROLE.unknown);
       }
     });
   }
@@ -98,7 +105,7 @@ export class Auth {
     const apiResponse: any = await firstValueFrom(
       this.http.get(environment.apiURL + `/usuario/${uid}`)
     );
-    return apiResponse?.rol ?? 'unknown';
+    return apiResponse?.rol ?? ROLE.unknown;
   }
 
   //metodo para obtener rol por api auth/me/rol
@@ -112,7 +119,7 @@ export class Auth {
       this.http.get<{ rol: string }>(`${environment.apiURL}/auth/me/rol`, { headers }).pipe(
         catchError((error) => {
           console.error('Error al obtener el rol:', error);
-          return of({ rol: 'unknown' });
+          return of({ rol: ROLE.unknown });
         })
       )
     );
@@ -123,6 +130,6 @@ export class Auth {
   async logOut(): Promise<void> {
     await this.fireAuth.signOut();
     this.user.set(null);
-    this.role.set('unknown');
+    this.role.set(ROLE.unknown);
   }
 }

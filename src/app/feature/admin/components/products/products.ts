@@ -1,4 +1,5 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
+import { STATUS } from '../../../../core/models/status.model';
 import { ProductsService } from '../../../../core/service/products/products';
 import { Modal } from '../modal/modal';
 import { ModalService } from '../modal/service/modal';
@@ -20,7 +21,7 @@ export class Products implements OnInit {
   rowData = computed(() => this.productsService.data);
 
   ngOnInit(): void {
-    this.productsService.getProducts();
+    this.productsService.getProducts([STATUS.active, STATUS.inactive]);
   }
 
   openModal() {

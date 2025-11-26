@@ -45,8 +45,15 @@ export const routes: Routes = [
       {
         path: 'frequently-questions',
         loadComponent: () =>
-          import('./page/frequently-questions/frequently-questions').then((c) => c.FrequentlyQuestions),
-      }
+         import('./page/frequently-questions/frequently-questions').then(
+            (c) => c.FrequentlyQuestions
+          ),
+      },
+      {
+        path: '**',
+        redirectTo: 'home',
+      },
+
     ],
   },
 
@@ -88,14 +95,12 @@ export const routes: Routes = [
       {
         path: 'orders',
         loadComponent: () =>
-          import('./feature/user/Components/orders/orders').then((c) => c.OrdersList),
+          import('./feature/admin/components/orders/orders').then((c) => c.Orders),
       },
       {
         path: 'orders/:id',
         loadComponent: () =>
-          import('./feature/user/Components/orders/orders-detail/orders-detail').then(
-            (c) => c.OrdersDetail
-          ),
+          import('./feature/admin/components/order-detail/order-detail').then((c) => c.OrderDetail),
       },
       {
         path: '**',

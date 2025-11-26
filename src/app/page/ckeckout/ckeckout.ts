@@ -14,10 +14,14 @@ import { CartService } from '../../core/service/cart/cart';
 import type { CartItem } from '../../core/models/cart-item.model';
 import { ModalVenta } from '../../components/modal-venta/modal-venta';
 import { Router } from '@angular/router';
+
 import { OrdersService } from '../../core/service/orders/orders';
 import { toSignal } from '@angular/core/rxjs-interop';
 import type { Order } from '../../core/models/order.model';
 import { Auth } from '../../core/service/auth/auth';
+
+import { Notification } from '../../core/service/notification/notification';
+
 
 interface ShippingMethod {
   id: string;
@@ -56,7 +60,7 @@ export class Ckeckout implements OnInit {
     { id: 'standard', name: 'Envío Estándar', price: 0, estimatedDays: '5-7 días hábiles' },
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private notify: Notification) {}
 
   ngOnInit() {
     this.initForms();
@@ -279,6 +283,13 @@ export class Ckeckout implements OnInit {
       //   firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       // }, 100);
 
+
+
+      
+      // ⚠️ Notificación de error de validación
+      this.notify.error('Por favor, completa correctamente todos los campos requeridos.');
+    
+
       return;
     }
     const items = this.products.map((p) => ({
@@ -315,6 +326,14 @@ export class Ckeckout implements OnInit {
     // Generar número de orden
     this.orderNumber = this.generateOrderNumber();
 
+    
+    // Guardar carrito
+    this.cartService.saveCart();
+
+    // Notificación de éxito
+    this.notify.success(`Orden ${this.orderNumber} procesada correctamente 🎉`);
+    
+
     // Mostrar modal
     this.showSuccessModal = true;
   }
@@ -332,8 +351,12 @@ export class Ckeckout implements OnInit {
       // Vaciar carrito
       this.cartService.clearCart();
 
-      // Redirigir al Home
-      this.router.navigate(['/']);
-    }, 350); // coincide con duración del fade-out
-  }
+
+    // Notificación informativa
+    this.notify.info('Regresando al inicio...');
+
+    // Redirigir al Home
+    this.router.navigate(['/']);
+  }, 350); // coincide con duración del fade-out
+
 }

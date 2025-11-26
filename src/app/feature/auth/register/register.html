@@ -103,8 +103,8 @@
             <label class="flex items-center gap-2 mt-2">
               <input type="checkbox" formControlName="terms"
                 class="w-4 h-4 text-[#F29706] border-gray-300 rounded focus:ring-[#F29706]">
-              <span class="text-slate-600 text-sm">Acepto los <a href="#"
-                  class="text-[#4F46E5] hover:underline">Términos y Condiciones</a></span>
+              <span class="text-slate-600 text-sm">Acepto los <a (click)="showTerms.set(true); $event.preventDefault()"
+                  href="#" class="text-[#4F46E5] hover:underline">Términos y Condiciones</a></span>
             </label>
             @if (terms?.invalid && (terms?.dirty || terms?.touched)) {
             <p class="text-red-500 text-sm ml-6">
@@ -129,4 +129,8 @@
       </div>
     </div>
   </div>
+
+  @if (showTerms()) {
+  <app-terminos-condiciones [(visible)]="showTerms" (accept)="onTermsAccepted()" />
+  }
 </div>
