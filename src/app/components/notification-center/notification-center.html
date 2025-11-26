@@ -1,0 +1,14 @@
+<div class="toast-container">
+  @for (n of notifications(); track n) {
+    <div class="toast" [ngClass]="n.type">
+      <div class="toast-icon">
+        @switch (n.type) {
+          @case ('success') { ✅ }
+          @case ('error') { ❌ }
+          @case ('info') { ℹ️ }
+        }
+      </div>
+      <div class="toast-message">{{ n.message }}</div>
+    </div>
+  }
+</div>
