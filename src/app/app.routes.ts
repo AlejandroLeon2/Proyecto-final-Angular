@@ -74,11 +74,6 @@ export const routes: Routes = [
         redirectTo: 'products',
       },
       {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./feature/admin/components/products/products').then((c) => c.Products),
-      },
-      {
         path: 'products',
         loadComponent: () =>
           import('./feature/admin/components/products/products').then((c) => c.Products),
