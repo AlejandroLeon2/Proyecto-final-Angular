@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { Category } from '../../models/category.model';
 import { ICustomResponse } from '../../models/customResponse';
 import { Status } from '../../models/status.model';
+import { NotificationService } from '../notification/notification';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ import { Status } from '../../models/status.model';
 export class CategoriesService {
   private _data = signal<Category[]>([]);
   private http = inject(HttpClient);
+  private notification = inject(NotificationService);
 
   // <--- Exponemos el Signal como ReadOnly --->
   // Esto permite que el componente use () para detectar cambios
@@ -60,9 +62,11 @@ export class CategoriesService {
       )
       .subscribe({
         next: (response) => {
+          this.notification.success('Categoría creada correctamente');
           this._data.update((data) => [...data, response.data!]);
         },
         error: () => {
+          this.notification.error('Error al crear categoría');
           console.error('ThrowError: Error al obtener las categorías');
         },
       });
@@ -85,10 +89,14 @@ export class CategoriesService {
             if (index !== -1) {
               data[index] = response.data!;
             }
+            this.notification.success('Categoría actualizada correctamente');
+
             return [...data];
           });
         },
         error: () => {
+          this.notification.error('Error al actualizar categoría');
+
           console.error('ThrowError: Error al obtener las categorías');
         },
       });
@@ -111,10 +119,14 @@ export class CategoriesService {
             if (index !== -1) {
               data.splice(index, 1);
             }
+            this.notification.success('Categoría eliminada correctamente');
+
             return [...data];
           });
         },
         error: () => {
+          this.notification.error('Error al eliminar categoría');
+
           console.error('ThrowError: Error al obtener las categorías');
         },
       });
