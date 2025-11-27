@@ -1,59 +1,72 @@
-# ProyectoFinalEcommerce
+# Proyecto Final Angular - Ecommerce
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+Este es el proyecto frontend desarrollado en Angular para el sistema de Ecommerce.
 
-## Development server
+## Prerrequisitos
 
-To start a local development server, run:
+- **Node.js**: Se requiere tener instalado Node.js (versión LTS recomendada).
+- **pnpm**: Este proyecto utiliza `pnpm` como gestor de paquetes. Si no lo tienes, instálalo con:
+  ```bash
+  npm install -g pnpm
+  ```
+- **Angular CLI**: Se recomienda tener instalada la CLI de Angular globalmente:
+  ```bash
+  npm install -g @angular/cli
+  ```
 
-```bash
-ng serve
-```
+## Instalación
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Sigue estos pasos detallados para instalar el proyecto:
 
-## Code scaffolding
+1. **Crear Carpeta**: Crea una nueva carpeta en tu computadora donde quieras alojar el proyecto, por ejemplo, llámala `Proyecto Frontend`.
+2. **Abrir Terminal**: Abre la carpeta que acabas de crear y abre una terminal dentro de ella.
+3. **Clonar Repositorio**: Ejecuta el comando `git clone` con la URL del repositorio.
+   ```bash
+   git clone https://github.com/AlejandroLeon2/Proyecto-final-Angular.git
+   ```
+4. **Abrir en IDE**: Navega hacia la carpeta del proyecto clonado y ábrelo con tu editor de código favorito.
+   ```bash
+   cd Proyecto-final-Angular
+   code .
+   ```
+   *(El comando `code .` funciona si tienes Visual Studio Code instalado y configurado en el PATH)*
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+5. **Instalar Dependencias**: Estando dentro del editor (VS Code), abre una nueva terminal integrada y ejecuta:
+   ```bash
+   pnpm install
+   ```
 
-```bash
-ng generate component component-name
-```
+## Configuración del Entorno
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. **Variables de Entorno**:
+   - Localizar el archivo `.example.env` en la raíz del proyecto.
+   - Crear una copia de este archivo y renombrarla a `.env`.
+   - **Importante**: Rellenar las variables en el archivo `.env` con tus propias credenciales de Firebase (API Key, Auth Domain, etc.) y la URL de la API.
 
-```bash
-ng generate --help
-```
+2. **Generación de Archivos de Entorno**:
+   - El proyecto utiliza un script para generar los archivos `environment.ts` y `environment.development.ts` automáticamente basándose en tu archivo `.env`.
+   - Este paso se ejecuta automáticamente al iniciar el servidor, pero también puedes ejecutarlo manualmente con:
+     ```bash
+     pnpm run config
+     ```
 
-## Building
+## Ejecución
 
-To build the project run:
+- **Modo Desarrollo**:
+  Ejecuta el siguiente comando para levantar el servidor y abrir el navegador automáticamente:
+  ```bash
+  ng serve -o
+  ```
+  El servidor se iniciará en `http://localhost:4200`.
 
-```bash
-ng build
-```
+- **Modo Producción**:
+  Para generar los archivos optimizados para despliegue en la carpeta `dist/`, ejecuta:
+  ```bash
+  ng build --configuration=production
+  ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Pruebas**:
+  Para correr las pruebas unitarias, ejecuta:
+  ```bash
+  pnpm test
+  ```
