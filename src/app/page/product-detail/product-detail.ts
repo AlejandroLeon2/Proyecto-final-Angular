@@ -1,7 +1,7 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import {
   LucideAngularModule,
   Minus,
@@ -38,18 +38,18 @@ export class ProductDetail implements OnInit, OnDestroy {
   readonly Plus = Plus;
   readonly Minus = Minus;
   readonly shoppingCartIcon = ShoppingCart;
-  private productsService = inject(ProductsService);
+  private productsService: ProductsService = inject(ProductsService);
   private authService: Auth = inject(Auth);
+  private cartService: CartService = inject(CartService);
+  private location: Location = inject(Location);
+  private router: Router = inject(Router);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-
-    private location: Location,
-    private cartService: CartService
-  ) {}
+  constructor(private route: ActivatedRoute) {}
   get user() {
     return this.authService.user();
+  }
+  get role() {
+    return this.authService.role();
   }
   news = toSignal(
     this.productsService.getPaginatedProducts(1, 10, []).pipe(map((res) => res.products)),
@@ -101,10 +101,9 @@ export class ProductDetail implements OnInit, OnDestroy {
   }
   isStockExceeded(quantity: number = 1): boolean {
     const currentQuantity = this.cartService.getQuantity(this.product!.id!);
-      const newTotal = currentQuantity + quantity;
-  return newTotal > this.product!.stock;
+    const newTotal = currentQuantity + quantity;
+    return newTotal > this.product!.stock;
   }
-
 
   increaseQuantity(): void {
     if (this.product && this.quantity < this.product.stock) {

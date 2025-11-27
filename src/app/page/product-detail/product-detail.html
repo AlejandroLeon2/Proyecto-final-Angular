@@ -80,10 +80,8 @@
             <div class="flex items-center border border-[var(--border)] rounded-sm">
               <button
                 (click)="decreaseQuantity()"
-
-                [disabled]="quantity <= 1 || isOutOfStock() ||!user"
-                class="w-10 h-10 border-r border-[var(--border)]  flex justify-center items-center text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-alt)] transition"
-
+                [disabled]="quantity <= 1 || isOutOfStock() || !user || role === 'admin'"
+                class="w-10 h-10 border-r border-[var(--border)] flex justify-center items-center text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-alt)] transition"
               >
                 <lucide-icon [img]="Minus" size="16"></lucide-icon>
               </button>
@@ -94,11 +92,14 @@
 
               <button
                 (click)="increaseQuantity()"
-
-                [disabled]="quantity >= product.stock || isOutOfStock() ||isStockExceeded() ||!user "
-                class="w-10 border-l border-[var(--border)]  flex justify-center items-center h-10 text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-alt)] transition"
-
-
+                [disabled]="
+                  quantity >= product.stock ||
+                  isOutOfStock() ||
+                  isStockExceeded() ||
+                  !user ||
+                  role === 'admin'
+                "
+                class="w-10 border-l border-[var(--border)] flex justify-center items-center h-10 text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-alt)] transition"
               >
                 <lucide-icon [img]="Plus" size="16"></lucide-icon>
               </button>
@@ -106,7 +107,7 @@
 
             <button
               (click)="addToCart()"
-              [disabled]="!user || isOutOfStock()||isStockExceeded()"
+              [disabled]="!user || isOutOfStock() || isStockExceeded() || role === 'admin'"
               class="flex gap-4 justify-center items-center rounded-sm px-4 w-full h-10 bg-[var(--text-main)] text-[var(--bg-card)] disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-90 transition text-sm font-medium"
             >
               Agregar al carrito <lucide-icon [img]="shoppingCartIcon" size="16"></lucide-icon>
@@ -156,10 +157,9 @@
       ></div>
     </div>
     } @if (news().length === 0) {
-  <div class="text-center py-12">
-    <p class="text-gray-500 text-lg">No hay productos disponibles</p>
-  </div>
-  }
-
+    <div class="text-center py-12">
+      <p class="text-gray-500 text-lg">No hay productos disponibles</p>
+    </div>
+    }
   </section>
 </div>

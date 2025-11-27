@@ -34,11 +34,12 @@ export class Header implements OnInit {
   //inyección de servicio auth
   private auth: Auth = inject(Auth);
   private rout: Router = inject(Router);
+  private cartService:CartService=inject(CartService);
   //iconos lucide
-  TextAlignJustify = TextAlignJustify;
-  UserRound = UserRound;
-  LogOut = LogOut;
-  SquareChartGantt = SquareChartGantt;
+  readonly TextAlignJustify = TextAlignJustify;
+  readonly UserRound = UserRound;
+  readonly LogOut = LogOut;
+  readonly SquareChartGantt = SquareChartGantt;
 
   totalCartItems = 0;
 
@@ -48,11 +49,10 @@ export class Header implements OnInit {
   //variable para mostrar/ocultar dropdown del carrito
   showCartDropdown = true;
   showUserMenu = false;
+
   toggleCartDropdown() {
     this.showCartDropdown = !this.showCartDropdown;
   }
-
-  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
     //cargar src de perfil de usuario
@@ -68,8 +68,6 @@ export class Header implements OnInit {
     switch (this.role) {
       case 'usuario':
         return '/user/profile';
-      case 'admin':
-        return '/admin/dashboard';
       default:
         return '/login';
     }
@@ -78,8 +76,6 @@ export class Header implements OnInit {
     switch (this.role) {
       case 'usuario':
         return '/user/orders';
-        case 'admin':
-          return'/admin/orders';
       default:
         return '/login';
     }
