@@ -28,14 +28,15 @@ export class Search {
   resultados: ApiResponse<Product> = {success:false, message:''};
   crono:number = 0;
 
-  onSearch() {
+  onSearchKeyUp() {
     
     //filtramos wordKey con trim y lowerCase dentro de la funcion en wordSearch
     let wordSearch =  this.wordKey.trim().toLowerCase();
     //si el usuario sigue escribiendo limpiamos el cronometro y resultados
-    if(this.wordKey.length === 0 && this.wordKey.trim() === ''){
+    if(wordSearch.length === 0 || wordSearch.trim() === ''){
       clearTimeout(this.crono);
       this.resultados = {success:false, message:''};
+      return
     }
     this.crono = setTimeout(async()=>{
       try {
@@ -63,13 +64,32 @@ export class Search {
     },500);
   };
 
+  //funcion para guardar wordkey en localstorage y pasar a catalogo-produt
+  onViewAllResults(event: Event) {
+    event.preventDefault();
+
+    localStorage.setItem('searchWord', this.wordKey.trim().toLowerCase());
+    this.clearSearch();
+
+    if(this.router.url === '/shop/catalogo-product'){
+      // Si ya estamos en el catálogo de productos, recargamos la página para aplicar el nuevo término de búsqueda
+      window.location.reload();
+      return;
+    }
+    this.router.navigate(['/shop', 'catalogo-product']);
+  }
+
   onSelectProduct(product: Product) {
-    // ejemplo: limpiar búsqueda
-    this.wordKey = '';
-    this.resultados =  {success:false, message:''};
+    // limpiar busqueda
+    this.clearSearch();
     
     // navegar a detalle
     this.router.navigate(['/shop', 'product-detail', product.id]);
-  }
+  };
 
+  //funcion para cerrar modal de busqueda y limpiar resultados
+  clearSearch(){
+    this.wordKey = '';
+    this.resultados =  {success:false, message:''};
+  };
 }

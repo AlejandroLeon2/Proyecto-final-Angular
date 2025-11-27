@@ -29,31 +29,45 @@ export class ProductCatalog implements OnInit {
   // <--- CAMBIO: Estado local de filtros --->
   currentFilters = signal<FilterState>({ categories: [] });
 
+  //variable para search
+  wordSearch: string = '';
+ 
   ngOnInit(): void {
+    this.loadWordSearch();
     this.loadPaginatedProducts();
   }
 
+  loadWordSearch(): void {
+    this.wordSearch = localStorage.getItem('searchWord') || '';
+  }
+
+  // se altero el metodo para incluir filtros del buscador
   loadPaginatedProducts(): void {
     this.loading.set(true);
+
+    //varificamos si existe wordSearch para hacer la busqueda con getPSearchProducts o con getPaginatedProducts
 
     // <--- CAMBIO: Obtenemos los filtros actuales --->
     const filters = this.currentFilters();
     
+    const actionGetProducts = this.wordSearch
+      ? this.productsService.getPSearchProducts(this.currentPage(), this.itemsPerPage, this.wordSearch, filters.categories)
+      : this.productsService.getPaginatedProducts(this.currentPage(), this.itemsPerPage, filters.categories);
     // Efecto: Cuando cambia currentPage, llamamos al servicio
-    this.productsService
-      .getPaginatedProducts(this.currentPage(), this.itemsPerPage, filters.categories) //Pasamos las categorías al servicio
+    actionGetProducts
       .subscribe({
         next: (data) => {
           this.products.set(data.products);
           this.totalPages.set(data.pagination.totalPages);
           this.totalItems.set(data.pagination.totalItems);
           this.loading.set(false);
-          
+        
           // Scroll al inicio suavemente cuando cambie la página
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         error: (err) => {
-          console.error('Error cargando productos paginados:', err);
+          this.products = signal<Product[]>([]);
+          console.error('Error loading products:', err);
           this.loading.set(false);
         }
       });
