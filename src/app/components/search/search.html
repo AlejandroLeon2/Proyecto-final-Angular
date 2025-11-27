@@ -27,7 +27,7 @@
       (click)="clearSearch()"
       class="absolute top-15 left-0 h-[90vh] gap-2 w-full bg-[#0000008a] flex flex-col overflow-y-auto rounded-b-lg items-center p-4 pt-2 shadow-lg z-50">
 
-      <div class="w-[70%] h-auto flex flex-wrap justify-center items-center border my-4 gap-3">
+      <div class="w-[70%] h-auto flex flex-wrap justify-center items-center my-4 gap-3">
         <!-- contenedor de conincidencias del search -->
         @if (resultados.success){
           @for( product of resultados.data?.products; track product.id) {
