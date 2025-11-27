@@ -47,6 +47,9 @@ importers:
       firebase:
         specifier: ^12.5.0
         version: 12.5.0
+      lucide:
+        specifier: ^0.553.0
+        version: 0.553.0
       lucide-angular:
         specifier: ^0.553.0
         version: 0.553.0(@angular/common@20.3.10(@angular/core@20.3.10(@angular/compiler@20.3.10)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.10(@angular/compiler@20.3.10)(rxjs@7.8.2)(zone.js@0.15.1))
@@ -2656,6 +2659,9 @@ packages:
     peerDependencies:
       '@angular/common': 13.x - 20.x
       '@angular/core': 13.x - 20.x
+
+  lucide@0.553.0:
+    resolution: {integrity: sha512-zdU8nM8mTqFUE6uBP+ncZRN+CTONxwhZbOL2dy+7gINRb1/6zCNQnv6nqpdSrEy5/gy/aJj6FxWHO8WdQgfN0g==}
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
@@ -6401,6 +6407,8 @@ snapshots:
       '@angular/common': 20.3.10(@angular/core@20.3.10(@angular/compiler@20.3.10)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       '@angular/core': 20.3.10(@angular/compiler@20.3.10)(rxjs@7.8.2)(zone.js@0.15.1)
       tslib: 2.8.1
+
+  lucide@0.553.0: {}
 
   magic-string@0.30.17:
     dependencies:

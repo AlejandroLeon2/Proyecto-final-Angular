@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 import { Product } from '../../core/models/product.model';
+import { CartService } from '../../core/service/cart/cart';
+import { Auth } from '../../core/service/auth/auth';
 
 @Component({
   selector: 'app-product-card',
@@ -12,9 +14,12 @@ import { Product } from '../../core/models/product.model';
   styleUrls: ['./product-card.css'],
 })
 export class ProductCardComponent {
-  @Input() product!: Product; // Recibe el producto del componente padre
+  @Input() product!: Product;
+  private authService:Auth= inject(Auth);
 
   shoppingCartIcon = ShoppingCart;
+
+  constructor(private cartService: CartService) {}
 
   /**
    * Formatea la fecha a formato legible
@@ -31,7 +36,9 @@ export class ProductCardComponent {
       minute: '2-digit',
     });
   }
-
+  get user() {
+    return this.authService.user();
+  }
   /**
    * Determina si el stock es bajo
    */
@@ -51,12 +58,9 @@ export class ProductCardComponent {
    */
   addToCart(): void {
     if (this.isOutOfStock()) return;
-
-    // Aquí implementarás la lógica del carrito
+    this.cartService.addItem(this.product);
     console.log('Producto agregado al carrito:', this.product);
-    // Ejemplo: this.cartService.addItem(this.product);
   }
-
   /**
    * Obtiene la clase CSS según el estado
    */

@@ -1,3 +1,14 @@
+
+// Archivo generado automáticamente
 export const environment = {
-  apiURL: 'https://proyecto-final-api-ecommerce-production.up.railway.app/v1',
+  production: true,
+  apiURL: 'http://localhost:3000/v1',
+  firebaseConfig: {
+    apiKey: 'undefined',
+    authDomain: 'undefined',
+    projectId: 'undefined',
+    storageBucket: 'undefined',
+    messagingSenderId: 'undefined',
+    appId: 'undefined'
+  }
 };

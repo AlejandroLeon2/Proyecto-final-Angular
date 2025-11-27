@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { IconTienda } from "../../icons/icon-tienda/icon-tienda";
 
 @Component({
   selector: 'app-footer',
-  imports: [ CommonModule, FormsModule ],
+  imports: [CommonModule, FormsModule, IconTienda],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
 })

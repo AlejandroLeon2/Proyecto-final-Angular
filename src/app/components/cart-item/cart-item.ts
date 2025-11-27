@@ -1,21 +1,27 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CartItem } from '../../core/models/cart-item.model';
+import { CurrencyPipe } from '@angular/common';
+import { LucideAngularModule,Trash2 } from "lucide-angular";
 
 @Component({
   selector: 'app-cart-item',
   standalone: true,
+  imports: [CurrencyPipe, LucideAngularModule],
   templateUrl: './cart-item.html',
-  styleUrls: ['./cart-item.css']
+  styleUrls: ['./cart-item.css'],
 })
 export class CartItemComponent {
-  @Input() item: any;
-  @Output() quantityChange = new EventEmitter<{id: number, quantity: number}>();
-  @Output() removeItem = new EventEmitter<number>();
+  Trash2 =Trash2 ;
+  @Input() item!: CartItem;
 
-  updateQuantity(id: number, quantity: number) {
+  @Output() quantityChange = new EventEmitter<{ id: string; quantity: number }>();
+  @Output() removeItem = new EventEmitter<string>();
+
+  updateQuantity(id: string, quantity: number) {
     this.quantityChange.emit({ id, quantity });
   }
 
-  onRemoveItem(id: number) {
+  onRemoveItem(id: string) {
     this.removeItem.emit(id);
   }
 }

@@ -1,0 +1,39 @@
+<section
+  class="carousel-container"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+>
+  <!-- Botón anterior -->
+  <button 
+    class="carousel-btn prev" 
+    (click)="prev()" 
+    [disabled]="!canGoPrev && !autoPlay()"
+    [class.hidden]="products().length <= visibleItems()"
+  >
+    <lucide-icon [img]="ChevronLeft" [size]="24"></lucide-icon>
+  </button>
+
+  <!-- Carrusel -->
+  <div class="carousel-track-wrapper">
+    <ul class="carousel-track" [style.transform]="translateX">
+    @for (product of products(); track product.id) {
+      <li 
+        class="product-card" 
+        [style.flex]="'0 0 ' + cardWidth"
+      >
+<app-product-card [product]="product"/>
+      </li>
+    }
+    </ul>
+  </div>
+
+  <!-- Botón siguiente -->
+  <button 
+    class="carousel-btn next" 
+    (click)="next()" 
+    [disabled]="!canGoNext && !autoPlay()"
+    [class.hidden]="products().length <= visibleItems()"
+  >
+    <lucide-icon [img]="ChevronRight" [size]="24"></lucide-icon>
+  </button>
+</section>

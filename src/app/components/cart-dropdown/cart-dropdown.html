@@ -1,42 +1,165 @@
 <div class="cart-dropdown-container">
-  <button class="cart-button" (click)="toggleDropdown()">
-    <span class="cart-icon">🛒</span>
-    @if (totalItems > 0) {
-      <span class="cart-count">{{totalItems}}</span>
-    }
-  </button>
 
-  @if (isDropdownOpen) {
-    <div class="dropdown-menu">
-      <div class="dropdown-header">
-        <h3>Mi Carrito</h3>
-        <button class="close-button" (click)="toggleDropdown()">×</button>
-      </div>
+  <!-- ÍCONO SOLO EN MODO POPUP -->
+  @if (!isFullPage) {
+    <button class="cart-button p-1" (click)="toggleDropdown()">
+      <lucide-icon [img]="shoppingCartIcon" class="text-[var(--icon)]"></lucide-icon>
 
-      @if (cartItems.length > 0) {
-        <div class="cart-items">
-          @for (item of cartItems; track item.id) {
-            <app-cart-item
-              [item]="item"
-              (quantityChange)="updateQuantity($event.id, $event.quantity)"
-              (removeItem)="removeItem($event)">
-            </app-cart-item>
+      @if (totalItems > 0) {
+        <span class="cart-count">{{ totalItems }}</span>
+      }
+    </button>
+  }
+
+  <!-- PANEL DEL CARRITO (popup o full page) -->
+  @if (isFullPage || isDropdownOpen) {
+    <div
+      [ngClass]="
+        isFullPage
+          ? 'w-full min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8'
+          : 'dropdown-menu absolute right-0 mt-2 w-96 bg-white shadow-xl rounded-lg z-40'
+      "
+    >
+
+      <!-- LAYOUT DE 2 COLUMNAS PARA FULL PAGE -->
+      @if (isFullPage) {
+        <div class="max-w-7xl mx-auto">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center lg:text-left">
+            Mi Carrito de Compras
+          </h1>
+
+          @if (cartItems.length > 0) {
+            <!-- GRID CENTRADO CON ESPACIOS IGUALES -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+              
+              <!-- COLUMNA IZQUIERDA: PRODUCTOS (2/3) -->
+              <div class="lg:col-span-2 w-full">
+                <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+                  <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
+                    Productos ({{ totalItems }} {{ totalItems === 1 ? 'artículo' : 'artículos' }})
+                  </h2>
+                  <div class="space-y-4">
+                    @for (item of cartItems; track $index) {
+                      <app-cart-item
+                        [item]="item"
+                        (quantityChange)="updateQuantity($event.id, $event.quantity)"
+                        (removeItem)="removeItem($event)"
+                      >
+                      </app-cart-item>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <!-- COLUMNA DERECHA: RESUMEN (1/3) -->
+              <div class="lg:col-span-1 w-full">
+                <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:sticky lg:top-8">
+                  <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-6">
+                    Resumen del Pedido
+                  </h2>
+                  
+                  <div class="space-y-3 mb-6">
+                    <div class="flex justify-between text-sm sm:text-base text-gray-600">
+                      <span>Subtotal:</span>
+                      <span>{{ totalPrice | currency: 'PEN':'symbol':'1.2' }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm sm:text-base text-gray-600">
+                      <span>Envío:</span>
+                      <span class="text-green-600">Gratis</span>
+                    </div>
+                    <div class="border-t border-gray-200 pt-3 mt-3">
+                      <div class="flex justify-between text-base sm:text-lg font-bold text-gray-900">
+                        <span>Total:</span>
+                        <span>{{ totalPrice | currency: 'PEN':'symbol':'1.2' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button 
+                    (click)="finalizePurchase()" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg text-sm sm:text-base"
+                  >
+                    Finalizar Compra
+                  </button>
+
+                  <button 
+                    (click)="continueShopping()" 
+                    class="w-full mt-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base"
+                  >
+                    Continuar Comprando
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          } @else {
+            <!-- CARRITO VACÍO - CENTRADO VERTICAL Y HORIZONTAL -->
+            <div class="flex items-center justify-center min-h-[calc(100vh-12rem)]">
+              <div class="text-center py-8 sm:py-16 px-4">
+                <div class="max-w-md mx-auto">
+                  <div class="flex justify-center mb-6">
+                    <lucide-icon 
+                      [img]="shoppingCartIcon" 
+                      class="w-20 h-20 sm:w-24 sm:h-24 text-gray-300"
+                    ></lucide-icon>
+                  </div>
+                  <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-2">
+                    Tu carrito está vacío
+                  </h2>
+                  <p class="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8">
+                    Agrega productos para comenzar tu compra
+                  </p>
+                  <button 
+                    (click)="continueShopping()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 sm:px-8 rounded-lg transition-colors duration-200 text-sm sm:text-base inline-block"
+                  >
+                    Explorar Productos
+                  </button>
+                </div>
+              </div>
+            </div>
           }
-        </div>
-      } @else {
-        <div class="empty-cart">
-          <p>Tu carrito está vacío</p>
         </div>
       }
 
-      @if (cartItems.length > 0) {
-        <div class="dropdown-footer">
-          <div class="total-section">
-            <span class="total-label">Total:</span>
-            <span class="total-price">${{totalPrice.toFixed(2)}}</span>
-          </div>
-          <button class="checkout-btn">Proceder al Pago</button>
+      <!-- LAYOUT POPUP (SIN CAMBIOS) -->
+      @if (!isFullPage) {
+        <div class="dropdown-header flex justify-between items-center">
+          <h3>Mi Carrito</h3>
+          <button class="close-button" (click)="toggleDropdown()">×</button>
         </div>
+
+        @if (cartItems.length > 0) {
+          <div class="cart-items">
+            @for (item of cartItems; track $index) {
+              <app-cart-item
+                [item]="item"
+                (quantityChange)="updateQuantity($event.id, $event.quantity)"
+                (removeItem)="removeItem($event)"
+              >
+              </app-cart-item>
+            }
+          </div>
+        } @else {
+          <div class="empty-cart">
+            <p>Tu carrito está vacío</p>
+          </div>
+        }
+
+        @if (cartItems.length > 0) {
+          <div class="dropdown-footer">
+            <div class="total-section">
+              <span class="total-label">Total:</span>
+              <span class="total-price">
+                {{ totalPrice | currency: 'PEN':'symbol':'1.2' }}
+              </span>
+            </div>
+
+            <button (click)="goToCartPage()" class="checkout-btn">
+              Proceder al Pago
+            </button>
+          </div>
+        }
       }
     </div>
   }

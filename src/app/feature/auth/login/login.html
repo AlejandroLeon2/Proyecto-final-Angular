@@ -1,63 +1,83 @@
 <div class="flex min-h-screen w-full items-center justify-center bg-white p-4">
   <div class="container mx-auto">
+    <button (click)="goBack()"
+      class="mb-2 text-black hover:scale-105 active:scale-95 duration-300 font-medium flex items-center gap-2 transition">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Volver
+    </button>
     <div class="grid grid-cols-1 lg:grid-cols-2 items-center max-w-4xl mx-auto shadow-lg rounded-xl overflow-hidden">
-      
+      <div class="flex items-center mx-auto lg:hidden gap-4">
+        <app-icon-tienda />
+      </div>
       <div class="hidden lg:flex flex-col h-full p-8 sm:p-12">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="size-8 text-[#4F46E5]">
-            <app-icon-brand-logo></app-icon-brand-logo>
-          </div>
-          <h2 class="text-slate-800 text-2xl font-bold font-satisfy">E-Commerce Brand</h2>
+
+        <div class="lg:flex items-center hidden gap-4 mb-6">
+          <app-icon-tienda />
         </div>
+
         <div class="flex-1 h-full">
-          <img
-            alt="Stylish person wearing sunglasses"
-            class="rounded-xl object-cover w-full h-full max-h-[600px]"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWIgA1oCC4EMNXEU5uuarulJmcuvy5Hh3hNYfg5ZMIrrYL-TkM3r-XRSBDbCzXxUmKZZkRTT--TsrDg-E2W4n6ySj7nG1IPb15F7dKzSlb4TjE-2wlosSlNjNmjn7PBPsF0me4iYdam1OYqy8FMi1DRTRLxInrPeTRqq8PrBVcMXD4iazxCDq55blDoHArGyAs_Ql71TLvBHBFOaxn-akDWrPYSNcvGw2QfsFU7M2m5fYDwuDI3yqNwOibNRwOmXOj8Cz65pQfHYY"
-          />
+          <img alt="Stylish person wearing sunglasses" class="rounded-xl object-cover w-full h-full max-h-[600px]"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWIgA1oCC4EMNXEU5uuarulJmcuvy5Hh3hNYfg5ZMIrrYL-TkM3r-XRSBDbCzXxUmKZZkRTT--TsrDg-E2W4n6ySj7nG1IPb15F7dKzSlb4TjE-2wlosSlNjNmjn7PBPsF0me4iYdam1OYqy8FMi1DRTRLxInrPeTRqq8PrBVcMXD4iazxCDq55blDoHArGyAs_Ql71TLvBHBFOaxn-akDWrPYSNcvGw2QfsFU7M2m5fYDwuDI3yqNwOibNRwOmXOj8Cz65pQfHYY" />
         </div>
       </div>
 
       <div class="flex flex-col justify-center p-8 sm:p-12">
         <div class="max-w-md mx-auto w-full">
-          
           <h1 class="text-slate-800 text-3xl font-bold mb-2">¡Bienvenido de Nuevo!</h1>
-          <p class="text-slate-600 text-base font-normal leading-normal mb-8">Inicia sesión para continuar en tu cuenta.</p>
-          
+          <p class="text-slate-600 text-base font-normal leading-normal mb-8">
+            Inicia sesión para continuar en tu cuenta.
+          </p>
+
+          @if (errorMessage()) {
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline">{{ errorMessage() }}</span>
+          </div>
+          }
+
           <form class="flex flex-col gap-4" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            
             <label class="flex flex-col w-full">
-              <p class="text-slate-800 text-sm font-medium leading-normal pb-2">Correo Electrónico</p>
-              <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-800 focus:outline-0 focus:ring-2 focus:ring-[#4F46E5]/50 bg-white h-12 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal border border-[#4F46E5]" placeholder="you@example.com" type="email" formControlName="email"/>
+              <p class="text-slate-800 text-sm font-medium leading-normal pb-2">
+                Correo Electrónico
+              </p>
+              <input
+                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-800 focus:outline-0 focus:ring-2 focus:ring-[#4F46E5]/50 bg-white h-12 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal border border-[#4F46E5]"
+                placeholder="you@example.com" type="email" formControlName="email" />
               @if (email?.invalid && (email?.dirty || email?.touched)) {
-                <p class="text-red-500 text-sm mt-1">
-                  @if (email?.errors?.['required']) {
-                    El email es requerido.
-                  }
-                  @if (email?.errors?.['email']) {
-                    El formato del email no es válido.
-                  }
-                </p>
+              <p class="text-red-500 text-sm mt-1">
+                @if (email?.errors?.['required']) { El email es requerido. }
+                @if (email?.errors?.['email']) { El formato del email no es válido. }
+              </p>
               }
             </label>
 
             <label class="flex flex-col w-full">
               <div class="flex items-baseline justify-between">
                 <p class="text-slate-800 text-sm font-medium leading-normal pb-2">Contraseña</p>
-                <!-- <a class="text-[#4F46E5] text-sm font-medium leading-normal hover:underline" href="#">¿Olvidaste tu contraseña?</a> -->
+                <button type="button" (click)="toggleRecoverModal()"
+                  class="text-[#4F46E5] text-sm font-medium leading-normal hover:underline bg-transparent border-0 p-0 cursor-pointer">
+                  ¿Olvidaste tu contraseña?
+                </button>
               </div>
-              <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-800 focus:outline-0 focus:ring-2 focus:ring-[#4F46E5]/50 bg-white h-12 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal border border-[#4F46E5]" placeholder="Ingresa tu contraseña" type="password" formControlName="password"/>
+              <input
+                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-800 focus:outline-0 focus:ring-2 focus:ring-[#4F46E5]/50 bg-white h-12 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal border border-[#4F46E5]"
+                placeholder="Ingresa tu contraseña" type="password" formControlName="password" />
               @if (password?.invalid && (password?.dirty || password?.touched)) {
-                <p class="text-red-500 text-sm mt-1">
-                  @if (password?.errors?.['required']) {
-                    La contraseña es requerida.
-                  }
-                </p>
+              <p class="text-red-500 text-sm mt-1">
+                @if (password?.errors?.['required']) { La contraseña es requerida. }
+              </p>
               }
             </label>
 
-            <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-[#4F46E5] text-white text-base font-bold leading-normal tracking-[0.015em] w-full mt-4 hover:bg-[#4F46E5]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4F46E5]/50 disabled:opacity-50" [disabled]="loginForm.invalid">
+            <button
+              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-[#F29706] text-white text-base font-bold leading-normal tracking-[0.015em] w-full mt-4 hover:bg-[#F29706]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F29706]/50 disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="loginForm.invalid || isLoading()">
+              @if (isLoading()) {
+              <span class="truncate">Cargando...</span>
+              } @else {
               <span class="truncate">Iniciar Sesión</span>
+              }
             </button>
           </form>
 
@@ -67,10 +87,8 @@
             <div class="flex-grow border-t border-slate-200"></div>
           </div>
 
-          <button 
-            type="button" 
-            (click)="onGoogleLogin()" 
-            class="flex items-center justify-center gap-2 border border-slate-300 bg-white text-slate-800 rounded-lg h-12 w-full hover:bg-slate-50 transition-colors">
+          <button type="button" (click)="onGoogleLogin()" [disabled]="isLoading()"
+            class="flex items-center justify-center gap-2 border border-slate-300 bg-white text-slate-800 rounded-lg h-12 w-full hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
             <div class="size-5">
               <app-icon-google-logo></app-icon-google-logo>
             </div>
@@ -86,3 +104,78 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de Recuperación -->
+@if (showRecoverModal()) {
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity duration-300">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up">
+    <!-- Header del Modal -->
+    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+      <h3 class="text-lg font-bold text-slate-800">Recuperar Contraseña</h3>
+      <button (click)="toggleRecoverModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Contenido del Modal -->
+    <div class="p-6">
+      @if (recoverSuccessMessage()) {
+      <div class="text-center py-4">
+        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+          <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-slate-900 mb-2">¡Correo enviado!</h3>
+        <p class="text-sm text-slate-600 mb-6">
+          {{ recoverSuccessMessage() }}
+        </p>
+        <button (click)="toggleRecoverModal()"
+          class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-[#F29706] text-base font-medium text-white hover:bg-[#F29706]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F29706] sm:text-sm">
+          Entendido
+        </button>
+      </div>
+      } @else {
+      <p class="text-slate-600 text-sm mb-4">
+        Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+      </p>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico</label>
+        <input [formControl]="recoverEmailControl" type="email" placeholder="you@example.com"
+          class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#F29706]/50 focus:border-[#F29706] outline-none transition-all"
+          [class.border-red-300]="recoverEmailControl.invalid && recoverEmailControl.touched">
+        @if (recoverEmailControl.invalid && recoverEmailControl.touched) {
+        <p class="text-red-500 text-xs mt-1">Por favor ingresa un correo válido.</p>
+        }
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button (click)="toggleRecoverModal()"
+          class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F29706]">
+          Cancelar
+        </button>
+        <button (click)="onRecoverPassword()" [disabled]="recoverEmailControl.invalid || isLoading()"
+          class="px-4 py-2 text-sm font-medium text-white bg-[#F29706] rounded-lg hover:bg-[#F29706]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F29706] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+          @if (isLoading()) {
+          <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+          </svg>
+          Enviando...
+          } @else {
+          Enviar Enlace
+          }
+        </button>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}

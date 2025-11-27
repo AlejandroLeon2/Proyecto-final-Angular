@@ -5,7 +5,7 @@ export const CATEGORIES: Record<number, string> = {
   4: 'Computación',
   5: 'Tecnología',
   6: 'Hogar',
-  7: 'Moda',
+  7: 'Mujer',
   8: 'Herramientas',
   9: 'Muebles',
   10: 'Audio',

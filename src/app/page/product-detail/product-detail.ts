@@ -1,18 +1,21 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LucideAngularModule, Minus, Plus, ShoppingCart } from 'lucide-angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CATEGORIES } from '../../core/constants/categories';
 import { Product } from '../../core/models/product.model';
-import { ProductService } from '../../core/service/productData';
-
+import { ProductsService } from '../../core/service/products/products';
+import { CartService } from '../../core/service/cart/cart';
+import { ProductCarouselComponent } from '../../components/product-carousel/product-carousel';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
+import { Auth } from '../../core/service/auth/auth';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule, ProductCarouselComponent, RouterLink],
   templateUrl: './product-detail.html',
   styleUrls: ['./product-detail.css'],
 })
@@ -21,19 +24,29 @@ export class ProductDetail implements OnInit, OnDestroy {
   quantity: number = 1;
   isLoading: boolean = true;
   error: string | null = null;
-  CATEGORIES = CATEGORIES;
+
   private destroy$ = new Subject<void>();
 
   Plus = Plus;
   Minus = Minus;
   shoppingCartIcon = ShoppingCart;
-
+  private productsService = inject(ProductsService);
+  private authService:Auth = inject(Auth);
+  featuredProducts = this.productsService['_data'];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService,
-    private location: Location
+
+    private location: Location,
+    private cartService: CartService
   ) {}
+  get user() {
+    return this.authService.user();
+  }
+  news = toSignal(
+    this.productsService.getPaginatedProducts(1, 10, []).pipe(map((res) => res.products)),
+    { initialValue: [] }
+  );
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
@@ -42,6 +55,7 @@ export class ProductDetail implements OnInit, OnDestroy {
         this.loadProduct(productId);
       }
     });
+    this.productsService.getProducts();
   }
 
   ngOnDestroy(): void {
@@ -49,19 +63,18 @@ export class ProductDetail implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadProduct(id: string | number): void {
+  loadProduct(id: string): void {
     this.isLoading = true;
     this.error = null;
 
-    const numericId = Number(id);
-    if (isNaN(numericId)) {
+    if (!id) {
       this.error = 'ID de producto inválido';
       this.isLoading = false;
       return;
     }
 
-    this.productService
-      .getProductById(numericId)
+    this.productsService
+      .getProductById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {
@@ -103,13 +116,12 @@ export class ProductDetail implements OnInit, OnDestroy {
   addToCart(): void {
     if (!this.product || this.isOutOfStock()) return;
 
-    const cartItem = {
-      product: this.product,
-      quantity: this.quantity,
-    };
+    this.cartService.addItem(this.product, this.quantity);
 
-    console.log('✅ Agregado al carrito:', cartItem);
-    // TODO: Conectar con CartService
+    console.log('🛒 Producto añadido:', {
+      id: this.product.id,
+      quantity: this.quantity,
+    });
   }
 
   goBack(): void {

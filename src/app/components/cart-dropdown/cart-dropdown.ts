@@ -1,65 +1,69 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CartService } from '../../core/service/cart/cart';
+import { CartItem } from '../../core/models/cart-item.model';
 import { CartItemComponent } from '../cart-item/cart-item';
-
-interface CartItem {
-  id: number;
-  nombre: string;
-  precio: number;
-  categoria: string;
-  imagen: string;
-  cantidad: number;
-}
+import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 
 @Component({
   selector: 'app-cart-dropdown',
   standalone: true,
-  imports: [CartItemComponent],
+  imports: [CommonModule, CartItemComponent, LucideAngularModule],
   templateUrl: './cart-dropdown.html',
   styleUrl: './cart-dropdown.css',
 })
-export class CartDropdown {
+export class CartDropdown implements OnInit {
+  @Input() isFullPage = false;
+
   cartItems: CartItem[] = [];
   isDropdownOpen = false;
   totalItems = 0;
   totalPrice = 0;
 
-  constructor() {
-    this.loadCartData();
-  }
+  shoppingCartIcon = ShoppingCart;
 
-  private loadCartData(): void {
-    fetch('data/carrito-compras.json')
-      .then(response => response.json())
-      .then(data => {
-        this.cartItems = data;
-        this.calculateTotals();
-      })
-      .catch(error => console.error('Error loading cart data:', error));
+  constructor(private cartService: CartService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.cartService.items$.subscribe((items) => {
+      this.cartItems = items;
+      this.calculateTotals();
+
+      if (this.isFullPage) {
+        this.isDropdownOpen = true;
+      }
+    });
   }
 
   calculateTotals(): void {
-    this.totalItems = this.cartItems.reduce((sum, item) => sum + item.cantidad, 0);
-    this.totalPrice = this.cartItems.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+    this.totalItems = this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    this.totalPrice = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 
   toggleDropdown(): void {
+    if (this.isFullPage) return;
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  removeItem(itemId: number): void {
-    this.cartItems = this.cartItems.filter(item => item.id !== itemId);
-    this.calculateTotals();
+  removeItem(itemId: string): void {
+    this.cartService.removeItem(itemId);
   }
 
-  updateQuantity(itemId: number, newQuantity: number): void {
-    for (let i = 0; i < this.cartItems.length; i++) {
-      if (this.cartItems[i].id === itemId) {
-        if (newQuantity > 0) {
-          this.cartItems[i].cantidad = newQuantity;
-          this.calculateTotals();
-        }
-        break;
-      }
-    }
+  updateQuantity(itemId: string, newQuantity: number): void {
+    this.cartService.updateQuantity(itemId, newQuantity);
+  }
+
+  goToCartPage() {
+        this.cartService.saveCart();
+    this.router.navigate(['/shop/cart']);
+  }
+
+  finalizePurchase() {
+    this.router.navigate(['/shop/ckeckout']);
+  }
+
+  continueShopping() {
+    this.router.navigate(['/shop']);
   }
 }

@@ -1,0 +1,380 @@
+<section class="min-h-screen bg-[var(--bg-main)] py-16 px-4">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="mb-16">
+      <h1 class="text-3xl font-medium text-[var(--text-main)] mb-2">Pago</h1>
+      <p class="text-sm text-[var(--text-muted)]">Completa tu compra en 3 pasos</p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-12">
+
+      <div class="lg:col-span-3 space-y-12">
+
+        <div>
+          <div class="flex items-baseline gap-3 mb-6">
+            <span class="text-[var(--text-soft)] text-sm">01</span>
+            <h2 class="text-lg font-medium text-[var(--text-main)]">Información de contacto</h2>
+          </div>
+
+          <form [formGroup]="buyerForm" class="space-y-4">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  for="name"
+                  class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+                >
+                  Nombre completo
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  formControlName="name"
+                  class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none placeholder:text-gray-400 transition-colors text-[var(--text-main)]"
+                  [class.border-[var(--error)]]="hasError(buyerForm, 'name')"
+                  [class.border-[var(--border)]]="!hasError(buyerForm, 'name')"
+                  [class.focus:border-[var(--primary)]]="!hasError(buyerForm, 'name')"
+                  placeholder="Juan Pérez"
+                />
+                @if (hasError(buyerForm, 'name')) {
+                <p class="text-xs text-[var(--error)] mt-1">
+                  {{ getErrorMessage(buyerForm, 'name') }}
+                </p>
+                }
+              </div>
+
+              <div>
+                <label
+                  for="email"
+                  class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none transition-colors placeholder:text-gray-400 text-[var(--text-main)]"
+                  [class.border-[var(--error)]]="hasError(buyerForm, 'email')"
+                  [class.border-[var(--border)]]="!hasError(buyerForm, 'email')"
+                  [class.focus:border-[var(--primary)]]="!hasError(buyerForm, 'email')"
+                  placeholder="juan@ejemplo.com"
+                />
+                @if (hasError(buyerForm, 'email')) {
+                <p class="text-xs text-[var(--error)] mt-1">
+                  {{ getErrorMessage(buyerForm, 'email') }}
+                </p>
+                }
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  for="phone"
+                  class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+                >
+                  Teléfono
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  formControlName="phone"
+                  class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none transition-colors placeholder:text-gray-400 text-[var(--text-main)]"
+                  [class.border-[var(--error)]]="hasError(buyerForm, 'phone')"
+                  [class.border-[var(--border)]]="!hasError(buyerForm, 'phone')"
+                  [class.focus:border-[var(--primary)]]="!hasError(buyerForm, 'phone')"
+                  placeholder="+51 999 999 999"
+                />
+                @if (hasError(buyerForm, 'phone')) {
+                <p class="text-xs text-[var(--error)] mt-1">
+                  {{ getErrorMessage(buyerForm, 'phone') }}
+                </p>
+                }
+              </div>
+
+              <div>
+                <label
+                  for="city"
+                  class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+                >
+                  Ciudad
+                </label>
+                <input
+                  id="city"
+                  type="text"
+                  formControlName="city"
+                  class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none transition-colors placeholder:text-gray-400 text-[var(--text-main)]"
+                  [class.border-[var(--error)]]="hasError(buyerForm, 'city')"
+                  [class.border-[var(--border)]]="!hasError(buyerForm, 'city')"
+                  [class.focus:border-[var(--primary)]]="!hasError(buyerForm, 'city')"
+                  placeholder="Lima"
+                />
+                @if (hasError(buyerForm, 'city')) {
+                <p class="text-xs text-[var(--error)] mt-1">
+                  {{ getErrorMessage(buyerForm, 'city') }}
+                </p>
+                }
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="address"
+                class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+              >
+                Dirección
+              </label>
+              <input
+                id="address"
+                type="text"
+                formControlName="address"
+                class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none transition-colors placeholder:text-gray-400 text-[var(--text-main)]"
+                [class.border-[var(--error)]]="hasError(buyerForm, 'address')"
+                [class.border-[var(--border)]]="!hasError(buyerForm, 'address')"
+                [class.focus:border-[var(--primary)]]="!hasError(buyerForm, 'address')"
+                placeholder="Av. Principal 123, Distrito"
+              />
+              @if (hasError(buyerForm, 'address')) {
+              <p class="text-xs text-[var(--error)] mt-1">
+                {{ getErrorMessage(buyerForm, 'address') }}
+              </p>
+              }
+            </div>
+          </form>
+        </div>
+
+
+        <div>
+          <div class="flex items-baseline gap-3 mb-6">
+            <span class="text-[var(--text-soft)] text-sm">02</span>
+            <h2 class="text-lg font-medium text-[var(--text-main)]">Método de envío</h2>
+          </div>
+
+          <div class="space-y-3">
+            @for (method of shippingMethods; track method.id) {
+            <label
+              class="flex items-center justify-between py-4 cursor-pointer group"
+              [class.opacity-50]="selectedShipping !== method.id"
+            >
+              <div class="flex items-center gap-4">
+                <input
+                  type="radio"
+                  name="shipping"
+                  [value]="method.id"
+                  [(ngModel)]="selectedShipping"
+                  class="w-4 h-4 text-[var(--primary)] border-[var(--border)] placeholder:text-gray-400 focus:ring-0"
+                />
+                <div>
+                  <p class="text-sm font-medium text-[var(--text-main)]">{{ method.name }}</p>
+                  <p class="text-xs text-[var(--text-muted)]">{{ method.estimatedDays }}</p>
+                </div>
+              </div>
+              <span class="text-sm text-[var(--text-main)]">
+                {{ method.price === 0 ? 'Gratis' : 'S/ ' + method.price.toFixed(2) }}
+              </span>
+            </label>
+            }
+          </div>
+        </div>
+
+        <!-- 3. Pago -->
+        <div>
+          <div class="flex items-baseline gap-3 mb-6">
+            <span class="text-[var(--text-soft)] text-sm">03</span>
+            <h2 class="text-lg font-medium text-[var(--text-main)]">Método de pago</h2>
+          </div>
+
+          <div class="space-y-6">
+ 
+            <div class="flex gap-8 border-b border-[var(--border)]">
+              <button
+                type="button"
+                (click)="paymentMethod = 'card'"
+                class="pb-3 text-sm font-medium transition-colors relative"
+                [class.text-[var(--primary)]]="paymentMethod === 'card'"
+                [class.text-[var(--text-muted)]]="paymentMethod !== 'card'"
+              >
+                Tarjeta @if (paymentMethod === 'card') {
+                <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--primary)]"></span>
+                }
+              </button>
+             <!-- <button
+                type="button"
+                (click)="paymentMethod = 'mercadopago'"
+                class="pb-3 text-sm font-medium transition-colors relative"
+                [class.text-[var(--primary)]]="paymentMethod === 'mercadopago'"
+                [class.text-[var(--text-muted)]]="paymentMethod !== 'mercadopago'"
+              >
+                Mercado Pago @if (paymentMethod === 'mercadopago') {
+                <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--primary)]"></span>
+                }
+              </button> -->
+            </div>
+
+
+            @if (paymentMethod === 'card') {
+            <form [formGroup]="cardForm" class="space-y-4">
+              <div>
+                <label
+                  for="cardNumber"
+                  class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+                >
+                  Número de tarjeta
+                </label>
+                <input
+                  id="cardNumber"
+                  type="text"
+                  formControlName="cardNumber"
+                  (input)="formatCardNumber($event)"
+                  maxlength="19"
+                  class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none transition-colors placeholder:text-gray-400 text-[var(--text-main)] font-mono"
+                  [class.border-[var(--error)]]="hasError(cardForm, 'cardNumber')"
+                  [class.border-[var(--border)]]="!hasError(cardForm, 'cardNumber')"
+                  [class.focus:border-[var(--primary)]]="!hasError(cardForm, 'cardNumber')"
+                  placeholder="1234 5678 9012 3456"
+                />
+                @if (hasError(cardForm, 'cardNumber')) {
+                <p class="text-xs text-[var(--error)] mt-1">
+                  {{ getErrorMessage(cardForm, 'cardNumber') }}
+                </p>
+                }
+              </div>
+
+              <div class="grid grid-cols-2 gap-6">
+                <div>
+                  <label
+                    for="expiry"
+                    class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+                  >
+                    Vencimiento
+                  </label>
+                  <input
+                    id="expiry"
+                    type="text"
+                    formControlName="expiry"
+                    (input)="formatExpiry($event)"
+                    maxlength="5"
+                    class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none transition-colors text-[var(--text-main)] placeholder:text-gray-400 font-mono"
+                    [class.border-[var(--error)]]="hasError(cardForm, 'expiry')"
+                    [class.border-[var(--border)]]="!hasError(cardForm, 'expiry')"
+                    [class.focus:border-[var(--primary)]]="!hasError(cardForm, 'expiry')"
+                    placeholder="MM/AA"
+                  />
+                  @if (hasError(cardForm, 'expiry')) {
+                  <p class="text-xs text-[var(--error)] mt-1">
+                    {{ getErrorMessage(cardForm, 'expiry') }}
+                  </p>
+                  }
+                </div>
+
+                <div>
+                  <label
+                    for="cvv"
+                    class="block text-xs text-[var(--text-muted)] mb-2 uppercase tracking-wide"
+                  >
+                    CVV
+                  </label>
+                  <input
+                    id="cvv"
+                    type="text"
+                    formControlName="cvv"
+                    (input)="formatCVV($event)"
+                    maxlength="4"
+                    class="w-full px-0 py-3 bg-transparent border-b-2 focus:outline-none transition-colors placeholder:text-gray-400 text-[var(--text-main)] font-mono"
+                    [class.border-[var(--error)]]="hasError(cardForm, 'cvv')"
+                    [class.border-[var(--border)]]="!hasError(cardForm, 'cvv')"
+                    [class.focus:border-[var(--primary)]]="!hasError(cardForm, 'cvv')"
+                    placeholder="123"
+                  />
+                  @if (hasError(cardForm, 'cvv')) {
+                  <p class="text-xs text-[var(--error)] mt-1">
+                    {{ getErrorMessage(cardForm, 'cvv') }}
+                  </p>
+                  }
+                </div>
+              </div>
+            </form>
+            }
+
+
+            @if (paymentMethod === 'mercadopago') {
+            <div class="py-8 text-center">
+              <p class="text-sm text-[var(--text-muted)]">Serás redirigido a Mercado Pago</p>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+
+      <div class="lg:col-span-2">
+        <div class="lg:sticky lg:top-8 space-y-6">
+
+          <div>
+            <h3 class="text-xs text-[var(--text-muted)] mb-4 uppercase tracking-wide">Resumen</h3>
+            <div class="space-y-4">
+              @for (product of products; track product.id) {
+              <div class="flex gap-4">
+                <img
+                  [src]="product.image"
+                  [alt]="product.name"
+                  class="w-16 h-16 object-cover rounded bg-[var(--bg-input)]"
+                />
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm text-[var(--text-main)] truncate">{{ product.name }}</p>
+                  <p class="text-xs text-[var(--text-muted)] mt-1">
+                    Cantidad: {{ product.quantity }}
+                  </p>
+                </div>
+                <span class="text-sm text-[var(--text-main)]"
+                  >S/ {{ (product.price * product.quantity).toFixed(2) }}</span
+                >
+              </div>
+              }
+            </div>
+          </div>
+
+
+          <div class="pt-6 border-t border-[var(--border)] space-y-3">
+            <div class="flex justify-between text-sm">
+              <span class="text-[var(--text-muted)]">Subtotal</span>
+              <span class="text-[var(--text-main)]">S/ {{ subtotal.toFixed(2) }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-[var(--text-muted)]">Envío</span>
+              <span class="text-[var(--text-main)]">
+                {{ shippingCost === 0 ? 'Gratis' : 'S/ ' + shippingCost.toFixed(2) }}
+              </span>
+            </div>
+          </div>
+
+
+          <div class="pt-6 border-t border-[var(--border)]">
+            <div class="flex justify-between items-baseline mb-6">
+              <span class="text-sm text-[var(--text-muted)]">Total</span>
+              <span class="text-2xl font-medium text-[var(--text-main)]"
+                >S/ {{ total.toFixed(2) }}</span
+              >
+            </div>
+
+            <button
+              (click)="confirmOrder()"
+              [disabled]="!isFormValid()"
+              class="w-full py-4 text-sm font-medium transition-all"
+              [class.bg-[var(--primary)]]="isFormValid()"
+              [class.text-white]="isFormValid()"
+              [class.hover:opacity-90]="isFormValid()"
+              [class.bg-[var(--border)]]="!isFormValid()"
+              [class.text-[var(--text-soft)]]="!isFormValid()"
+              [class.cursor-not-allowed]="!isFormValid()"
+            >
+              Confirmar pedido
+            </button>
+
+            <p class="text-xs text-[var(--text-soft)] text-center mt-3">Pago seguro</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

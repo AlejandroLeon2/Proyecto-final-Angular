@@ -10,13 +10,15 @@ import {
   output,
   signal,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, XIcon } from 'lucide-angular';
 import { Subscription } from 'rxjs';
 import { Product } from '../../../../../core/models/product.model';
 import { ProductsService } from '../../../../../core/service/products/products';
-
+import { CategoriesService } from '../../../../../core/service/categories/categories';
+import { Category } from '../../../../../core/models/category.model';
 @Component({
   selector: 'app-product-form',
   standalone: true,
@@ -24,14 +26,14 @@ import { ProductsService } from '../../../../../core/service/products/products';
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
 })
-export class Form implements OnDestroy {
+export class Form implements OnInit, OnDestroy {
   // Input signals with default values
   product = input<Product | null>(null);
 
   // Output signals
   close = output<void>();
   submitForm = output<Product>();
-
+  categoriesService = inject(CategoriesService);
   productService = inject(ProductsService);
 
   subscriptions: Subscription = new Subscription();
@@ -54,12 +56,14 @@ export class Form implements OnDestroy {
     status: 'active',
   });
 
-  // Categories for the dropdown
-  categories = signal([
-    { id: '1', name: 'Ropa' },
-    { id: '2', name: 'Accesorios' },
-    { id: '3', name: 'Electrónica' },
-  ]);
+  categories = signal<Category[]>([]);
+
+  ngOnInit(): void {
+    this.categoriesService.getCategories();
+    effect(() => {
+      this.categories.set(this.categoriesService['_data']());
+    });
+  }
 
   // Form validation
   isFormValid = computed(() => {

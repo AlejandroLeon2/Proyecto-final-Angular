@@ -12,13 +12,17 @@ export class CategoriesService {
   private _data = signal<Category[]>([]);
   private http = inject(HttpClient);
 
+  // <--- Exponemos el Signal como ReadOnly --->
+  // Esto permite que el componente use () para detectar cambios
+  public readonly categories = this._data.asReadonly();
+
   get data() {
     return this._data();
   }
 
   getCategories(): void {
     this.http
-      .get<Category[]>(environment.apiURL + '/category/all')
+      .get<ICustomResponse<Category[]>>(environment.apiURL + '/category/all')
       .pipe(
         take(1),
         catchError((error) => {
@@ -28,7 +32,10 @@ export class CategoriesService {
       )
       .subscribe({
         next: (response) => {
-          this._data.set(response);
+          // Aseguramos que guardamos el array de categorías
+          // Si devuelve directo el array, usa response.
+          const categoriesData = response.data || (response as any);
+          this._data.set(categoriesData);
         },
         error: () => {
           console.error('ThrowError: Error al obtener las categorías');
@@ -37,10 +44,8 @@ export class CategoriesService {
   }
 
   addCategory(category: Category) {
-    const formData = this.getFormData(category);
-
     this.http
-      .post<ICustomResponse<Category>>(environment.apiURL + '/category', formData)
+      .post<ICustomResponse<Category>>(environment.apiURL + '/category', category)
       .pipe(
         take(1),
         catchError((error) => {
@@ -59,10 +64,8 @@ export class CategoriesService {
   }
 
   updateCategory(category: Category) {
-    const formData = this.getFormData(category);
-
     this.http
-      .put<ICustomResponse<Category>>(environment.apiURL + '/category/' + category.id, formData)
+      .put<ICustomResponse<Category>>(environment.apiURL + '/category/' + category.id, category)
       .pipe(
         take(1),
         catchError((error) => {
@@ -86,11 +89,29 @@ export class CategoriesService {
       });
   }
 
-  getFormData(category: Category) {
-    const formData = new FormData();
-    formData.append('name', category.name);
-    formData.append('description', category.description);
-    formData.append('status', category.status);
-    return formData;
+  deleteCategory(id: string) {
+    this.http
+      .delete<ICustomResponse<Category>>(environment.apiURL + '/category/' + id)
+      .pipe(
+        take(1),
+        catchError((error) => {
+          console.error('CategoriesService: Error al obtener las categorías', error);
+          return throwError(() => error);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this._data.update((data) => {
+            const index = data.findIndex((p) => p.id === id);
+            if (index !== -1) {
+              data.splice(index, 1);
+            }
+            return [...data];
+          });
+        },
+        error: () => {
+          console.error('ThrowError: Error al obtener las categorías');
+        },
+      });
   }
 }

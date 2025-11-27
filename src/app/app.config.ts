@@ -1,4 +1,3 @@
-
 import { 
   ApplicationConfig, 
   provideBrowserGlobalErrorListeners, 
@@ -18,7 +17,7 @@ import { environment } from '../environments/environment'; // Importa el entorno
 // Imports para Firebase (Google Login)
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-
+import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +25,9 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
+    importProvidersFrom(
+      LucideAngularModule.pick({ ChevronLeft, ChevronRight })
+    ),
 
     // --- Providers nuevos añadidos (CORREGIDOS) ---
 
