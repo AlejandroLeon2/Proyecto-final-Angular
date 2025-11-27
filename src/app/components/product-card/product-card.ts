@@ -16,11 +16,8 @@ import { Auth } from '../../core/service/auth/auth';
 export class ProductCardComponent {
   @Input() product!: Product;
   private authService: Auth = inject(Auth);
-
-  shoppingCartIcon = ShoppingCart;
-
-  constructor(private cartService: CartService) {}
-
+  private cartService:CartService = inject(CartService);
+  readonly shoppingCartIcon = ShoppingCart;
   /**
    * Formatea la fecha a formato legible
    */
@@ -35,6 +32,9 @@ export class ProductCardComponent {
       hour: '2-digit',
       minute: '2-digit',
     });
+  }
+  get role(){
+    return this.authService.role();
   }
   get user() {
     return this.authService.user();
@@ -57,19 +57,18 @@ export class ProductCardComponent {
    * Maneja el click en agregar al carrito
    */
   addToCart(): void {
-  if (this.isOutOfStock() || this.isStockExceeded()) {
-    console.warn('No puedes agregar más, stock agotado');
-    return;
-  }
+    if (this.isOutOfStock() || this.isStockExceeded()) {
+      console.warn('No puedes agregar más, stock agotado');
+      return;
+    }
     this.cartService.addItem(this.product);
     console.log('Producto agregado al carrito:', this.product);
   }
 
-isStockExceeded(): boolean {
-  const currentQuantity = this.cartService.getQuantity(this.product.id!);
-  return currentQuantity >= this.product.stock;
-}
-
+  isStockExceeded(): boolean {
+    const currentQuantity = this.cartService.getQuantity(this.product.id!);
+    return currentQuantity >= this.product.stock;
+  }
 
   /**
    * Obtiene la clase CSS según el estado

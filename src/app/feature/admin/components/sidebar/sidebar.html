@@ -23,22 +23,12 @@
   class="fixed lg:static inset-y-0 left-0 z-50 w-64 h-full bg-gray-950 text-white transition-transform duration-300 ease-in-out transform lg:translate-x-0"
 >
   <div class="flex flex-col h-full pb-4 p-4">
-    <div class="text-xl flex font-bold border-b border-gray-700 pb-3">
+    <a routerLink="/shop/home" title="Ir a la tienda" class="text-xl flex font-bold border-b border-gray-700 pb-3">
       <img src="/images/logo.svg" alt="Logo de la tienda Repiit" class="h-12" />
-    </div>
+    </a>
 
     <nav class="flex-1 pt-4">
       <ul class="space-y-2">
-        <li (click)="isMobile && closeMenu()">
-          <a
-            routerLink="dashboard"
-            routerLinkActive="bg-gray-800 text-blue-400"
-            class="flex items-center p-2 rounded-lg hover:bg-gray-800 gap-2"
-          >
-            <lucide-icon [img]="dashboardIcon" [size]="18" class="icon"></lucide-icon>
-            <span>Dashboard</span>
-          </a>
-        </li>
         <li (click)="closeMenu()">
           <a
             routerLink="products"

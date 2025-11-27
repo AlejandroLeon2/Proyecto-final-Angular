@@ -45,6 +45,7 @@
   }
   </section>
 
+ @if(accesorios().length !== 0){
   <section id="accesorio" class="relative mt-12">
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-2xl md:text-3xl font-light text-[var(--text-main)]">Accesorios</h2>
@@ -80,6 +81,8 @@
   </div>
   }
   </section>
+}
+   @if(moda().length !== 0){
   <section id="mujer" class="relative mt-12">
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-2xl md:text-3xl font-light text-[var(--text-main)]">Moda Mujer</h2>
@@ -115,7 +118,8 @@
     <p class="text-gray-500 text-lg">No hay productos disponibles</p>
   </div>
   }
-  </section>
+  </section>}
+  @if(electronica().length !== 0){
   <section id="tecnologia" class="relative mt-12">
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-2xl md:text-3xl font-light text-[var(--text-main)]">Tecnología</h2>
@@ -154,4 +158,5 @@
   </div>
   }
   </section>
+  }
 </section>

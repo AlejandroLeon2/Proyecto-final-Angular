@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener,inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive,Router } from '@angular/router';
 import {
   House,
   LogOut,
@@ -10,7 +10,6 @@ import {
   Shapes,
   ShoppingCart,User
 } from 'lucide-angular';
-import { IconTienda } from "../../../../icons/icon-tienda/icon-tienda";
 import { Auth } from '../../../../core/service/auth/auth';
 @Component({
   selector: 'app-sidebar',
@@ -27,7 +26,8 @@ export class Sidebar {
   readonly logoutIcon = LogOut;
   readonly menuIcon = Menu;
   readonly userIcon = User;
-  private authService = inject(Auth);
+  private authService:Auth = inject(Auth);
+  private router:Router =inject(Router);
 
   user= this.authService.user;
 
@@ -55,6 +55,8 @@ export class Sidebar {
   }
   async logout(): Promise<void> {
     await this.authService.logOut();
+    this.router.navigateByUrl("/login")
+    
     
 
   }
