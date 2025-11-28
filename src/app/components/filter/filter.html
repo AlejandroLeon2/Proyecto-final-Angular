@@ -1,6 +1,17 @@
 <div class="filter-container">
   <h2 class="filter-title">Filtros</h2>
 
+  @if (searchWord.trim().length !> 0) {
+    <div class="w-full h-7 bg-[var(--bg-main)] border border-[var(--border)] rounded-[5px] text-[var(--text-main)] px-3 flex justify-between">
+      {{searchWord}}
+      <button 
+        (click)="loadSearchWord(`delete`)"
+        class="cursor-pointer hover:scale-[1.1]">
+        <lucide-icon [img]="clear"></lucide-icon>
+      </button>
+    </div>
+  }
+
   <div class="filter-section">
     <button
       type="button"

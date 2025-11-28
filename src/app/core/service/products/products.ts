@@ -65,6 +65,36 @@ export class ProductsService {
       );
   }
 
+  // meodo para obtener todos los productos buscador desde search
+
+  getPSearchProducts(page: number = 1, limit: number, query: string, categories: string[] = []) {
+
+    //agregamos parametro
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString())
+      .set(`data`, query.toString())
+      .set(`categories`, categories.join(','))
+      ;
+
+    return this.http
+      .get<ICustomResponse<PaginatedProductResponse>>(`${environment.apiURL}/search/paginated`,{ params }
+        ).pipe(
+          take(1),
+          // Extraemos directamente la data relevante de la respuesta CustomResponse
+          map((response) => {
+            if (!response.success || !response.data) {
+              throw new Error(response.message || 'Error al obtener productos');
+            }
+            return response.data;
+          }),
+          catchError((error) => {
+            console.error('ProductsService: Error al obtener productos paginados', error);
+            return throwError(() => error);
+          })
+        );
+    
+  }
   getProducts(status?: Status[]): void {
     this.http
       .get<Product[]>(environment.apiURL + '/product/all', {
