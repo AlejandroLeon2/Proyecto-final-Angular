@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core'; //se agrego inject
+import { Component, EventEmitter, inject, OnInit, output, Output, signal } from '@angular/core'; //se agrego inject
 import { FormsModule } from '@angular/forms';
 import { STATUS } from '../../core/models/status.model';
 import { CategoriesService } from '../../core/service/categories/categories'; //Importamos el servicio real
-
+import { LucideAngularModule, X } from 'lucide-angular';
 export interface FilterState {
   categories: string[];
 }
@@ -11,12 +11,13 @@ export interface FilterState {
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, LucideAngularModule],
   templateUrl: './filter.html',
   styleUrl: './filter.css',
 })
 export class FilterComponent implements OnInit {
   @Output() filterChange = new EventEmitter<FilterState>();
+  @Output() refreshCatalogo = new EventEmitter<void>();
 
   // <--- Inyección del servicio de categorías --->
   private categoriesService = inject(CategoriesService);
@@ -34,11 +35,28 @@ export class FilterComponent implements OnInit {
   // <--- Signal para acceder a las categorías del servicio --->
   categories = this.categoriesService.data;
 
+  // icono para cerrar y variable para searchWord
+  clear = X;
+  searchWord = ``;
+
   ngOnInit(): void {
+    this.loadSearchWord(`get`);
     // <--- Cargar categorías reales al iniciar --->
     this.categoriesService.getCategories(STATUS.active);
   }
 
+  loadSearchWord(metod:string):void{
+
+    if(metod === `get`){
+      this.searchWord = localStorage.getItem(`searchWord`)|| ``;
+    };
+    if(metod === `delete`){
+      localStorage.removeItem(`searchWord`);
+      this.searchWord = ``;
+      this.clearFilters()
+      this.refreshCatalogo.emit();
+    }
+  }
   /**
    * Maneja el cambio de selección de categoría
    */

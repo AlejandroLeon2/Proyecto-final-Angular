@@ -85,4 +85,9 @@ export class ProductCatalog implements OnInit {
     this.currentPage.set(newPage);
     this.loadPaginatedProducts();
   }
+
+  refreshCatalogo():void{
+    this.wordSearch = ``;
+    this.loadPaginatedProducts();
+  }
 }
