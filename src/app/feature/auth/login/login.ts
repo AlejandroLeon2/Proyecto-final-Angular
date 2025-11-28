@@ -68,11 +68,18 @@ export class Login {
       //Espera a que Firebase genere un token de identificación para este usuario.
       const token = await userCredential.user.getIdToken();
 
-      //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
-      const backendResponse = await this.auth.validateAndSaveUserToDb(token);
-      //handleSuccessfulLogin: manejar inicio de sesión exitoso.
-
-      this.router.navigate(['/shop/home']);
+      await this.auth.validateAndSaveUserToDb(token);
+      const rol = await this.auth.guardUserRol(token);
+  
+      switch (rol) {
+        case 'admin':
+          this.router.navigateByUrl("/admin/products");
+          break;
+        case 'usuario':
+          this.router.navigateByUrl("/shop/home");
+          break;
+          default:
+      }
     } catch (error: any) {
       console.error('Error en el login (Email/Pass):', error);
       this.errorMessage.set('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
