@@ -89,7 +89,6 @@ export class Form implements OnInit, OnDestroy {
       category: ['', Validators.required],
       image: [''],
       status: [true], // true for active, false for inactive
-      imageFile: [null],
     });
   }
 
@@ -114,7 +113,7 @@ export class Form implements OnInit, OnDestroy {
       const file = input.files[0];
       this.selectedFile = file;
       this.productForm.patchValue({
-        imageFile: file,
+        image: file,
       });
 
       // Create preview
@@ -132,7 +131,6 @@ export class Form implements OnInit, OnDestroy {
     }
     this.productForm.patchValue({
       image: '',
-      imageFile: null,
     });
   }
 
@@ -154,7 +152,7 @@ export class Form implements OnInit, OnDestroy {
 
     // If there's a new image file, include it in the form data
     if (this.selectedFile) {
-      formValue.imageFile = this.selectedFile;
+      formValue.image = this.selectedFile;
     }
 
     if (this.product()?.id) {
@@ -181,7 +179,6 @@ export class Form implements OnInit, OnDestroy {
       category: '',
       image: '',
       status: true,
-      imageFile: null,
     });
     this.previewUrl = null;
     this.selectedFile = null;
