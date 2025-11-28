@@ -20,17 +20,15 @@
       <h2 class="modal-title">¡Venta Exitosa!</h2>
       <p class="modal-message">
         Tu orden ha sido procesada correctamente.
-        <br>
-        Recibirás un correo de confirmación pronto.
+   
       </p>
 
       <!-- Detalles de la orden -->
-      @if (orderNumber) {
+
         <div class="order-details">
-          <p class="order-number">Orden #{{ orderNumber }}</p>
           <p class="order-total">Total: S/{{ total | number:'1.2-2' }}</p>
         </div>
-      }
+      
 
       <!-- Botón de cerrar -->
       <button class="close-button" (click)="close()">

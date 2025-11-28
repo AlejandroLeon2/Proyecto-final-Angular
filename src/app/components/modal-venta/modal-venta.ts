@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule,CurrencyPipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-modal-venta',
@@ -10,7 +11,6 @@ import { CommonModule } from '@angular/common';
 })
 export class ModalVenta implements OnChanges {
   @Input() isVisible: boolean = false;
-  @Input() orderNumber?: string;
   @Input() total: number = 0;
   @Output() closeModal = new EventEmitter<void>();
 

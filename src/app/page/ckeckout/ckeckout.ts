@@ -38,6 +38,9 @@ export class Ckeckout implements OnInit {
   private cartService = inject(CartService);
   private ordersService = inject(OrdersService);
   private authService = inject(Auth);
+  private fb:FormBuilder=inject(FormBuilder);
+  private router:Router=inject(Router);
+  private notify:NotificationService= inject(NotificationService);
 
   user = this.authService.user;
 
@@ -51,17 +54,10 @@ export class Ckeckout implements OnInit {
 
   // Variables para el modal
   showSuccessModal: boolean = false;
-  orderNumber: string = '';
 
   shippingMethods: ShippingMethod[] = [
     { id: 'standard', name: 'Envío Estándar', price: 0, estimatedDays: '5-7 días hábiles' },
   ];
-
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private notify: NotificationService
-  ) {}
 
   ngOnInit() {
     this.initForms();
@@ -259,17 +255,6 @@ export class Ckeckout implements OnInit {
     const value = event.target.value.replace(/\D/g, '');
     this.cardForm.patchValue({ cvv: value }, { emitEvent: false });
   }
-
-  // ========== GENERADOR DE NÚMERO DE ORDEN ==========
-
-  generateOrderNumber(): string {
-    const timestamp = Date.now().toString();
-    const random = Math.floor(Math.random() * 1000)
-      .toString()
-      .padStart(3, '0');
-    return `ORD-${timestamp.slice(-6)}${random}`;
-  }
-
   // ========== CONFIRMACIÓN ==========
 
   confirmOrder() {
@@ -279,12 +264,6 @@ export class Ckeckout implements OnInit {
         this.cardForm.markAllAsTouched();
       }
 
-      // setTimeout(() => {
-      //   const firstError = document.querySelector('.border-[var(--error)]');
-      //   firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // }, 100);
-
-      // ⚠️ Notificación de error de validación
       this.notify.error('Por favor, completa correctamente todos los campos requeridos.');
 
       return;
@@ -314,20 +293,18 @@ export class Ckeckout implements OnInit {
     this.ordersService.createOrder(nuevaOrden).subscribe({
       next: (res) => {
         console.log('Orden creada:', res.data);
-        this.orderNumber = this.generateOrderNumber();
         this.showSuccessModal = true;
       },
       error: (err) => console.error('Error creando orden:', err),
     });
 
-    // Generar número de orden
-    this.orderNumber = this.generateOrderNumber();
+
 
     // Guardar carrito
     this.cartService.saveCart();
 
     // Notificación de éxito
-    this.notify.success(`Orden ${this.orderNumber} procesada correctamente 🎉`);
+    this.notify.success(`Orden procesada correctamente 🎉`);
 
     // Mostrar modal
     this.showSuccessModal = true;
@@ -345,9 +322,6 @@ export class Ckeckout implements OnInit {
 
       // Vaciar carrito
       this.cartService.clearCart();
-
-      // Notificación informativa
-      this.notify.info('Regresando al inicio...');
 
       // Redirigir al Home
       this.router.navigate(['/']);

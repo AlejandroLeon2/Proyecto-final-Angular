@@ -5,19 +5,21 @@ import { take } from 'rxjs';
 import { Order } from '../../../../core/models/order.model';
 import { Auth } from '../../../../core/service/auth/auth';
 import { OrdersService } from '../../../../core/service/orders/orders';
+import { LucideAngularModule,ChevronRight } from 'lucide-angular';
 
 @Component({
   selector: 'app-orders-list',
   standalone: true,
-  imports: [RouterLink, DatePipe, CurrencyPipe],
+  imports: [RouterLink, DatePipe, CurrencyPipe,LucideAngularModule],
   templateUrl: './orders.html',
   styleUrl: './orders.css',
 })
 export class OrdersList {
   orders = signal<Order[]>([]);
 
-  authService = inject(Auth);
-  ordersService = inject(OrdersService);
+  private authService = inject(Auth);
+  private ordersService = inject(OrdersService);
+  readonly ChevronRight=ChevronRight;
 
   isLoading = signal<boolean>(true);
 
