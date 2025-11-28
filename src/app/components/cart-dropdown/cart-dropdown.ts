@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartService } from '../../core/service/cart/cart';
@@ -21,9 +21,10 @@ export class CartDropdown implements OnInit {
   totalItems = 0;
   totalPrice = 0;
 
-  shoppingCartIcon = ShoppingCart;
-
-  constructor(private cartService: CartService, private router: Router) {}
+  readonly shoppingCartIcon = ShoppingCart;
+  private cartService: CartService = inject(CartService);
+  private router: Router = inject(Router);
+  private eRef: ElementRef = inject(ElementRef);
 
   ngOnInit(): void {
     this.cartService.items$.subscribe((items) => {
@@ -55,7 +56,7 @@ export class CartDropdown implements OnInit {
   }
 
   goToCartPage() {
-        this.cartService.saveCart();
+    this.cartService.saveCart();
     this.router.navigate(['/shop/cart']);
   }
 
@@ -65,5 +66,15 @@ export class CartDropdown implements OnInit {
 
   continueShopping() {
     this.router.navigate(['/shop']);
+  }
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (
+      !this.isFullPage &&
+      this.isDropdownOpen &&
+      !this.eRef.nativeElement.contains(event.target)
+    ) {
+      this.isDropdownOpen = false;
+    }
   }
 }

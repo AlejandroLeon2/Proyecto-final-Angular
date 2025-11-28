@@ -5,6 +5,7 @@ import { LucideAngularModule, Trash2, Minus, Plus } from 'lucide-angular';
 import { CartService } from '../../core/service/cart/cart';
 import { Auth } from '../../core/service/auth/auth';
 
+
 @Component({
   selector: 'app-cart-item',
   standalone: true,
@@ -37,4 +38,5 @@ export class CartItemComponent {
     const currentQuantity = this.cartService.getQuantity(this.item!.id!);
     return currentQuantity >= this.item!.stock;
   }
+  
 }
