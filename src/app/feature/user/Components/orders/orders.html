@@ -1,28 +1,51 @@
-<h2 class="text-2xl font-bold m-4">Mis Órdenes</h2>
-
-<div class="w-full max-w-2xl px-4 py-6 rounded-xl transition-colors duration-300">
+<section class="w-full max-w-7xl px-4 py-6 rounded-xl transition-colors duration-300">
+  <h2 class="text-3xl font-light text-[var(--text-main)] mb-2">Mis Órdenes</h2>
+  <div class="w-12 h-px bg-[var(--primary)]"></div>
   <div>
     <div class="space-y-4">
       @if (isLoading()) {
-      <div class="flex justify-center items-center">
-        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      <div class="flex justify-center items-center h-50">
+        <div class="animate-spin rounded-full h-22 w-22 border-b-2 border-gray-900"></div>
       </div>
       } @else { @if (orders().length > 0) { @for (order of orders(); track $index) {
-      <div
-        class="p-4 border border-gray-200 shadow-sm rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-300"
+      <article
+        class="group py-6 border-b border-[var(--border)] cursor-pointer hover:border-[var(--primary)] transition-all"
         [routerLink]="['/user/orders', order.id]"
       >
-        <h3 class="font-semibold">
-          Detalle de la orden: <span class="accent">{{ order.id }}</span>
-        </h3>
-        <p class="text-sm text-gray-600">Fecha: {{ order.createdAt | date : 'dd/MM/yyyy' }}</p>
-        <p class="text-sm text-gray-600">
-          Total: {{ order.total | currency : 'PEN' : 'symbol' : '1.2' }}
-        </p>
-      </div>
+        <div class="flex items-start justify-between gap-6">
+          <div class="flex-1">
+            <div class="flex items-baseline gap-3 mb-3">
+              <span class="text-sm text-[var(--text-soft)] uppercase tracking-wide"> Orden </span>
+              <h3
+                class="text-sm font-medium text-[var(--text-main)] group-hover:text-[var(--primary)] transition-colors"
+              >
+                #{{ order.id }}
+              </h3>
+            </div>
+
+            <div class="flex flex-wrap gap-x-6 gap-y-2">
+              <div class="flex gap-4 justify-center items-center">
+                <p class="text-sm text-[var(--text-soft)] ">Fecha</p>
+                <p class="text-sm text-[var(--text-main)]">
+                  {{ order.createdAt | date : 'dd/MM/yyyy' }}
+                </p>
+              </div>
+
+              <div class="flex justify-center items-center gap-4">
+                <p class="text-sm text-[var(--text-soft)] ">Total</p>
+                <p class="text-sm font-medium text-[var(--text-main)]">
+                  {{ order.total | currency : 'PEN' : 'symbol' : '1.2-2' }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <lucide-icon [img]="ChevronRight" [size]="24" class=" text-[var(--text-soft)] group-hover:text-[var(--primary)] group-hover:translate-x-1 transition-all flex-shrink-0 mt-1"></lucide-icon>
+        </div>
+      </article>
       } } @else {
       <p>No se encontraron órdenes.</p>
       } }
     </div>
   </div>
-</div>
+</section>

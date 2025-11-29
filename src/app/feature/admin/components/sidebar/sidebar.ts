@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, HostListener,inject } from '@angular/core';
+import { RouterLink, RouterLinkActive,Router } from '@angular/router';
 import {
   House,
   LogOut,
@@ -8,9 +8,9 @@ import {
   Menu,
   Package2,
   Shapes,
-  ShoppingCart,
+  ShoppingCart,User
 } from 'lucide-angular';
-
+import { Auth } from '../../../../core/service/auth/auth';
 @Component({
   selector: 'app-sidebar',
   imports: [CommonModule, LucideAngularModule, RouterLink, RouterLinkActive],
@@ -19,12 +19,19 @@ import {
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  dashboardIcon = House;
-  productIcon = Package2;
-  categoryIcon = Shapes;
-  orderIcon = ShoppingCart;
-  logoutIcon = LogOut;
-  menuIcon = Menu;
+  readonly dashboardIcon = House;
+  readonly productIcon = Package2;
+  readonly categoryIcon = Shapes;
+  readonly orderIcon = ShoppingCart;
+  readonly logoutIcon = LogOut;
+  readonly menuIcon = Menu;
+  readonly userIcon = User;
+  private authService:Auth = inject(Auth);
+  private router:Router =inject(Router);
+
+  user= this.authService.user;
+
+  
 
   isOpen = false;
   isMobile = false;
@@ -46,7 +53,13 @@ export class Sidebar {
       this.isOpen = false;
     }
   }
+  async logout(): Promise<void> {
+    await this.authService.logOut();
+    this.router.navigateByUrl("/login")
+    
+    
 
+  }
   toggleMenu() {
     if (this.isMobile) {
       this.isOpen = !this.isOpen;

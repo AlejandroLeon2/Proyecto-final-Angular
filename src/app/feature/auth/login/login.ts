@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../core/service/auth/auth';
 import { IconTienda } from '../../../icons/icon-tienda/icon-tienda';
 import { IconGoogleLogo } from '../../../icons/IconGoogleLogo/IconGoogleLogo';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -29,12 +30,11 @@ export class Login {
   private fb: FormBuilder = inject(FormBuilder);
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
+  private location:Location = inject(Location);
 
   // --- Signals ---
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
-
-  constructor(private location: Location) {}
 
   //se crean los controles del formulario reactivo
   loginForm = this.fb.group({
@@ -65,19 +65,21 @@ export class Login {
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
       const userCredential = await this.auth.loginWithEmail(this.loginForm.value);
-      console.log('¡Login (Email/Pass) exitoso (Paso 1)!', userCredential.user);
-
-      // --- PASO 2: Enviar Token al Backend ---
-      console.log('Enviando token al backend (Paso 2)...');
-
       //Espera a que Firebase genere un token de identificación para este usuario.
       const token = await userCredential.user.getIdToken();
 
-      //Espera a que el backend (a través de auth.ts) valide ese token y guarde/actualice al usuario en la base de datos.
-      const backendResponse = await this.auth.validateAndSaveUserToDb(token);
-      console.log('Respuesta del backend (Paso 2):', backendResponse);
-      //handleSuccessfulLogin: manejar inicio de sesión exitoso.
-      this.router.navigate(['/shop/home']);
+      await this.auth.validateAndSaveUserToDb(token);
+      const rol = await this.auth.guardUserRol(token);
+  
+      switch (rol) {
+        case 'admin':
+          this.router.navigateByUrl("/admin/products");
+          break;
+        case 'usuario':
+          this.router.navigateByUrl("/shop/home");
+          break;
+          default:
+      }
     } catch (error: any) {
       console.error('Error en el login (Email/Pass):', error);
       this.errorMessage.set('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
@@ -93,15 +95,20 @@ export class Login {
     try {
       // --- PASO 1: Autenticar con Firebase (Frontend) ---
       const userCredential = await this.auth.loginWithGoogle();
-      console.log('¡Login con Google exitoso (Paso 1)!', userCredential.user);
-
-      // --- PASO 2: Enviar Token al Backend ---
-      console.log('Enviando token al backend (Paso 2)...');
       const token = await userCredential.user.getIdToken();
 
-      const backendResponse = await this.auth.validateAndSaveUserToDb(token);
-      console.log('Respuesta del backend (Paso 2):', backendResponse);
-      this.router.navigate(['/shop/home']);
+      await this.auth.validateAndSaveUserToDb(token);
+      const rol = await this.auth.guardUserRol(token);
+  
+      switch (rol) {
+        case 'admin':
+          this.router.navigateByUrl("/admin/products");
+          break;
+        case 'usuario':
+          this.router.navigateByUrl("/shop/home");
+          break;
+          default:
+      }
     } catch (error: any) {
       console.error('Error en el flujo de Google:', error);
       this.errorMessage.set('Error al iniciar sesión con Google. Inténtalo de nuevo.');

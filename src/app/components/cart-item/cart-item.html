@@ -1,20 +1,29 @@
 <div class="flex justify-center items-center p-3 gap-3 border-b border-[var(--border)]">
-  <img [src]="item.image" [alt]="item.name" class="h-16  w-full max-w-16 rounded-sm object-cover" />
-  <div class="item-details ">
-    <h4 class="text-base text-[var(--text-main)] line-clamp-2 leading-snug ">{{ item.name }}</h4>
-    <p class="text-[var(--text-soft)] text-xs">{{ item.category }}</p>
+  <img [src]="item.image" [alt]="item.name" class="h-16 w-full max-w-16 rounded-sm object-cover" />
+  <div class="item-details">
+    <h4 class="text-base text-[var(--text-main)] line-clamp-2 leading-snug">{{ item.name }}</h4>
+    <p class="text-[var(--text-soft)] text-xs">{{ item.category.name }}</p>
     <div class="item-price-quantity">
-      <span class="text-[var(--text-main)]">{{ item.price  | currency: 'PEN':'symbol':'1.2' }}</span>
+      <span class="text-[var(--text-main)]">{{
+        item.price | currency : 'PEN' : 'symbol' : '1.2'
+      }}</span>
       <div class="quantity-controls">
-        <button class=" text-[var(--text-main)] active:scale-95 duration-300 rounded-sm border flex justify-center items-center  border-[var(--border)] py-2 px-1" (click)="updateQuantity(item.id!, item.quantity - 1)">
+
+        <button [disabled]="!user || item.quantity <= 1" class=" text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 duration-300 rounded-sm border flex justify-center items-center  border-[var(--border)] py-2 px-1" (click)="updateQuantity(item.id!, item.quantity - 1)">
           <lucide-icon [img]="Minus" size="16"></lucide-icon>
         </button>
         <span class="text-[var(--text-main)] w-4 text-center">{{ item.quantity }}</span>
-        <button class="text-[var(--text-main)] active:scale-95 duration-300 rounded-sm border flex justify-center items-center border-[var(--border)] py-2 px-1" (click)="updateQuantity(item.id!, item.quantity + 1)">
+        <button [disabled]="!user||isStockExceeded()" class="text-[var(--text-main)] disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 duration-300 rounded-sm border flex justify-center items-center border-[var(--border)] py-2 px-1" (click)="updateQuantity(item.id!, item.quantity + 1)">
+
           <lucide-icon [img]="Plus" size="16"></lucide-icon>
         </button>
       </div>
     </div>
   </div>
-  <button class=" active:text-red-400 hover:text-red-400 duration-300 text-[var(--text-soft)]" (click)="onRemoveItem(item.id!)"><lucide-icon [img]="Trash2 "  ></lucide-icon></button>
+  <button
+    class="active:text-red-400 hover:text-red-400 duration-300 text-[var(--text-soft)]"
+    (click)="onRemoveItem(item.id!)"
+  >
+    <lucide-icon [img]="Trash2"></lucide-icon>
+  </button>
 </div>

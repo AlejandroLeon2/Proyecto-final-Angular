@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ICustomResponse } from '../../models/customResponse';
 import { Product } from '../../models/product.model';
 import { Status } from '../../models/status.model';
+import { NotificationService } from '../notification/notification';
 
 // Interfaces para la respuesta paginada
 export interface PaginationData {
@@ -25,6 +26,7 @@ export interface PaginatedProductResponse {
 export class ProductsService {
   private _data = signal<Product[]>([]);
   private http = inject(HttpClient);
+  private notification = inject(NotificationService);
 
   get data() {
     return this._data();
@@ -63,6 +65,36 @@ export class ProductsService {
       );
   }
 
+  // meodo para obtener todos los productos buscador desde search
+
+  getPSearchProducts(page: number = 1, limit: number, query: string, categories: string[] = []) {
+
+    //agregamos parametro
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString())
+      .set(`data`, query.toString())
+      .set(`categories`, categories.join(','))
+      ;
+
+    return this.http
+      .get<ICustomResponse<PaginatedProductResponse>>(`${environment.apiURL}/search/paginated`,{ params }
+        ).pipe(
+          take(1),
+          // Extraemos directamente la data relevante de la respuesta CustomResponse
+          map((response) => {
+            if (!response.success || !response.data) {
+              throw new Error(response.message || 'Error al obtener productos');
+            }
+            return response.data;
+          }),
+          catchError((error) => {
+            console.error('ProductsService: Error al obtener productos paginados', error);
+            return throwError(() => error);
+          })
+        );
+    
+  }
   getProducts(status?: Status[]): void {
     this.http
       .get<Product[]>(environment.apiURL + '/product/all', {
@@ -99,9 +131,11 @@ export class ProductsService {
       )
       .subscribe({
         next: (response) => {
+          this.notification.success('Producto creado correctamente');
           this._data.update((data) => [...data, response.data!]);
         },
         error: () => {
+          this.notification.error('Error al crear el producto');
           console.error('ThrowError: Error al obtener los productos');
         },
       });
@@ -126,10 +160,14 @@ export class ProductsService {
             if (index !== -1) {
               data[index] = response.data!;
             }
+
+            this.notification.success('Producto actualizado correctamente');
             return [...data];
           });
         },
         error: () => {
+          this.notification.error('Por favor, completa correctamente todos los campos requeridos.');
+
           console.error('ThrowError: Error al obtener los productos');
         },
       });
@@ -172,10 +210,12 @@ export class ProductsService {
             if (index !== -1) {
               data.splice(index, 1);
             }
+            this.notification.success('Producto eliminado correctamente');
             return [...data];
           });
         },
         error: () => {
+          this.notification.error('Error al eliminar el producto');
           console.error('ThrowError: Error al obtener los productos');
         },
       });

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IconTienda } from "../../icons/icon-tienda/icon-tienda";
-import { RouterLink } from "@angular/router";
+import { IconTienda } from '../../icons/icon-tienda/icon-tienda';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -13,31 +13,24 @@ import { RouterLink } from "@angular/router";
 export class Footer {
   email: string = '';
 
-    shopLinks = [
-      { label: 'Nuevos Lanzamientos', url: '/shop/home' },
-      { label: 'Ofertas', url: '/deals' },
-      { label: 'Categorias', url: '/shop/categorias-product' }
-    ];
+  shopLinks = [
+    { label: 'Nuevos Lanzamientos', url: '/shop/home' },
+    { label: 'Catalogo', url: '/shop/catalogo-product' },
+  ];
 
   aboutLinks = [
-      { label: 'Sobre Nosotros', url: '/about' },
-      { label: 'Contacto', url: '/contact' },
-      { label: 'Preguntas frecuentes', url: '/shop/frequently-questions' }
-    ];
-
-  legalLinks = [
-      { label: 'Terminos y condiciones', url: '/terms' },
-      { label: 'Politica de privacidad', url: '/privacy' }
-    ];
+    { label: 'Sobre Nosotros', url: '/about' },
+    { label: 'Preguntas frecuentes', url: '/shop/frequently-questions' },
+  ];
 
   subscribe() {
     if (this.email) {
       console.log(`Subscribed with email: ${this.email}`);
-      
-      
+
       alert('Gracias por suscribirte');
 
       this.email = '';
     }
   }
+  
 }

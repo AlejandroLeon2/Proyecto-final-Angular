@@ -1,0 +1,14 @@
+<div class="toast-container">
+  @for (n of notifications(); track n) {
+    <div class="toast" [ngClass]="n.type">
+      <div class="toast-icon">
+        @switch (n.type) {
+          @case ('success') { <lucide-angular [img]="Check" class=""/>}
+          @case ('error') { <lucide-angular [img]="X" class=""/>}
+          @case ('info') { <lucide-angular [img]="CircleAlert" class=""/> }
+        }
+      </div>
+      <div class="toast-message">{{ n.message }}</div>
+    </div>
+  }
+</div>

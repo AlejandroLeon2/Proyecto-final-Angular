@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './core/guards/admin/admin-guard';
 import { userGuard } from './core/guards/user/user-guard';
+import { sessionGuard } from './core/guards/session/session-guard';
 
 export const routes: Routes = [
   {
@@ -34,15 +35,17 @@ export const routes: Routes = [
       {
         path: 'cart',
         loadComponent: () => import('./page/cart/cart').then((c) => c.Cart),
+        canActivate:[sessionGuard]
       },
       {
         path: 'ckeckout',
         loadComponent: () => import('./page/ckeckout/ckeckout').then((c) => c.Ckeckout),
+        canActivate:[sessionGuard]
       },
       {
         path: 'frequently-questions',
         loadComponent: () =>
-          import('./page/frequently-questions/frequently-questions').then(
+         import('./page/frequently-questions/frequently-questions').then(
             (c) => c.FrequentlyQuestions
           ),
       },
@@ -50,7 +53,13 @@ export const routes: Routes = [
         path: '**',
         redirectTo: 'home',
       },
+
     ],
+  },
+
+  {
+    path: 'about',
+    loadComponent: () => import('./page/about/about').then((c) => c.About),
   },
 
   {
